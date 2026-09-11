@@ -59,9 +59,7 @@ body::after{
 }
 main,header,nav,div,section,table{position:relative;z-index:1}
 
-/* ==========================================================
-   TELA DE LOGIN
-========================================================== */
+/* LOGIN */
 #loginScreen{
   position:fixed;inset:0;z-index:200;
   display:flex;align-items:center;justify-content:center;
@@ -131,9 +129,7 @@ main,header,nav,div,section,table{position:relative;z-index:1}
   min-height:18px;
 }
 
-/* ==========================================================
-   HEADER
-========================================================== */
+/* HEADER */
 header{
   display:grid;
   grid-template-columns:1fr auto 1fr;
@@ -146,12 +142,8 @@ header{
   position:sticky;top:0;z-index:30;
 }
 .header-left{display:flex;align-items:center;gap:10px}
-.header-center{
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-}
-.logo-wrap{
-  display:flex;align-items:center;gap:16px;justify-content:center;
-}
+.header-center{display:flex;flex-direction:column;align-items:center;gap:4px}
+.logo-wrap{display:flex;align-items:center;gap:16px;justify-content:center}
 .logo-svg{
   width:64px;height:64px;flex-shrink:0;
   filter:drop-shadow(0 4px 20px rgba(201,169,97,.22));
@@ -176,9 +168,7 @@ header{
   font-size:12px;font-weight:600;letter-spacing:.3px;
 }
 
-/* ==========================================================
-   BOTÕES
-========================================================== */
+/* BOTÕES */
 button{
   border:0;border-radius:8px;
   padding:11px 18px;cursor:pointer;
@@ -213,9 +203,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .ghost:hover{background:var(--dourado-10);color:var(--dourado-claro);border-color:var(--dourado)}
 .btn-sm{padding:6px 12px;font-size:12px}
 
-/* ==========================================================
-   ABAS
-========================================================== */
+/* ABAS */
 .tabs{
   display:flex;justify-content:center;align-items:center;gap:4px;
   background:rgba(10,30,61,.85);
@@ -240,16 +228,12 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 }
 .tabs::-webkit-scrollbar{height:0}
 
-/* ==========================================================
-   LAYOUT
-========================================================== */
+/* LAYOUT */
 .container{max-width:1400px;margin:auto;padding:28px 20px 80px}
 .page{display:none;animation:fadeIn .35s ease}
 .page.active{display:block}
 
-/* ==========================================================
-   CARDS DE RESUMO
-========================================================== */
+/* CARDS DE RESUMO */
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:26px}
 .card-resumo{
   background:linear-gradient(180deg,var(--bg-nivel-1) 0%,#0a1e3d 100%);
@@ -279,13 +263,9 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .card-resumo.entrada strong{color:var(--verde)}
 .card-resumo.saida strong{color:var(--vermelho)}
 .card-resumo.saldo strong{color:var(--dourado)}
-.card-resumo small{
-  font-size:12px;color:var(--texto-70);
-}
+.card-resumo small{font-size:12px;color:var(--texto-70)}
 
-/* ==========================================================
-   BOXES
-========================================================== */
+/* BOXES */
 .box{
   background:var(--bg-nivel-1);
   border:1px solid var(--borda);
@@ -309,9 +289,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 }
 .box-body{padding:22px}
 
-/* ==========================================================
-   FORMULÁRIOS
-========================================================== */
+/* FORMULÁRIOS */
 .form-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -349,9 +327,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   border-top:1px solid var(--borda);
 }
 
-/* ==========================================================
-   TABELAS
-========================================================== */
+/* TABELAS */
 .table-wrap{overflow-x:auto;background:var(--bg-nivel-2)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{
@@ -378,7 +354,6 @@ td.valor-saida{color:var(--vermelho);font-weight:700}
 td.valor-saldo{color:var(--dourado);font-weight:700}
 td.acoes{text-align:right;white-space:nowrap}
 
-/* Badges */
 .badge{
   display:inline-block;
   padding:5px 11px;
@@ -395,9 +370,7 @@ td.acoes{text-align:right;white-space:nowrap}
 .badge.bom{background:rgba(34,197,94,.15);color:#86efac;border-color:rgba(34,197,94,.35)}
 .badge.manutencao{background:rgba(251,191,36,.15);color:#fcd34d;border-color:rgba(251,191,36,.35)}
 
-/* ==========================================================
-   INVENTÁRIO — GRID DE CARDS
-========================================================== */
+/* INVENTÁRIO */
 .inv-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
@@ -424,14 +397,8 @@ td.acoes{text-align:right;white-space:nowrap}
   overflow:hidden;
   border-bottom:1px solid var(--borda);
 }
-.inv-card .foto img{
-  width:100%;height:100%;
-  object-fit:cover;
-}
-.inv-card .foto .sem-foto{
-  color:var(--texto-40);
-  font-size:36px;
-}
+.inv-card .foto img{width:100%;height:100%;object-fit:cover}
+.inv-card .foto .sem-foto{color:var(--texto-40);font-size:36px}
 .inv-card .info{
   padding:14px;
   flex:1;
@@ -439,8 +406,7 @@ td.acoes{text-align:right;white-space:nowrap}
 }
 .inv-card .info h4{
   margin:0;font-size:14px;
-  color:var(--texto);
-  font-weight:700;
+  color:var(--texto);font-weight:700;
 }
 .inv-card .info .estado{
   margin-top:auto;
@@ -452,7 +418,6 @@ td.acoes{text-align:right;white-space:nowrap}
 }
 .inv-card .acoes button{flex:1;padding:7px;font-size:12px}
 
-/* Upload de foto */
 .foto-upload{
   border:2px dashed var(--borda-clara);
   border-radius:10px;
@@ -466,10 +431,7 @@ td.acoes{text-align:right;white-space:nowrap}
 .foto-upload input{display:none}
 .foto-upload .icon{font-size:32px;color:var(--texto-40);margin-bottom:8px}
 .foto-upload .texto{font-size:12px;color:var(--texto-70)}
-.foto-preview{
-  margin-top:14px;
-  text-align:center;
-}
+.foto-preview{margin-top:14px;text-align:center}
 .foto-preview img{
   max-width:200px;max-height:200px;
   border-radius:8px;
@@ -477,46 +439,9 @@ td.acoes{text-align:right;white-space:nowrap}
 }
 .foto-preview button{margin-top:8px}
 
-/* ==========================================================
-   MODAL
-========================================================== */
-.modal{
-  display:none;
-  position:fixed;inset:0;
-  background:rgba(2,8,20,.8);
-  z-index:100;
-  align-items:center;justify-content:center;
-  padding:20px;
-  backdrop-filter:blur(8px);
-}
-.modal.show{display:flex}
-.modal-content{
-  background:linear-gradient(180deg,var(--bg-nivel-1) 0%,#0a1e3d 100%);
-  border:1px solid var(--borda-clara);
-  width:min(720px,100%);
-  max-height:92vh;overflow-y:auto;
-  border-radius:14px;
-  padding:30px;
-  box-shadow:0 25px 70px rgba(0,0,0,.7);
-}
-.modal-content h2{
-  margin:0 0 20px;
-  font-size:18px;
-  color:var(--dourado);
-  font-family:'Cinzel',serif;
-  letter-spacing:1.5px;
-}
-.modal-actions{
-  display:flex;gap:10px;justify-content:flex-end;
-  margin-top:22px;padding-top:18px;
-  border-top:1px solid var(--borda);
-}
-
 .hidden{display:none !important}
 
-/* ==========================================================
-   RESPONSIVO
-========================================================== */
+/* RESPONSIVO */
 @media(max-width:1000px){
   header{padding:20px 24px;min-height:100px}
   .logo-svg{width:56px;height:56px}
@@ -549,23 +474,11 @@ td.acoes{text-align:right;white-space:nowrap}
 @media(max-width:480px){
   .inv-grid{grid-template-columns:1fr}
 }
-@media print{
-  body{background:#fff;color:#000}
-  body::before,body::after{display:none}
-  header,.tabs,.toolbar,.no-print,.header-actions{display:none !important}
-  .box,.card-resumo{background:#fff;border:1px solid #ccc;box-shadow:none;color:#000}
-  .box-title{background:#eee;color:#000}
-  th{background:#eee;color:#000;border-color:#999}
-  td{border-color:#ccc;color:#000;background:#fff}
-  .modal{display:none !important}
-}
 </style>
 </head>
 <body>
 
-<!-- ==========================================================
-     TELA DE LOGIN
-========================================================== -->
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-card">
     <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -587,19 +500,17 @@ td.acoes{text-align:right;white-space:nowrap}
     <button class="primary" onclick="tentarLogin()">Entrar</button>
     <div class="erro" id="loginErro"></div>
     <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--borda)">
-      <a href="https://euthiagopereira.github.io/MH-Comunica/" style="color:var(--texto-55);font-size:12px;text-decoration:none">
+      <a href="../" style="color:var(--texto-55);font-size:12px;text-decoration:none">
         🎥 Voltar para MH Comunica (Mídia)
       </a>
     </div>
   </div>
 </div>
 
-<!-- ==========================================================
-     HEADER
-========================================================== -->
+<!-- HEADER -->
 <header id="appHeader" class="hidden">
   <div class="header-left">
-    <button class="ghost btn-sm" onclick="window.location.href='https://euthiagopereira.github.io/MH-Comunica/'">
+    <button class="ghost btn-sm" onclick="window.location.href='../'">
       🎥 Mídia
     </button>
   </div>
@@ -628,9 +539,7 @@ td.acoes{text-align:right;white-space:nowrap}
   </div>
 </header>
 
-<!-- ==========================================================
-     ABAS
-========================================================== -->
+<!-- ABAS -->
 <nav class="tabs hidden" id="tabsNav">
   <button onclick="openTab('resumo',this)" class="active">📊 Resumo</button>
   <button onclick="openTab('lancamentos',this)">💰 Lançamentos</button>
@@ -638,12 +547,9 @@ td.acoes{text-align:right;white-space:nowrap}
   <button onclick="openTab('inventario',this)">📦 Inventário</button>
 </nav>
 
-<!-- ==========================================================
-     CONTEÚDO
-========================================================== -->
+<!-- CONTEÚDO -->
 <main class="container hidden" id="appMain">
 
-  <!-- RESUMO -->
   <section id="resumo" class="page active">
     <div class="cards">
       <div class="card-resumo entrada">
@@ -659,7 +565,7 @@ td.acoes{text-align:right;white-space:nowrap}
       <div class="card-resumo saldo">
         <span>Saldo do Mês</span>
         <strong id="totalSaldo">R$ 0,00</strong>
-        <small id="mesAtual">Setembro 2026</small>
+        <small id="mesAtual">—</small>
       </div>
     </div>
 
@@ -682,24 +588,19 @@ td.acoes{text-align:right;white-space:nowrap}
     </div>
   </section>
 
-  <!-- LANÇAMENTOS -->
   <section id="lancamentos" class="page">
     <div class="box">
       <div class="box-title">➕ Novo lançamento</div>
       <div class="box-body">
         <div class="form-grid">
-          <label>Data
-            <input type="date" id="lancData">
-          </label>
+          <label>Data<input type="date" id="lancData"></label>
           <label>Tipo
             <select id="lancTipo">
               <option value="entrada">🟢 Entrada</option>
               <option value="saida">🔴 Saída</option>
             </select>
           </label>
-          <label>Descrição
-            <input type="text" id="lancDesc" placeholder="Ex: Oferta do culto">
-          </label>
+          <label>Descrição<input type="text" id="lancDesc" placeholder="Ex: Oferta do culto"></label>
           <label>Categoria
             <select id="lancCategoria">
               <option>Oferta</option>
@@ -712,9 +613,7 @@ td.acoes{text-align:right;white-space:nowrap}
               <option>Outros</option>
             </select>
           </label>
-          <label>Valor (R$)
-            <input type="number" id="lancValor" placeholder="0,00" step="0.01" min="0">
-          </label>
+          <label>Valor (R$)<input type="number" id="lancValor" placeholder="0,00" step="0.01" min="0"></label>
         </div>
         <div class="form-actions">
           <button class="ghost" onclick="limparFormLanc()">Limpar</button>
@@ -743,15 +642,12 @@ td.acoes{text-align:right;white-space:nowrap}
     </div>
   </section>
 
-  <!-- CANTINA -->
   <section id="cantina" class="page">
     <div class="box">
       <div class="box-title">🍫 Nova venda</div>
       <div class="box-body">
         <div class="form-grid">
-          <label>Data
-            <input type="date" id="cantData">
-          </label>
+          <label>Data<input type="date" id="cantData"></label>
           <label>Produto
             <select id="cantProduto">
               <option>Brigadeiro</option>
@@ -763,15 +659,9 @@ td.acoes{text-align:right;white-space:nowrap}
               <option>Outros</option>
             </select>
           </label>
-          <label>Comprador
-            <input type="text" id="cantComprador" placeholder="Nome de quem comprou">
-          </label>
-          <label>Quantidade
-            <input type="number" id="cantQtd" value="1" min="1">
-          </label>
-          <label>Valor total (R$)
-            <input type="number" id="cantValor" placeholder="0,00" step="0.01" min="0">
-          </label>
+          <label>Comprador<input type="text" id="cantComprador" placeholder="Nome de quem comprou"></label>
+          <label>Quantidade<input type="number" id="cantQtd" value="1" min="1"></label>
+          <label>Valor total (R$)<input type="number" id="cantValor" placeholder="0,00" step="0.01" min="0"></label>
           <label>Status
             <select id="cantStatus">
               <option value="receber">🟡 A receber</option>
@@ -826,15 +716,12 @@ td.acoes{text-align:right;white-space:nowrap}
     </div>
   </section>
 
-  <!-- INVENTÁRIO -->
   <section id="inventario" class="page">
     <div class="box">
       <div class="box-title">📦 Cadastrar item</div>
       <div class="box-body">
         <div class="form-grid">
-          <label>Descrição
-            <input type="text" id="invDesc" placeholder="Ex: Microfone sem fio">
-          </label>
+          <label>Descrição<input type="text" id="invDesc" placeholder="Ex: Microfone sem fio"></label>
           <label>Estado de conservação
             <select id="invEstado">
               <option value="Novo">✨ Novo</option>
@@ -842,9 +729,7 @@ td.acoes{text-align:right;white-space:nowrap}
               <option value="Manutenção">🔧 Precisa manutenção</option>
             </select>
           </label>
-          <label>Quantidade
-            <input type="number" id="invQtd" value="1" min="1">
-          </label>
+          <label>Quantidade<input type="number" id="invQtd" value="1" min="1"></label>
         </div>
         <div style="margin-top:16px">
           <label style="display:block;font-size:11px;font-weight:700;color:var(--texto-70);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px">
@@ -880,54 +765,44 @@ td.acoes{text-align:right;white-space:nowrap}
 "use strict";
 
 /* ==========================================================
-   CONFIGURAÇÃO
+   CONFIGURAÇÃO — TROQUE A SENHA AQUI
 ========================================================== */
-const SENHA_FINANCEIRO = "fin2026";  // 👈 TROQUE AQUI a senha do responsável
+const SENHA_FINANCEIRO = "fin2026";   // 👈 mude para a senha que quiser
 const CHAVE_STORAGE    = "mh_financeiro_v1";
 
 /* ==========================================================
    ESTRUTURA DE DADOS
 ========================================================== */
 const DB = {
-  lancamentos: [],  // { id, data, tipo ('entrada'|'saida'), descricao, categoria, valor, criadoEm }
-  vendas:      [],  // { id, data, produto, comprador, qtd, valor, status ('pago'|'receber'), criadoEm }
-  inventario:  []   // { id, descricao, estado, qtd, foto (base64) }
+  lancamentos: [],
+  vendas:      [],
+  inventario:  []
 };
 
 /* ==========================================================
    HELPERS
 ========================================================== */
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
-
 function esc(v){
   return String(v==null?"":v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 }
-
 function moeda(v){
   const n = Number(v) || 0;
   return "R$ " + n.toLocaleString("pt-BR",{minimumFractionDigits:2, maximumFractionDigits:2});
 }
-
 function dataHoje(){
   const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth()+1).padStart(2,"0");
-  const dd = String(d.getDate()).padStart(2,"0");
-  return y + "-" + m + "-" + dd;
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
 }
-
 function dataBR(iso){
   if(!iso) return "";
   const p = iso.split("-");
-  if(p.length !== 3) return iso;
-  return p[2] + "/" + p[1] + "/" + p[0];
+  return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : iso;
 }
-
 function mesAtualISO(){
   const d = new Date();
   return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0");
 }
-
 function nomeMesAtual(){
   const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
                  "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
@@ -937,13 +812,11 @@ function nomeMesAtual(){
 
 /* ==========================================================
    PERSISTÊNCIA (LocalStorage)
-   — Para migrar para Supabase: substitua por chamadas async
 ========================================================== */
 function salvarLocal(){
   try{ localStorage.setItem(CHAVE_STORAGE, JSON.stringify(DB)); }
   catch(e){ console.warn("Erro ao salvar:", e); }
 }
-
 function carregarLocal(){
   try{
     const raw = localStorage.getItem(CHAVE_STORAGE);
@@ -963,7 +836,6 @@ function tentarLogin(){
   const input = document.getElementById("senhaInput");
   const erro  = document.getElementById("loginErro");
   const senha = input.value.trim();
-
   if(senha === SENHA_FINANCEIRO){
     sessionStorage.setItem("mh_fin_logado", "1");
     abrirApp();
@@ -971,12 +843,10 @@ function tentarLogin(){
     erro.textContent = "❌ Senha incorreta. Tente novamente.";
     input.value = "";
     input.focus();
-    // pequena animação de erro
     input.style.borderColor = "#dc2626";
     setTimeout(()=>{ input.style.borderColor = ""; }, 800);
   }
 }
-
 function abrirApp(){
   document.getElementById("loginScreen").classList.add("hidden");
   document.getElementById("appHeader").classList.remove("hidden");
@@ -985,7 +855,6 @@ function abrirApp(){
   carregarLocal();
   inicializar();
 }
-
 function fazerLogout(){
   if(!confirm("Deseja sair do sistema?")) return;
   sessionStorage.removeItem("mh_fin_logado");
@@ -1012,73 +881,50 @@ function limparFormLanc(){
   document.getElementById("lancCategoria").value = "Oferta";
   document.getElementById("lancValor").value = "";
 }
-
 function salvarLancamento(){
   const data      = document.getElementById("lancData").value;
   const tipo      = document.getElementById("lancTipo").value;
   const descricao = document.getElementById("lancDesc").value.trim();
   const categoria = document.getElementById("lancCategoria").value;
   const valor     = parseFloat(document.getElementById("lancValor").value);
-
   if(!data || !descricao || isNaN(valor) || valor <= 0){
-    alert("⚠️ Preencha todos os campos corretamente.");
-    return;
+    alert("⚠️ Preencha todos os campos corretamente."); return;
   }
-
   DB.lancamentos.push({
-    id: uid(),
-    data: data,
-    tipo: tipo,
-    descricao: descricao,
-    categoria: categoria,
-    valor: valor,
+    id: uid(), data: data, tipo: tipo,
+    descricao: descricao, categoria: categoria, valor: valor,
     criadoEm: new Date().toISOString()
   });
-
-  salvarLocal();
-  limparFormLanc();
-  renderAll();
-  alert("✅ Lançamento salvo com sucesso!");
+  salvarLocal(); limparFormLanc(); renderAll();
+  alert("✅ Lançamento salvo!");
 }
-
 function excluirLancamento(id){
   if(!confirm("Excluir este lançamento?")) return;
   DB.lancamentos = DB.lancamentos.filter(l=>l.id !== id);
-  salvarLocal();
-  renderAll();
+  salvarLocal(); renderAll();
 }
-
 function lancamentosDoMes(){
   const mes = mesAtualISO();
-  return DB.lancamentos
-    .filter(l => l.data.startsWith(mes))
-    .sort((a,b) => b.data.localeCompare(a.data));
+  return DB.lancamentos.filter(l => l.data.startsWith(mes)).sort((a,b) => b.data.localeCompare(a.data));
 }
-
 function renderLancamentos(){
   const lista = lancamentosDoMes();
   const tbody = document.getElementById("lancTable");
-
   if(!lista.length){
     tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum lançamento neste mês.</td></tr>';
     return;
   }
-
   tbody.innerHTML = lista.map(l => {
     const cls = l.tipo === "entrada" ? "valor-entrada" : "valor-saida";
     const badge = l.tipo === "entrada" ? "entrada" : "saida";
-    return `
-      <tr>
-        <td>${esc(dataBR(l.data))}</td>
-        <td>${esc(l.descricao)}</td>
-        <td>${esc(l.categoria)}</td>
-        <td><span class="badge ${badge}">${l.tipo === "entrada" ? "🟢 Entrada" : "🔴 Saída"}</span></td>
-        <td style="text-align:right" class="${cls}">${moeda(l.valor)}</td>
-        <td class="acoes">
-          <button class="danger btn-sm" onclick="excluirLancamento('${l.id}')">✕</button>
-        </td>
-      </tr>
-    `;
+    return `<tr>
+      <td>${esc(dataBR(l.data))}</td>
+      <td>${esc(l.descricao)}</td>
+      <td>${esc(l.categoria)}</td>
+      <td><span class="badge ${badge}">${l.tipo === "entrada" ? "🟢 Entrada" : "🔴 Saída"}</span></td>
+      <td style="text-align:right" class="${cls}">${moeda(l.valor)}</td>
+      <td class="acoes"><button class="danger btn-sm" onclick="excluirLancamento('${l.id}')">✕</button></td>
+    </tr>`;
   }).join("");
 }
 
@@ -1093,7 +939,6 @@ function limparFormCant(){
   document.getElementById("cantValor").value     = "";
   document.getElementById("cantStatus").value    = "receber";
 }
-
 function salvarVenda(){
   const data      = document.getElementById("cantData").value;
   const produto   = document.getElementById("cantProduto").value;
@@ -1101,110 +946,66 @@ function salvarVenda(){
   const qtd       = parseInt(document.getElementById("cantQtd").value) || 1;
   const valor     = parseFloat(document.getElementById("cantValor").value);
   const status    = document.getElementById("cantStatus").value;
-
   if(!data || !comprador || isNaN(valor) || valor <= 0){
-    alert("⚠️ Preencha todos os campos corretamente.");
-    return;
+    alert("⚠️ Preencha todos os campos corretamente."); return;
   }
-
   const venda = {
-    id: uid(),
-    data: data,
-    produto: produto,
-    comprador: comprador,
-    qtd: qtd,
-    valor: valor,
-    status: status,
+    id: uid(), data: data, produto: produto, comprador: comprador,
+    qtd: qtd, valor: valor, status: status,
     criadoEm: new Date().toISOString()
   };
-
   DB.vendas.push(venda);
-
-  // 💡 REGRA: se já cadastrar como PAGA, gera lançamento de entrada no mês da venda
-  if(status === "pago"){
-    gerarReceitaVenda(venda);
-  }
-
-  salvarLocal();
-  limparFormCant();
-  renderAll();
+  if(status === "pago") gerarReceitaVenda(venda);
+  salvarLocal(); limparFormCant(); renderAll();
   alert("✅ Venda registrada!");
 }
-
 function gerarReceitaVenda(venda){
-  // Evita duplicar se já existir lançamento vinculado
   const existente = DB.lancamentos.find(l => l.vendaId === venda.id);
   if(existente) return;
-
   DB.lancamentos.push({
-    id: uid(),
-    vendaId: venda.id,
-    data: venda.data,
-    tipo: "entrada",
+    id: uid(), vendaId: venda.id, data: venda.data, tipo: "entrada",
     descricao: "Venda: " + venda.produto + " (" + venda.comprador + ")",
-    categoria: "Cantina",
-    valor: venda.valor,
+    categoria: "Cantina", valor: venda.valor,
     criadoEm: new Date().toISOString()
   });
 }
-
 function marcarComoPaga(id){
   const v = DB.vendas.find(x => x.id === id);
-  if(!v) return;
-  if(v.status === "pago") return;
-
+  if(!v || v.status === "pago") return;
   const confirmar = confirm(
     "💡 Marcar venda como PAGA?\n\n" +
     "Comprador: " + v.comprador + "\n" +
-    "Valor: " + moeda(v.valor) + "\n\n" +
-    "⚠️ IMPORTANTE: A venda era de " + dataBR(v.data) + ".\n" +
-    "Ao confirmar, o valor entrará como ENTRADA no MÊS ATUAL (regra de fechamento).\n" +
+    "Valor: " + moeda(v.valor) + "\n" +
+    "Data original: " + dataBR(v.data) + "\n\n" +
+    "⚠️ A venda entrará como ENTRADA no MÊS ATUAL.\n" +
     "Deseja continuar?"
   );
   if(!confirmar) return;
-
   v.status = "pago";
-
-  // 💡 REGRA ESPECIAL: se a venda é de mês anterior, a receita entra no MÊS ATUAL
-  const dataReceita = dataHoje();
   const existente = DB.lancamentos.find(l => l.vendaId === v.id);
   if(!existente){
     DB.lancamentos.push({
-      id: uid(),
-      vendaId: v.id,
-      data: dataReceita,
-      tipo: "entrada",
+      id: uid(), vendaId: v.id, data: dataHoje(), tipo: "entrada",
       descricao: "Recebimento: " + v.produto + " (" + v.comprador + ") — ref. " + dataBR(v.data),
-      categoria: "Cantina",
-      valor: v.valor,
+      categoria: "Cantina", valor: v.valor,
       criadoEm: new Date().toISOString()
     });
   }
-
-  salvarLocal();
-  renderAll();
+  salvarLocal(); renderAll();
   alert("✅ Venda marcada como paga. Valor lançado como entrada no mês atual.");
 }
-
 function excluirVenda(id){
   if(!confirm("Excluir esta venda? O lançamento vinculado também será removido.")) return;
   DB.vendas = DB.vendas.filter(v => v.id !== id);
   DB.lancamentos = DB.lancamentos.filter(l => l.vendaId !== id);
-  salvarLocal();
-  renderAll();
+  salvarLocal(); renderAll();
 }
-
 function renderCantina(){
   const mes = mesAtualISO();
-
-  // Vendas do mês atual
-  const doMes = DB.vendas
-    .filter(v => v.data.startsWith(mes))
-    .sort((a,b) => b.data.localeCompare(a.data));
-
+  const doMes = DB.vendas.filter(v => v.data.startsWith(mes)).sort((a,b) => b.data.localeCompare(a.data));
   const tbody = document.getElementById("cantTable");
   if(!doMes.length){
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma venda registrada neste mês.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma venda neste mês.</td></tr>';
   } else {
     tbody.innerHTML = doMes.map(v => {
       const badge = v.status === "pago" ? "pago" : "receber";
@@ -1213,28 +1014,24 @@ function renderCantina(){
         ? `<button class="danger btn-sm" onclick="excluirVenda('${v.id}')">✕</button>`
         : `<button class="green btn-sm" onclick="marcarComoPaga('${v.id}')">✓ Pago</button>
            <button class="danger btn-sm" onclick="excluirVenda('${v.id}')">✕</button>`;
-      return `
-        <tr>
-          <td>${esc(dataBR(v.data))}</td>
-          <td>${esc(v.produto)}</td>
-          <td>${esc(v.comprador)}</td>
-          <td>${v.qtd}</td>
-          <td style="text-align:right" class="valor-entrada">${moeda(v.valor)}</td>
-          <td><span class="badge ${badge}">${label}</span></td>
-          <td class="acoes">${acao}</td>
-        </tr>
-      `;
+      return `<tr>
+        <td>${esc(dataBR(v.data))}</td>
+        <td>${esc(v.produto)}</td>
+        <td>${esc(v.comprador)}</td>
+        <td>${v.qtd}</td>
+        <td style="text-align:right" class="valor-entrada">${moeda(v.valor)}</td>
+        <td><span class="badge ${badge}">${label}</span></td>
+        <td class="acoes">${acao}</td>
+      </tr>`;
     }).join("");
   }
 
-  // Pendências de meses anteriores
   const pendentes = DB.vendas
     .filter(v => !v.data.startsWith(mes) && v.status === "receber")
     .sort((a,b) => a.data.localeCompare(b.data));
-
   const tbodyPend = document.getElementById("cantPendTable");
   if(!pendentes.length){
-    tbodyPend.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma pendência de meses anteriores. 🎉</td></tr>';
+    tbodyPend.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma pendência. 🎉</td></tr>';
   } else {
     tbodyPend.innerHTML = pendentes.map(v => `
       <tr>
@@ -1244,7 +1041,7 @@ function renderCantina(){
         <td style="text-align:right" class="valor-entrada">${moeda(v.valor)}</td>
         <td><span class="badge receber">🟡 A receber</span></td>
         <td class="acoes">
-          <button class="green btn-sm" onclick="marcarComoPaga('${v.id}')">✓ Recebi (entra no mês atual)</button>
+          <button class="green btn-sm" onclick="marcarComoPaga('${v.id}')">✓ Recebi</button>
           <button class="danger btn-sm" onclick="excluirVenda('${v.id}')">✕</button>
         </td>
       </tr>
@@ -1256,30 +1053,23 @@ function renderCantina(){
    INVENTÁRIO
 ========================================================== */
 let fotoTemporariaBase64 = null;
-
 function processarFoto(evt){
   const file = evt.target.files[0];
   if(!file) return;
-
   const reader = new FileReader();
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
-      // Compressão automática para ~15KB
       const MAX_W = 500;
       const scale = Math.min(1, MAX_W / img.width);
       const w = Math.round(img.width * scale);
       const h = Math.round(img.height * scale);
-
       const canvas = document.createElement("canvas");
-      canvas.width = w;
-      canvas.height = h;
+      canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, w, h);
-
       const comprimida = canvas.toDataURL("image/jpeg", 0.7);
       fotoTemporariaBase64 = comprimida;
-
       document.getElementById("fotoPreviewImg").src = comprimida;
       document.getElementById("fotoPreview").classList.remove("hidden");
     };
@@ -1287,58 +1077,39 @@ function processarFoto(evt){
   };
   reader.readAsDataURL(file);
 }
-
 function removerFoto(){
   fotoTemporariaBase64 = null;
   document.getElementById("invFotoInput").value = "";
   document.getElementById("fotoPreview").classList.add("hidden");
 }
-
 function limparFormInv(){
   document.getElementById("invDesc").value   = "";
   document.getElementById("invEstado").value = "Novo";
   document.getElementById("invQtd").value    = "1";
   removerFoto();
 }
-
 function salvarItem(){
   const descricao = document.getElementById("invDesc").value.trim();
   const estado    = document.getElementById("invEstado").value;
   const qtd       = parseInt(document.getElementById("invQtd").value) || 1;
-
-  if(!descricao){
-    alert("⚠️ Informe a descrição do item.");
-    return;
-  }
-
+  if(!descricao){ alert("⚠️ Informe a descrição do item."); return; }
   DB.inventario.push({
-    id: uid(),
-    descricao: descricao,
-    estado: estado,
-    qtd: qtd,
-    foto: fotoTemporariaBase64
+    id: uid(), descricao: descricao, estado: estado, qtd: qtd, foto: fotoTemporariaBase64
   });
-
-  salvarLocal();
-  limparFormInv();
-  renderAll();
+  salvarLocal(); limparFormInv(); renderAll();
   alert("✅ Item cadastrado!");
 }
-
 function excluirItem(id){
   if(!confirm("Excluir este item do inventário?")) return;
   DB.inventario = DB.inventario.filter(i => i.id !== id);
-  salvarLocal();
-  renderAll();
+  salvarLocal(); renderAll();
 }
-
 function renderInventario(){
   const grid = document.getElementById("invGrid");
   if(!DB.inventario.length){
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(232,238,247,.4)">Nenhum item cadastrado ainda.</div>';
     return;
   }
-
   grid.innerHTML = DB.inventario.map(item => {
     const estadoBadge = item.estado === "Novo" ? "novo"
                       : item.estado === "Bom"  ? "bom"
@@ -1346,46 +1117,34 @@ function renderInventario(){
     const fotoHTML = item.foto
       ? `<img src="${item.foto}" alt="${esc(item.descricao)}">`
       : `<div class="sem-foto">📦</div>`;
-
-    return `
-      <div class="inv-card">
-        <div class="foto">${fotoHTML}</div>
-        <div class="info">
-          <h4>${esc(item.descricao)}</h4>
-          <div class="estado">
-            <span class="badge ${estadoBadge}">${esc(item.estado)}</span>
-            <span style="color:var(--texto-70);font-size:12px">Qtd: ${item.qtd}</span>
-          </div>
-        </div>
-        <div class="acoes">
-          <button class="danger btn-sm" onclick="excluirItem('${item.id}')">Excluir</button>
+    return `<div class="inv-card">
+      <div class="foto">${fotoHTML}</div>
+      <div class="info">
+        <h4>${esc(item.descricao)}</h4>
+        <div class="estado">
+          <span class="badge ${estadoBadge}">${esc(item.estado)}</span>
+          <span style="color:var(--texto-70);font-size:12px">Qtd: ${item.qtd}</span>
         </div>
       </div>
-    `;
+      <div class="acoes">
+        <button class="danger btn-sm" onclick="excluirItem('${item.id}')">Excluir</button>
+      </div>
+    </div>`;
   }).join("");
 }
 
 /* ==========================================================
-   RESUMO / TOTAIS
+   RESUMO
 ========================================================== */
 function calcularTotais(){
   const lista = lancamentosDoMes();
   let entradas = 0, saidas = 0, cEnt = 0, cSai = 0;
-
   lista.forEach(l => {
     if(l.tipo === "entrada"){ entradas += l.valor; cEnt++; }
     else { saidas += l.valor; cSai++; }
   });
-
-  return {
-    entradas: entradas,
-    saidas: saidas,
-    saldo: entradas - saidas,
-    countEntradas: cEnt,
-    countSaidas: cSai
-  };
+  return { entradas, saidas, saldo: entradas - saidas, countEntradas: cEnt, countSaidas: cSai };
 }
-
 function renderResumo(){
   const t = calcularTotais();
   document.getElementById("totalEntradas").textContent = moeda(t.entradas);
@@ -1395,7 +1154,6 @@ function renderResumo(){
   document.getElementById("countSaidas").textContent   = t.countSaidas + " lançamento" + (t.countSaidas !== 1 ? "s" : "");
   document.getElementById("mesAtual").textContent      = nomeMesAtual();
 
-  // Últimos 5 lançamentos
   const ultimos = lancamentosDoMes().slice(0, 5);
   const tbody = document.getElementById("ultimosTable");
   if(!ultimos.length){
@@ -1404,15 +1162,13 @@ function renderResumo(){
   }
   tbody.innerHTML = ultimos.map(l => {
     const cls = l.tipo === "entrada" ? "valor-entrada" : "valor-saida";
-    return `
-      <tr>
-        <td>${esc(dataBR(l.data))}</td>
-        <td>${esc(l.descricao)}</td>
-        <td>${esc(l.categoria)}</td>
-        <td><span class="badge ${l.tipo}">${l.tipo === "entrada" ? "🟢 Entrada" : "🔴 Saída"}</span></td>
-        <td style="text-align:right" class="${cls}">${moeda(l.valor)}</td>
-      </tr>
-    `;
+    return `<tr>
+      <td>${esc(dataBR(l.data))}</td>
+      <td>${esc(l.descricao)}</td>
+      <td>${esc(l.categoria)}</td>
+      <td><span class="badge ${l.tipo}">${l.tipo === "entrada" ? "🟢 Entrada" : "🔴 Saída"}</span></td>
+      <td style="text-align:right" class="${cls}">${moeda(l.valor)}</td>
+    </tr>`;
   }).join("");
 }
 
@@ -1425,18 +1181,12 @@ function renderAll(){
   renderCantina();
   renderInventario();
 }
-
-/* ==========================================================
-   INICIALIZAÇÃO
-========================================================== */
 function inicializar(){
   limparFormLanc();
   limparFormCant();
   limparFormInv();
   renderAll();
 }
-
-// Verifica se já está logado (recarregou a página)
 window.addEventListener("DOMContentLoaded", ()=>{
   carregarLocal();
   if(sessionStorage.getItem("mh_fin_logado") === "1"){
