@@ -66,13 +66,9 @@ main,header,nav,div,section,table{position:relative;z-index:1}
 }
 #loginScreen.hidden{display:none}
 .login-card{
-  background:var(--bg-nivel-1);
-  border:1px solid var(--borda-clara);
-  border-radius:16px;
-  padding:40px 36px;
-  width:min(420px,100%);
-  text-align:center;
-  box-shadow:0 25px 70px rgba(0,0,0,.7);
+  background:var(--bg-nivel-1);border:1px solid var(--borda-clara);
+  border-radius:16px;padding:40px 36px;width:min(420px,100%);
+  text-align:center;box-shadow:0 25px 70px rgba(0,0,0,.7);
   animation:fadeIn .4s ease;
 }
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -81,66 +77,36 @@ main,header,nav,div,section,table{position:relative;z-index:1}
   filter:drop-shadow(0 4px 20px rgba(201,169,97,.3));
 }
 .login-card h1{
-  margin:0 0 6px;
-  font-family:'Cinzel',serif;
-  font-weight:700;
-  font-size:22px;
-  letter-spacing:4px;
-  color:#fff;
+  margin:0 0 6px;font-family:'Cinzel',serif;
+  font-weight:700;font-size:22px;letter-spacing:4px;color:#fff;
 }
 .login-card h1 span{color:var(--dourado);font-weight:900}
 .login-card p{
-  margin:0 0 28px;
-  font-size:12px;
-  color:var(--texto-70);
-  letter-spacing:2px;
-  text-transform:uppercase;
+  margin:0 0 28px;font-size:12px;color:var(--texto-70);
+  letter-spacing:2px;text-transform:uppercase;
 }
 .login-card input{
-  width:100%;padding:14px;
-  border:1px solid var(--borda);
-  border-radius:10px;
-  font-size:15px;
-  font-family:inherit;
-  background:var(--bg-nivel-0);
-  color:var(--texto);
-  transition:all .18s;
-  margin-bottom:10px;
+  width:100%;padding:14px;border:1px solid var(--borda);
+  border-radius:10px;font-size:15px;font-family:inherit;
+  background:var(--bg-nivel-0);color:var(--texto);
+  transition:all .18s;margin-bottom:10px;
 }
 .login-card input:focus{
-  outline:none;
-  border-color:var(--dourado);
+  outline:none;border-color:var(--dourado);
   box-shadow:0 0 0 3px var(--dourado-20);
 }
-.login-card button{
-  width:100%;margin-top:8px;
-  padding:14px;
-  font-size:14px;
-  letter-spacing:1px;
-}
-.login-card .erro{
-  color:var(--vermelho);
-  font-size:12px;
-  margin-top:12px;
-  min-height:18px;
-}
+.login-card button{width:100%;margin-top:8px;padding:14px;font-size:14px;letter-spacing:1px}
+.login-card .erro{color:var(--vermelho);font-size:12px;margin-top:12px;min-height:18px}
 .login-card .link-visitante{
-  display:block;
-  margin-top:20px;
-  color:var(--texto-55);
-  font-size:12px;
-  text-decoration:none;
-  cursor:pointer;
+  display:block;margin-top:20px;color:var(--texto-55);
+  font-size:12px;text-decoration:none;cursor:pointer;
 }
 .login-card .link-visitante:hover{color:var(--dourado)}
 
 /* HEADER */
 header{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  padding:24px 40px;
-  min-height:130px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding:24px 40px;min-height:130px;
   background:linear-gradient(180deg,#0a1a30 0%,#071426 100%);
   border-bottom:1px solid var(--dourado-30);
   box-shadow:0 4px 32px rgba(0,0,0,.5);
@@ -149,49 +115,33 @@ header{
 .header-left{display:flex;align-items:center;gap:10px;min-width:0}
 .header-center{display:flex;flex-direction:column;align-items:center;gap:4px}
 .logo-wrap{display:flex;align-items:center;gap:16px;justify-content:center}
-.logo-svg{
-  width:64px;height:64px;flex-shrink:0;
-  filter:drop-shadow(0 4px 20px rgba(201,169,97,.22));
-}
+.logo-svg{width:64px;height:64px;flex-shrink:0;filter:drop-shadow(0 4px 20px rgba(201,169,97,.22))}
 .titulo-grupo{display:flex;flex-direction:column;line-height:1}
 .titulo-grupo h1{
-  margin:0;
-  font-family:'Cinzel',serif;
-  font-weight:700;
-  font-size:28px;
-  letter-spacing:5px;
-  color:#fff;
-  white-space:nowrap;
+  margin:0;font-family:'Cinzel',serif;font-weight:700;
+  font-size:28px;letter-spacing:5px;color:#fff;white-space:nowrap;
 }
 .titulo-grupo h1 span{color:var(--dourado);font-weight:900}
 .header-right{display:flex;justify-content:flex-end;gap:8px;align-items:center}
 .user-badge{
-  background:var(--dourado-10);
-  color:var(--dourado-claro);
-  border:1px solid var(--dourado-30);
-  padding:6px 14px;border-radius:20px;
-  font-size:12px;font-weight:600;letter-spacing:.3px;
-  white-space:nowrap;
+  background:var(--dourado-10);color:var(--dourado-claro);
+  border:1px solid var(--dourado-30);padding:6px 14px;border-radius:20px;
+  font-size:12px;font-weight:600;letter-spacing:.3px;white-space:nowrap;
 }
 
 /* BOTÕES */
 button{
-  border:0;border-radius:8px;
-  padding:11px 18px;cursor:pointer;
+  border:0;border-radius:8px;padding:11px 18px;cursor:pointer;
   font-weight:600;font-size:13px;
   transition:all .2s cubic-bezier(.4,0,.2,1);
-  font-family:inherit;
-  letter-spacing:.3px;
-  color:var(--texto);
+  font-family:inherit;letter-spacing:.3px;color:var(--texto);
 }
 button:hover{transform:translateY(-1px)}
 button:active{transform:translateY(0)}
 button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .primary{
   background:linear-gradient(180deg,var(--dourado) 0%,var(--dourado-escuro) 100%);
-  color:#1a1206;
-  box-shadow:0 2px 10px rgba(201,169,97,.3);
-  font-weight:700;
+  color:#1a1206;box-shadow:0 2px 10px rgba(201,169,97,.3);font-weight:700;
 }
 .primary:hover{
   background:linear-gradient(180deg,var(--dourado-claro) 0%,var(--dourado) 100%);
@@ -217,20 +167,16 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   display:flex;justify-content:center;align-items:center;gap:4px;
   background:rgba(10,30,61,.85);
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  padding:0 20px;
-  border-bottom:1px solid var(--borda);
+  padding:0 20px;border-bottom:1px solid var(--borda);
   position:sticky;top:130px;z-index:25;
-  box-shadow:0 2px 12px rgba(0,0,0,.3);
-  overflow-x:auto;
+  box-shadow:0 2px 12px rgba(0,0,0,.3);overflow-x:auto;
 }
 .tabs::-webkit-scrollbar{height:0}
 .tabs{scrollbar-width:none;-ms-overflow-style:none}
 .tabs button{
   background:transparent;color:var(--texto-55);
-  white-space:nowrap;padding:17px 20px;
-  font-size:13px;font-weight:600;
-  border-radius:0;border-bottom:2px solid transparent;
-  transition:all .2s;
+  white-space:nowrap;padding:17px 20px;font-size:13px;font-weight:600;
+  border-radius:0;border-bottom:2px solid transparent;transition:all .2s;
 }
 .tabs button:hover{color:var(--dourado-claro);transform:none;background:rgba(201,169,97,.05)}
 .tabs button.active{
@@ -242,20 +188,16 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .months{
   display:flex;justify-content:center;align-items:center;gap:8px;
   background:rgba(7,20,38,.95);
-  backdrop-filter:blur(8px);
-  padding:14px 20px;
+  backdrop-filter:blur(8px);padding:14px 20px;
   border-bottom:1px solid var(--borda);
-  position:sticky;top:178px;z-index:24;
-  overflow-x:auto;
+  position:sticky;top:178px;z-index:24;overflow-x:auto;
 }
 .months::-webkit-scrollbar{height:0}
 .months{scrollbar-width:none;-ms-overflow-style:none}
 .months button{
   background:transparent;color:var(--texto-55);
-  white-space:nowrap;padding:8px 15px;
-  font-size:12px;font-weight:600;
-  border-radius:20px;border:1px solid transparent;
-  transition:all .18s;
+  white-space:nowrap;padding:8px 15px;font-size:12px;font-weight:600;
+  border-radius:20px;border:1px solid transparent;transition:all .18s;
 }
 .months button:hover{color:var(--dourado-claro);border-color:var(--dourado-30);transform:none}
 .months button.active{background:var(--dourado);color:#1a1206;border-color:var(--dourado);font-weight:700}
@@ -272,8 +214,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .aviso-card{
   background:linear-gradient(135deg,rgba(30,58,95,.4) 0%,rgba(10,30,61,.6) 100%);
   border:1px solid var(--borda-clara);
-  border-radius:12px;
-  padding:20px 22px;
+  border-radius:12px;padding:20px 22px;
   position:relative;overflow:hidden;
 }
 .aviso-card::before{
@@ -298,18 +239,57 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .aviso-item .titulo{color:var(--dourado-claro);font-weight:700}
 .aviso-item .texto{color:var(--texto-70);margin-top:2px}
 .aviso-item .btn-excluir-aviso{
-  position:absolute;top:8px;right:0;
-  background:transparent;color:var(--texto-40);
-  border:0;padding:4px 8px;cursor:pointer;font-size:14px;
+  position:absolute;top:8px;right:0;background:transparent;
+  color:var(--texto-40);border:0;padding:4px 8px;cursor:pointer;font-size:14px;
 }
 .aviso-item .btn-excluir-aviso:hover{color:var(--vermelho);background:transparent;transform:none}
+
+/* LOG / ATUALIZAÇÕES */
+.log-box{
+  background:linear-gradient(135deg,rgba(30,58,95,.4) 0%,rgba(10,30,61,.6) 100%);
+  border:1px solid var(--borda-clara);
+  border-radius:12px;padding:20px 22px;
+  position:relative;overflow:hidden;margin-bottom:24px;
+}
+.log-box::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,#3b82f6,transparent);
+}
+.log-box h3{
+  margin:0 0 14px;font-size:13px;font-weight:700;
+  color:#93c5fd;letter-spacing:1px;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.log-lista{
+  display:flex;flex-direction:column;gap:8px;
+  max-height:280px;overflow-y:auto;
+  padding-right:6px;
+}
+.log-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 12px;
+  background:rgba(30,58,95,.4);
+  border-left:2px solid var(--borda-clara);
+  border-radius:6px;
+  font-size:12px;line-height:1.5;
+}
+.log-item .log-hora{
+  color:var(--texto-55);font-size:11px;
+  white-space:nowrap;flex-shrink:0;
+  font-family:'Courier New',monospace;
+}
+.log-item .log-texto{color:var(--texto-70);flex:1}
+.log-item .log-texto b{color:var(--dourado-claro);font-weight:700}
+.log-vazio{
+  text-align:center;padding:20px;
+  color:var(--texto-40);font-size:12px;font-style:italic;
+}
 
 /* CARDS */
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:26px}
 .card{
   background:linear-gradient(180deg,var(--bg-nivel-1) 0%,#0a1e3d 100%);
-  border:1px solid var(--borda);
-  border-radius:12px;padding:24px;
+  border:1px solid var(--borda);border-radius:12px;padding:24px;
   transition:all .25s;position:relative;overflow:hidden;
 }
 .card::before{
@@ -381,8 +361,7 @@ th{
   text-transform:uppercase;letter-spacing:1.2px;font-weight:700;
 }
 td{
-  padding:12px 16px;
-  border-bottom:1px solid rgba(30,58,95,.6);
+  padding:12px 16px;border-bottom:1px solid rgba(30,58,95,.6);
   vertical-align:middle;color:var(--texto);font-weight:500;
   background:var(--bg-nivel-1);
 }
@@ -407,7 +386,7 @@ td.cult input:nth-child(2){
 td.cult input:nth-child(2)::after{content:"·";color:var(--dourado-30);margin:0 8px;font-style:normal;font-weight:400;font-size:16px;vertical-align:-2px}
 td.cult input:nth-child(3){color:var(--texto);font-weight:700;font-size:13px}
 
-/* Colunas função — com botão whatsapp */
+/* Colunas função */
 td.story,td.foto,td.data,td.som{
   padding:10px 12px;font-size:13px;
   vertical-align:middle;font-weight:500;position:relative;
@@ -417,21 +396,16 @@ td.foto{background:rgba(30,58,95,.3);color:#dbeafe}
 td.data{background:rgba(30,58,95,.4);color:#bfdbfe}
 td.som{background:rgba(30,58,95,.55);color:#dbeafe}
 
-.celula-funcao{
-  display:flex;align-items:center;gap:6px;
-}
+.celula-funcao{display:flex;align-items:center;gap:6px}
 .celula-funcao input{
   flex:1;min-width:0;padding:5px 4px;border:0;
   background:transparent;font-family:inherit;
   font-size:13px;color:inherit;font-weight:600;
 }
 .celula-funcao .btn-whats-inline{
-  flex-shrink:0;
-  background:var(--verde-whats);color:#fff;
-  border:0;border-radius:6px;
-  padding:4px 7px;font-size:13px;
-  cursor:pointer;line-height:1;
-  transition:all .15s;
+  flex-shrink:0;background:var(--verde-whats);color:#fff;
+  border:0;border-radius:6px;padding:4px 7px;font-size:13px;
+  cursor:pointer;line-height:1;transition:all .15s;
 }
 .celula-funcao .btn-whats-inline:hover{
   background:#1eb655;transform:translateY(-1px);
@@ -443,8 +417,7 @@ td.som{background:rgba(30,58,95,.55);color:#dbeafe}
 }
 
 td input:focus,td select:focus{
-  background:var(--bg-nivel-0);
-  outline:2px solid var(--dourado);
+  background:var(--bg-nivel-0);outline:2px solid var(--dourado);
   outline-offset:-2px;border-radius:4px;
 }
 td input[readonly],td select:disabled{opacity:.85;cursor:default}
@@ -539,25 +512,28 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   margin-top:24px;padding-top:20px;
   border-top:1px solid var(--borda);
 }
+/* Botão Fechar melhorado */
+.btn-fechar{
+  background:linear-gradient(180deg,var(--bg-nivel-3) 0%,var(--bg-nivel-2) 100%);
+  color:var(--texto);
+  border:1px solid var(--borda-clara);
+  padding:11px 22px;font-weight:700;
+}
+.btn-fechar:hover{background:var(--borda-clara);border-color:var(--dourado)}
 .hidden{display:none !important}
 
-/* MODAL AVISAR EQUIPE */
+/* Lista whatsapp */
 .lista-whats{
-  display:flex;flex-direction:column;gap:10px;
-  margin-top:16px;
+  display:flex;flex-direction:column;gap:10px;margin-top:16px;
 }
 .whats-item{
   display:flex;align-items:center;gap:12px;
   padding:14px 16px;
   background:rgba(30,58,95,.4);
   border:1px solid var(--borda-clara);
-  border-radius:10px;
-  transition:all .2s;
+  border-radius:10px;transition:all .2s;
 }
-.whats-item:hover{
-  background:rgba(30,58,95,.65);
-  border-color:var(--dourado);
-}
+.whats-item:hover{background:rgba(30,58,95,.65);border-color:var(--dourado)}
 .whats-item .avatar{
   width:38px;height:38px;border-radius:50%;
   background:linear-gradient(135deg,var(--dourado),var(--dourado-escuro));
@@ -570,10 +546,9 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 .whats-item .info .info-mini{font-size:12px;color:var(--texto-70);margin-top:2px}
 .whats-item .btn-whats-item{
   background:var(--verde-whats);color:#fff;
-  border:0;border-radius:8px;
-  padding:8px 14px;font-size:12px;font-weight:700;
-  cursor:pointer;transition:all .2s;
-  white-space:nowrap;
+  border:0;border-radius:8px;padding:8px 14px;
+  font-size:12px;font-weight:700;cursor:pointer;
+  transition:all .2s;white-space:nowrap;
 }
 .whats-item .btn-whats-item:hover{
   background:#1eb655;transform:translateY(-1px);
@@ -582,22 +557,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 .whats-item .btn-whats-item:disabled{
   background:rgba(107,114,128,.4);cursor:not-allowed;
   transform:none;box-shadow:none;
-}
-
-/* Preview de mensagem */
-.preview-msg{
-  background:rgba(7,20,38,.7);
-  border:1px solid var(--borda-clara);
-  border-radius:8px;
-  padding:14px 16px;
-  font-family:'Courier New',monospace;
-  font-size:12px;
-  color:var(--texto-70);
-  white-space:pre-wrap;
-  line-height:1.6;
-  max-height:280px;
-  overflow-y:auto;
-  margin-top:14px;
 }
 
 /* RESPONSIVO */
@@ -635,7 +594,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 @media print{
   body{background:#fff;color:#000}
   body::before,body::after{display:none}
-  header,.tabs,.months,.toolbar,.no-print,.header-actions,.tabs,.avisos-topo{display:none !important}
+  header,.tabs,.months,.toolbar,.no-print,.header-actions,.avisos-topo,.log-box{display:none !important}
   .box,.card{background:#fff;border:1px solid #ccc;box-shadow:none;color:#000}
   .box-title{background:#eee;color:#000}
   th{background:#eee;color:#000;border-color:#999}
@@ -724,6 +683,15 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   <!-- DASHBOARD -->
   <section id="dashboard" class="page active">
     <div class="avisos-topo" id="avisosTopo"></div>
+    <div class="log-box hidden" id="logBox">
+      <h3>
+        🆕 Últimas atualizações
+        <span style="margin-left:auto">
+          <button class="ghost btn-xs" onclick="limparLog()" id="btnLimparLog" style="display:none">Limpar</button>
+        </span>
+      </h3>
+      <div class="log-lista" id="logLista"></div>
+    </div>
     <div class="notice info">
       <b>📌 Para compartilhar no grupo:</b> use esta aba para tirar print da escala do mês. Os voluntários veem tudo sem precisar de login.
     </div>
@@ -804,9 +772,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
     </div>
 
     <div class="box">
-      <div class="box-title">
-        <span class="titulo-esq">🎬 Produção vinculada ao culto — <span id="prodMonth">—</span></span>
-      </div>
+      <div class="box-title"><span class="titulo-esq">🎬 Produção vinculada ao culto — <span id="prodMonth">—</span></span></div>
       <div class="toolbar">
         <select id="prodFilter" onchange="renderProduction()">
           <option value="all">Todos os status</option>
@@ -831,9 +797,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
     </div>
 
     <div class="box">
-      <div class="box-title">
-        <span class="titulo-esq">📹 Programação de gravação (devocionais) — <span id="recordMonth">—</span></span>
-      </div>
+      <div class="box-title"><span class="titulo-esq">📹 Programação de gravação (devocionais) — <span id="recordMonth">—</span></span></div>
       <div class="toolbar">
         <button class="primary btn-add-grav" onclick="criarDevocionaisMes()">＋ Criar devocionais do mês</button>
         <button class="dark btn-add-grav" onclick="addRecording()">＋ Adicionar devocional</button>
@@ -964,7 +928,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
       💡 Senha inicial: <b>usuário + 123</b> (ex: se o usuário for <code>ana</code>, a senha será <code>ana123</code>). A pessoa pode trocar depois.
     </div>
     <div class="modal-actions">
-      <button onclick="closeModal('volModal')">Cancelar</button>
+      <button class="btn-fechar" onclick="closeModal('volModal')">Cancelar</button>
       <button class="primary" onclick="saveVolunteer()">Salvar</button>
     </div>
   </div>
@@ -988,7 +952,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
       <label class="full">Próximo passo<textarea id="tNext" rows="3"></textarea></label>
     </div>
     <div class="modal-actions">
-      <button onclick="closeModal('trainModal')">Cancelar</button>
+      <button class="btn-fechar" onclick="closeModal('trainModal')">Cancelar</button>
       <button class="primary" onclick="saveTraining()">Salvar</button>
     </div>
   </div>
@@ -1009,13 +973,13 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
     </div>
     <div id="perfilErro" style="color:#f87171;font-size:13px;margin-top:10px;min-height:18px"></div>
     <div class="modal-actions">
-      <button onclick="closeModal('perfilModal')">Cancelar</button>
+      <button class="btn-fechar" onclick="closeModal('perfilModal')">Cancelar</button>
       <button class="primary" onclick="salvarNovaSenha()">Salvar nova senha</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL AVISAR EQUIPE (WhatsApp) -->
+<!-- MODAL AVISAR EQUIPE -->
 <div class="modal" id="avisarModal">
   <div class="modal-content" style="max-width:640px">
     <h2>📱 Avisar equipe do mês</h2>
@@ -1024,7 +988,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
     </div>
     <div id="listaWhats" class="lista-whats"></div>
     <div class="modal-actions">
-      <button onclick="closeModal('avisarModal')">Fechar</button>
+      <button class="btn-fechar" onclick="closeModal('avisarModal')">Fechar</button>
     </div>
   </div>
 </div>
@@ -1041,7 +1005,7 @@ const MONTHS = {
   "09":"Setembro","10":"Outubro","11":"Novembro","12":"Dezembro"
 };
 
-const CHAVE_STORAGE = "mh_comunica_v4";
+const CHAVE_STORAGE = "mh_comunica_v5";
 const STATUS_FLUXO = ["A Fazer","Agendado","Gravado","Editado","Publicado"];
 const PRODUCOES_PADRAO = ["Arte/Story", "Chamada"];
 
@@ -1060,7 +1024,8 @@ const DB = {
   recordings: {},
   trainings: [],
   senhas: {},
-  avisos: []
+  avisos: [],
+  log: []
 };
 
 /* ==========================================================
@@ -1082,24 +1047,71 @@ function production(){ if(!DB.production[currentMonth]) DB.production[currentMon
 function records(){ if(!DB.recordings[currentMonth]) DB.recordings[currentMonth] = []; return DB.recordings[currentMonth]; }
 
 /* ==========================================================
-   TELEFONE — formatação para WhatsApp
+   LOG DE ATUALIZAÇÕES
+========================================================== */
+function registrarLog(icone, texto){
+  if(!DB.log) DB.log = [];
+  DB.log.unshift({
+    id: uid(),
+    icone: icone,
+    texto: texto,
+    autor: usuarioAtual ? usuarioAtual.name : "Visitante",
+    data: new Date().toISOString()
+  });
+  // Guarda só últimos 30
+  if(DB.log.length > 30) DB.log = DB.log.slice(0, 30);
+  // Não salva aqui — quem chamou cuida do saveLocal
+}
+
+function renderLog(){
+  const box = document.getElementById("logBox");
+  const lista = document.getElementById("logLista");
+  const btnLimpar = document.getElementById("btnLimparLog");
+  if(!box || !lista) return;
+
+  const logs = DB.log || [];
+  if(!logs.length){
+    box.classList.add("hidden");
+    return;
+  }
+
+  box.classList.remove("hidden");
+
+  // Mostra botão limpar só pra admin/coord
+  if(btnLimpar){
+    btnLimpar.style.display = (perfilAtual === "admin" || perfilAtual === "coordenador") ? "inline-block" : "none";
+  }
+
+  lista.innerHTML = logs.slice(0, 15).map(l=>{
+    const d = new Date(l.data);
+    const dataFmt = String(d.getDate()).padStart(2,"0") + "/" + String(d.getMonth()+1).padStart(2,"0") + " " +
+                    String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+    return '<div class="log-item">' +
+      '<span class="log-hora">' + dataFmt + '</span>' +
+      '<span class="log-texto">' + l.icone + ' <b>' + esc(l.autor) + '</b> ' + esc(l.texto) + '</span>' +
+    '</div>';
+  }).join("");
+}
+
+function limparLog(){
+  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
+  if(!confirm("Limpar todo o histórico de atualizações?")) return;
+  DB.log = [];
+  saveLocal();
+  renderLog();
+}
+
+/* ==========================================================
+   TELEFONE — WhatsApp
 ========================================================== */
 function formatarTelefoneWhats(tel){
   if(!tel) return "";
-  // Remove tudo que não é número
   let limpo = String(tel).replace(/\D/g, "");
-  // Remove zeros à esquerda
   limpo = limpo.replace(/^0+/, "");
-  // Se já tem 55 (Brasil) na frente + DDD, mantém
-  // Se tem 11 dígitos (DDD + 9 + 8), adiciona 55
   if(limpo.length === 11) return "55" + limpo;
-  // Se tem 10 dígitos (DDD + 8 fixo), adiciona 55
   if(limpo.length === 10) return "55" + limpo;
-  // Se tem 13 dígitos (55 + DDD + 9 + 8), mantém
   if(limpo.length === 13) return limpo;
-  // Se tem 12 dígitos (55 + DDD + 8), mantém
   if(limpo.length === 12) return limpo;
-  // Senão, tenta adicionar 55
   return "55" + limpo;
 }
 
@@ -1111,9 +1123,6 @@ function buscarTelefonePorNome(nome){
   return v.phone;
 }
 
-/* ==========================================================
-   WHATSAPP — envio
-========================================================== */
 function abrirWhatsApp(telefone, mensagem){
   if(!telefone){
     alert("⚠️ Esta pessoa não tem telefone cadastrado.\n\nCadastre o telefone na aba Voluntários para poder enviar mensagem.");
@@ -1123,6 +1132,16 @@ function abrirWhatsApp(telefone, mensagem){
   const msg = encodeURIComponent(mensagem);
   const url = "https://wa.me/" + num + "?text=" + msg;
   window.open(url, "_blank");
+}
+
+function buscarFuncoesNoCulto(nome, culto){
+  const funcs = [];
+  const n = nome.trim().toLowerCase();
+  if((culto.story||"").trim().toLowerCase() === n) funcs.push("Story");
+  if((culto.photo||"").trim().toLowerCase() === n) funcs.push("Fotografia");
+  if((culto.data||"").trim().toLowerCase() === n) funcs.push("Datashow");
+  if((culto.sound||"").trim().toLowerCase() === n) funcs.push("Mesa de Som");
+  return funcs;
 }
 
 function gerarMensagemIndividual(nome, culto){
@@ -1137,20 +1156,8 @@ function gerarMensagemIndividual(nome, culto){
     "Deus abençoe! 🙏";
 }
 
-function buscarFuncoesNoCulto(nome, culto){
-  const funcs = [];
-  const n = nome.trim().toLowerCase();
-  if((culto.story||"").trim().toLowerCase() === n) funcs.push("Story");
-  if((culto.photo||"").trim().toLowerCase() === n) funcs.push("Fotografia");
-  if((culto.data||"").trim().toLowerCase() === n) funcs.push("Datashow");
-  if((culto.sound||"").trim().toLowerCase() === n) funcs.push("Mesa de Som");
-  return funcs;
-}
-
 function gerarMensagemMensal(nome){
-  const n = nome.trim().toLowerCase();
   const escalas = [];
-
   scale().slice().sort((a,b)=>{
     const da = a.date.split("/").reverse().join("-");
     const db = b.date.split("/").reverse().join("-");
@@ -1158,12 +1165,7 @@ function gerarMensagemMensal(nome){
   }).forEach(culto=>{
     const funcs = buscarFuncoesNoCulto(nome, culto);
     if(funcs.length){
-      escalas.push({
-        date: culto.date,
-        day: culto.day,
-        event: culto.event,
-        funcs: funcs
-      });
+      escalas.push({date:culto.date, day:culto.day, event:culto.event, funcs:funcs});
     }
   });
 
@@ -1204,7 +1206,6 @@ function abrirAvisarEquipe(){
   const modal = document.getElementById("avisarModal");
   const lista = document.getElementById("listaWhats");
 
-  // Descobre quem tem escalas neste mês
   const pessoas = [];
   const nomesVistos = new Set();
 
@@ -1217,11 +1218,7 @@ function abrirAvisarEquipe(){
       const vol = DB.volunteers.find(v => (v.name||"").trim().toLowerCase() === n.toLowerCase());
       if(!vol) return;
       const count = countParticipation(vol.name, currentMonth).total;
-      pessoas.push({
-        nome: vol.name,
-        telefone: vol.phone || "",
-        count: count
-      });
+      pessoas.push({nome: vol.name, telefone: vol.phone || "", count: count});
     });
   });
 
@@ -1251,7 +1248,7 @@ function abrirAvisarEquipe(){
 }
 
 /* ==========================================================
-   COPIAR ESCALA COMO TEXTO
+   COPIAR ESCALA
 ========================================================== */
 function copiarEscala(){
   const lista = scale().slice().sort((a,b)=>{
@@ -1279,13 +1276,10 @@ function copiarEscala(){
 
   texto += "Deus abençoe a todos! 🙏";
 
-  // Copiar
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(texto).then(()=>{
       alert("✅ Escala copiada! Cole no grupo do WhatsApp.");
-    }).catch(()=>{
-      copiarFallback(texto);
-    });
+    }).catch(()=>{ copiarFallback(texto); });
   } else {
     copiarFallback(texto);
   }
@@ -1302,17 +1296,12 @@ function copiarFallback(texto){
     document.execCommand("copy");
     alert("✅ Escala copiada! Cole no grupo do WhatsApp.");
   } catch(e){
-    alert("⚠️ Não consegui copiar automaticamente. Segue o texto para você copiar:\n\n" + texto);
+    alert("⚠️ Não consegui copiar automaticamente:\n\n" + texto);
   }
   document.body.removeChild(textarea);
 }
 
-/* ==========================================================
-   IMPRIMIR ESCALA
-========================================================== */
-function imprimirEscala(){
-  window.print();
-}
+function imprimirEscala(){ window.print(); }
 
 /* ==========================================================
    EXCLUIR AVISO
@@ -1320,9 +1309,14 @@ function imprimirEscala(){
 function excluirAviso(id){
   if(!podeEditarAvisos()) return alert("Você não tem permissão.");
   if(!confirm("Excluir este aviso?")) return;
+  const aviso = DB.avisos.find(a=>a.id === id);
   DB.avisos = DB.avisos.filter(a => a.id !== id);
+  if(aviso){
+    registrarLog("🗑️", 'excluiu o aviso "' + aviso.titulo + '"');
+  }
   saveLocal();
   renderAvisosTopo();
+  renderLog();
 }
 
 /* ==========================================================
@@ -1368,6 +1362,7 @@ function loadLocal(){
       if(data.trainings)   DB.trainings   = data.trainings;
       if(data.senhas)      DB.senhas      = data.senhas;
       if(data.avisos)      DB.avisos      = data.avisos;
+      if(data.log)         DB.log         = data.log;
     }
   }catch(e){ console.warn("Erro ao carregar:", e); }
 }
@@ -1474,6 +1469,7 @@ function seedDados(){
 
   DB.recordings = { "08":[], "09":[], "10":[], "11":[], "12":[] };
   DB.avisos = [];
+  DB.log = [];
 
   saveLocal();
 }
@@ -1532,15 +1528,20 @@ function fazerLogout(){
   location.reload();
 }
 
+function gerarBadgeUsuario(){
+  if(!usuarioAtual) return "👤 Visitante";
+  const funcs = usuarioAtual.functions || "";
+  // Remove "Admin" e "Coordenadora" pra mostrar a função real, mas mantém se for o caso
+  const funcsLista = funcs.split(",").map(f=>f.trim()).filter(f=>f);
+  if(funcsLista.length === 0) return "👤 " + usuarioAtual.name;
+  return "👤 " + usuarioAtual.name + " (" + funcsLista.join(", ") + ")";
+}
+
 function aplicarPermissoes(){
   const badge = document.getElementById("userBadge");
-  if(usuarioAtual){
-    badge.textContent = "👤 " + usuarioAtual.name + " (" + perfilAtual + ")";
-    badge.classList.remove("hidden");
-  } else {
-    badge.textContent = "👤 Visitante";
-    badge.classList.remove("hidden");
-  }
+  badge.textContent = gerarBadgeUsuario();
+  badge.classList.remove("hidden");
+
   document.getElementById("btnSair").classList.remove("hidden");
   document.getElementById("btnPerfil").classList.toggle("hidden", !usuarioAtual);
 
@@ -1563,6 +1564,8 @@ function aplicarPermissoes(){
   if(vn) vn.classList.toggle("hidden", podeEditarEscala());
   const boxSug = document.getElementById("boxSugestao");
   if(boxSug) boxSug.classList.toggle("hidden", !podeEditarEscala());
+
+  renderLog();
 }
 
 /* ==========================================================
@@ -1620,11 +1623,7 @@ function renderAvisosTopo(){
       '</div>';
     }
     conteudo += aniversariantes.map(v => '🎈 <b>' + esc(v.name) + '</b> — dia ' + v.birth.substring(8,10)).join('<br>');
-    blocos.push({
-      tipo: "aniversarios",
-      titulo: "🎂 Aniversariantes de " + monthName(),
-      conteudo: conteudo
-    });
+    blocos.push({tipo: "aniversarios", titulo: "🎂 Aniversariantes de " + monthName(), conteudo: conteudo});
   }
 
   if(avisos.length || podeEditarAvisos()){
@@ -1642,9 +1641,7 @@ function renderAvisosTopo(){
       conteudo = '<div class="vazio">Nenhum aviso cadastrado. Clique em "＋ Novo aviso" para criar.</div>';
     }
     blocos.push({
-      tipo: "avisos",
-      titulo: "📢 Avisos importantes",
-      conteudo: conteudo,
+      tipo: "avisos", titulo: "📢 Avisos importantes", conteudo: conteudo,
       acao: podeEditarAvisos() ? '<button class="primary btn-sm" onclick="abrirNovoAviso()">＋ Novo aviso</button>' : ""
     });
   }
@@ -1670,8 +1667,10 @@ function abrirNovoAviso(){
     criadoPor: usuarioAtual ? usuarioAtual.name : "—",
     criadoEm: new Date().toISOString()
   });
+  registrarLog("📢", 'publicou o aviso "' + titulo.trim() + '"');
   saveLocal();
   renderAvisosTopo();
+  renderLog();
   alert("✅ Aviso publicado!");
 }
 
@@ -1706,6 +1705,7 @@ function renderDashboard(){
 
   renderAvisosTopo();
   renderBirthdayNotice();
+  renderLog();
 }
 
 /* ==========================================================
@@ -1729,7 +1729,6 @@ function renderScale(){
     if(search && !texto.includes(search)) return;
     const dis = edit ? "" : "disabled";
 
-    // Função que gera célula com input + botão whats
     function celula(nome, classe, campo, idx){
       const temTel = nome && buscarTelefonePorNome(nome);
       const btnDisabled = (!nome || !temTel) ? "disabled" : "";
@@ -1778,6 +1777,7 @@ function addScaleDay(){
     type:"regular", story:"", photo:"", data:"", sound:"", status:"A Fazer"
   });
   gerarProducaoAuto(date.trim(), event.trim());
+  registrarLog("🎬", 'criou a escala "' + (event.trim()||"Culto") + '" em ' + date.trim());
   saveLocal(); renderAll();
 }
 
@@ -1794,6 +1794,7 @@ function addSpecialEvent(){
     type:"special", story:"", photo:"", data:"", sound:"", status:"A Fazer"
   });
   gerarProducaoAuto(date.trim(), event.trim());
+  registrarLog("🎬", 'criou o evento "' + (event.trim()||"Evento") + '" em ' + date.trim());
   saveLocal(); renderAll();
 }
 
@@ -1810,6 +1811,7 @@ function deleteScale(i){
       prodMes.splice(j,1);
     }
   }
+  registrarLog("🗑️", 'removeu a escala "' + item.event + '" de ' + item.date);
   saveLocal(); renderAll();
 }
 
@@ -1819,10 +1821,7 @@ function gerarProducaoAuto(date, event){
   const prodMes = production();
   if(prodMes.some(p => p.cultoId === chave)) return;
   PRODUCOES_PADRAO.forEach(prod=>{
-    prodMes.push({
-      id: uid(), cultoId: chave, date: date, event: event,
-      tarefa: prod, responsavel: "", status: "A Fazer"
-    });
+    prodMes.push({id: uid(), cultoId: chave, date: date, event: event, tarefa: prod, responsavel: "", status: "A Fazer"});
   });
 }
 
@@ -1881,6 +1880,7 @@ function applyAutoScale(){
     if(!r.data)  r.data  = window._suggested[i].data;
     if(!r.sound) r.sound = window._suggested[i].sound;
   });
+  registrarLog("🤖", 'aplicou a escala automática em ' + monthName());
   saveLocal(); renderAll();
   alert("✅ Sugestões aplicadas somente onde os campos estavam vazios.");
 }
@@ -1905,7 +1905,7 @@ function renderProduction(){
       '<td>' + esc(p.event) + '</td>' +
       '<td><b>' + esc(p.tarefa) + '</b></td>' +
       '<td><input value="' + esc(p.responsavel) + '" placeholder="Atribuir..." onchange="production()[' + i + '].responsavel=this.value;saveLocal();" ' + (podeEditar("fluxo") ? "" : "disabled") + '></td>' +
-      '<td><select onchange="production()[' + i + '].status=this.value;saveLocal();renderProduction();" ' + (podeEditar("fluxo") ? "" : "disabled") + '>' +
+      '<td><select onchange="atualizarStatusProducao(' + i + ', this.value)" ' + (podeEditar("fluxo") ? "" : "disabled") + '>' +
         STATUS_FLUXO.map(x=>'<option ' + (x === p.status ? "selected" : "") + '>' + x + '</option>').join("") +
       '</select></td>' +
       '<td class="col-acao"><button class="danger btn-del" onclick="deleteProduction(' + i + ')" ' + (podeEditar("fluxo") ? "" : "disabled") + '>✕</button></td>' +
@@ -1916,6 +1916,18 @@ function renderProduction(){
     html = '<tr><td colspan="6" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma produção vinculada ainda.</td></tr>';
   }
   document.getElementById("productionTable").innerHTML = html;
+}
+
+function atualizarStatusProducao(i, novoStatus){
+  const p = production()[i];
+  if(!p) return;
+  const antigo = p.status;
+  p.status = novoStatus;
+  // Registra no log apenas status importantes
+  if(["Gravado","Editado","Publicado"].includes(novoStatus) && antigo !== novoStatus){
+    registrarLog("🎥", 'marcou "' + p.tarefa + '" (' + p.event + ') como ' + novoStatus);
+  }
+  saveLocal(); renderProduction(); renderLog();
 }
 
 function deleteProduction(i){
@@ -1958,17 +1970,9 @@ function addRecording(){
   if(!podeEditar("fluxo")) return alert("Você não tem permissão.");
   const hoje = new Date();
   const data = hoje.getFullYear() + "-" + String(hoje.getMonth()+1).padStart(2,"0") + "-" + String(hoje.getDate()).padStart(2,"0");
-  records().push({
-    id: uid(),
-    date: formatDate(data),
-    content: "Devocional",
-    speaker: "",
-    responsible: "",
-    edit: "",
-    publish: "",
-    status: "A Fazer"
-  });
-  saveLocal(); renderRecordings();
+  records().push({id: uid(), date: formatDate(data), content: "Devocional", speaker: "", responsible: "", edit: "", publish: "", status: "A Fazer"});
+  registrarLog("📹", 'adicionou um devocional');
+  saveLocal(); renderRecordings(); renderLog();
 }
 
 function criarDevocionaisMes(){
@@ -1988,18 +1992,13 @@ function criarDevocionaisMes(){
   semanas.forEach((dia, idx)=>{
     const dataStr = String(dia).padStart(2,"0") + "/" + String(mes).padStart(2,"0") + "/" + ano;
     records().push({
-      id: uid(),
-      date: dataStr,
-      content: "Devocional — Semana " + (idx+1),
-      speaker: "",
-      responsible: "",
-      edit: "",
-      publish: "",
-      status: "A Fazer"
+      id: uid(), date: dataStr, content: "Devocional — Semana " + (idx+1),
+      speaker: "", responsible: "", edit: "", publish: "", status: "A Fazer"
     });
   });
 
-  saveLocal(); renderRecordings();
+  registrarLog("📹", 'criou ' + semanas.length + ' devocionais em ' + monthName());
+  saveLocal(); renderRecordings(); renderLog();
   alert("✅ Criados " + semanas.length + " devocionais em " + monthName() + ".");
 }
 
@@ -2055,6 +2054,7 @@ function saveVolunteer(){
   if(editingVolunteer < 0){
     DB.volunteers.push(v);
     DB.senhas[user] = user + "123";
+    registrarLog("👤", 'cadastrou o voluntário "' + name + '"');
   } else {
     const antigoUser = DB.volunteers[editingVolunteer].user;
     DB.volunteers[editingVolunteer] = v;
@@ -2062,6 +2062,7 @@ function saveVolunteer(){
       DB.senhas[user] = DB.senhas[antigoUser] || user + "123";
       delete DB.senhas[antigoUser];
     }
+    registrarLog("✏️", 'editou o cadastro de "' + name + '"');
   }
 
   closeModal("volModal");
@@ -2075,6 +2076,7 @@ function deleteVolunteer(i){
   if(!confirm("Excluir cadastro de " + v.name + "?\n\nO histórico nas escalas permanece, mas o acesso será removido.")) return;
   if(v.user) delete DB.senhas[v.user];
   DB.volunteers.splice(i,1);
+  registrarLog("❌", 'removeu o voluntário "' + v.name + '"');
   saveLocal(); renderAll();
 }
 
@@ -2117,7 +2119,7 @@ function renderVolunteers(){
 }
 
 /* ==========================================================
-   CONTAGEM DE PARTICIPAÇÃO
+   CONTAGEM
 ========================================================== */
 function countParticipation(name, monthFilter){
   monthFilter = monthFilter || "all";
@@ -2194,14 +2196,14 @@ function saveTraining(){
   const name = document.getElementById("tName").value.trim();
   if(!name){ alert("Informe o nome."); return; }
   DB.trainings.push({
-    name: name,
-    area: document.getElementById("tArea").value,
+    name: name, area: document.getElementById("tArea").value,
     mentor: document.getElementById("tMentor").value,
     stage: document.getElementById("tStage").value,
     availability: document.getElementById("tAvailability").value,
     last: document.getElementById("tLast").value,
     next: document.getElementById("tNext").value
   });
+  registrarLog("🌱", 'adicionou "' + name + '" ao treinamento');
   closeModal("trainModal"); saveLocal(); renderAll();
 }
 function renderTrainings(){
@@ -2303,7 +2305,8 @@ function salvarNovaSenha(){
   if(nova.length < 4){ err.textContent = "⚠️ A nova senha precisa ter ao menos 4 caracteres."; return; }
   if(nova !== nova2){ err.textContent = "❌ As senhas não coincidem."; return; }
   DB.senhas[usuarioAtual.user] = nova;
-  saveLocal();
+  registrarLog("🔑", 'alterou a própria senha');
+  saveLocal(); renderLog();
   closeModal("perfilModal");
   alert("✅ Senha alterada com sucesso!");
 }
