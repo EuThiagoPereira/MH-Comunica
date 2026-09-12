@@ -412,7 +412,10 @@ td.cult input:nth-child(2)::after{
 }
 td.cult input:nth-child(3){
   color:var(--texto);font-weight:700;font-size:13px;
+  min-width:280px;         /* garante espaço pro nome */
+  max-width:100%;
 }
+td.cult{min-width:340px}   /* garante largura mínima da coluna */
 
 /* Colunas função */
 td.story,td.foto,td.data,td.som{
