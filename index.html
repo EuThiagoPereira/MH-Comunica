@@ -261,7 +261,68 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .page{display:none;animation:fadeIn .35s ease}
 .page.active{display:block}
 
-/* CARDS */
+/* AVISOS / NOTÍCIAS */
+.avisos-topo{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:24px;
+}
+.aviso-card{
+  background:linear-gradient(135deg,rgba(30,58,95,.4) 0%,rgba(10,30,61,.6) 100%);
+  border:1px solid var(--borda-clara);
+  border-radius:12px;
+  padding:20px 22px;
+  position:relative;
+  overflow:hidden;
+}
+.aviso-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,var(--dourado),transparent);
+}
+.aviso-card.aniversarios::before{
+  background:linear-gradient(180deg,#ec4899,transparent);
+}
+.aviso-card h3{
+  margin:0 0 14px;
+  font-size:13px;
+  font-weight:700;
+  color:var(--dourado);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.aviso-card.aniversarios h3{color:#f9a8d4}
+.aviso-card .conteudo{
+  font-size:13px;
+  line-height:1.7;
+  color:var(--texto);
+}
+.aviso-card .conteudo b{color:var(--dourado-claro)}
+.aviso-card .vazio{
+  color:var(--texto-40);
+  font-size:12px;
+  font-style:italic;
+}
+.aviso-item{
+  padding:10px 0;
+  border-bottom:1px solid rgba(30,58,95,.5);
+  font-size:13px;
+  line-height:1.55;
+}
+.aviso-item:last-child{border-bottom:0;padding-bottom:0}
+.aviso-item .data{
+  color:var(--texto-55);
+  font-size:11px;
+  letter-spacing:.5px;
+  margin-bottom:4px;
+}
+.aviso-item .titulo{color:var(--dourado-claro);font-weight:700}
+.aviso-item .texto{color:var(--texto-70);margin-top:2px}
+
+/* CARDS KPI */
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:26px}
 .card{
   background:linear-gradient(180deg,var(--bg-nivel-1) 0%,#0a1e3d 100%);
@@ -317,7 +378,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   background:var(--dourado);border-radius:2px;
 }
 
-/* AVISOS */
+/* AVISOS GENÉRICOS */
 .notice{
   padding:15px 20px;
   border-left:3px solid var(--dourado);
@@ -412,7 +473,7 @@ td.cult input:nth-child(2){
   font-weight:700;
   letter-spacing:1.5px;
   text-transform:uppercase;
-  opacity:.85;
+  opacity:.9;
 }
 td.cult input:nth-child(2)::after{
   content:"·";
@@ -425,10 +486,7 @@ td.cult input:nth-child(2)::after{
 }
 td.cult input:nth-child(3){
   color:var(--texto);font-weight:700;font-size:13px;
-  min-width:280px;         /* garante espaço pro nome */
-  max-width:100%;
 }
-td.cult{min-width:340px}   /* garante largura mínima da coluna */
 
 /* Colunas função */
 td.story,td.foto,td.data,td.som{
@@ -577,6 +635,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   .titulo-grupo h1{font-size:24px;letter-spacing:4px}
   .tabs{top:110px}
   .months{top:158px}
+  .avisos-topo{grid-template-columns:1fr}
 }
 @media(max-width:700px){
   .cards{grid-template-columns:1fr}
@@ -688,7 +747,10 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 
   <!-- DASHBOARD -->
   <section id="dashboard" class="page active">
-    <div id="birthdayNotice"></div>
+
+    <!-- AVISOS E ANIVERSARIANTES -->
+    <div class="avisos-topo" id="avisosTopo"></div>
+
     <div class="notice info">
       <b>📌 Para compartilhar no grupo:</b> use esta aba para tirar print da escala do mês. Os voluntários veem tudo sem precisar de login.
     </div>
@@ -763,7 +825,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
       </div>
     </div>
 
-    <!-- Produção vinculada à escala -->
     <div class="box">
       <div class="box-title">
         <span class="titulo-esq">🎬 Produção vinculada ao culto — <span id="prodMonth">—</span></span>
@@ -798,7 +859,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
       </div>
     </div>
 
-    <!-- Devocionais / Programação de Gravação -->
     <div class="box">
       <div class="box-title">
         <span class="titulo-esq">📹 Programação de gravação (devocionais) — <span id="recordMonth">—</span></span>
@@ -867,7 +927,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
       🌱 O treinamento deve acontecer com acompanhamento de alguém mais experiente antes da pessoa entrar sozinha na escala.
     </div>
     <div class="box">
-      <div class="box-title"><span class="titulo-esq">🌱 Voluntarios em treinamento</span></div>
+      <div class="box-title"><span class="titulo-esq">🌱 Voluntários em treinamento</span></div>
       <div class="toolbar">
         <button class="primary btn-admin" onclick="newTraining()">＋ Adicionar talento</button>
       </div>
@@ -931,7 +991,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
       <label>Nome *<input id="vName"></label>
       <label>Usuário (login) *<input id="vUser" placeholder="ex: ana"></label>
       <label>E-mail<input id="vEmail" type="email"></label>
-      <label>Telefone<input id="vPhone"></label>
+      <label>Telefone<input id="vPhone" placeholder="(47) 99999-9999"></label>
       <label>Data de nascimento<input id="vBirth" type="date"></label>
       <label>Funções (separe por vírgula)<input id="vFunctions" placeholder="Story, Fotografia"></label>
       <label class="full">Disponibilidade (dias)<input id="vAvailability" placeholder="Qui, Dom, Sáb"></label>
@@ -1002,16 +1062,14 @@ const MONTHS = {
   "09":"Setembro","10":"Outubro","11":"Novembro","12":"Dezembro"
 };
 
-const CHAVE_STORAGE = "mh_comunica_v2";
-
+const CHAVE_STORAGE = "mh_comunica_v3";
 const STATUS_FLUXO = ["A Fazer","Agendado","Gravado","Editado","Publicado"];
-
 const PRODUCOES_PADRAO = ["Arte/Story", "Chamada"];
 
 let currentMonth = "09";
 let editingVolunteer = -1;
-let usuarioAtual = null;      // objeto do usuário logado
-let perfilAtual = "visitante"; // visitante | voluntario | coordenador | admin
+let usuarioAtual = null;
+let perfilAtual = "visitante";
 
 /* ==========================================================
    BASE DE DADOS
@@ -1022,7 +1080,8 @@ const DB = {
   production: {},
   recordings: {},
   trainings: [],
-  senhas: {}   // { thiago: "thiago123", hilary: "hilary123", ... }
+  senhas: {},
+  avisos: []   // { id, titulo, texto, data, criadoPor, criadoEm }
 };
 
 /* ==========================================================
@@ -1043,26 +1102,22 @@ function scale(){ if(!DB.scale[currentMonth]) DB.scale[currentMonth] = []; retur
 function production(){ if(!DB.production[currentMonth]) DB.production[currentMonth] = []; return DB.production[currentMonth]; }
 function records(){ if(!DB.recordings[currentMonth]) DB.recordings[currentMonth] = []; return DB.recordings[currentMonth]; }
 
-function statusClass(s){
-  const x = (s||"").toLowerCase();
-  if(x.includes("public")||x.includes("concl")) return "st-publicado";
-  if(x.includes("edit")) return "st-editado";
-  if(x.includes("grav")) return "st-gravado";
-  if(x.includes("agend")) return "st-agendado";
-  if(x.includes("cancel")) return "st-cancelado";
-  return "st-a-fazer";
-}
-
 function countParticipation(name, monthFilter){
   monthFilter = monthFilter || "all";
   if(!name) return {total:0, functions:{Story:0,Fotografia:0,Datashow:0,Som:0}};
+  const norm = name.trim().toLowerCase();
+  // Compatibilidade: "ana" e "ana l." contam juntos
+  const aliases = { "ana":["ana","ana l.","ana luisa"], "duda":["duda","maria eduarda"], "lucas":["lucas","lucas p.","lucas prado"] };
+  const matches = [norm];
+  Object.keys(aliases).forEach(k=>{ if(aliases[k].includes(norm)) matches.push(...aliases[k]); });
+
   let total=0, f={Story:0,Fotografia:0,Datashow:0,Som:0};
   Object.keys(DB.scale).forEach(m=>{
     if(monthFilter !== "all" && m !== monthFilter) return;
     (DB.scale[m]||[]).forEach(r=>{
       [["Story",r.story],["Fotografia",r.photo],["Datashow",r.data],["Som",r.sound]].forEach(pair=>{
-        const fn = pair[0], p = pair[1];
-        if((p||"").trim().toLowerCase() === name.trim().toLowerCase()){ total++; f[fn]++; }
+        const fn = pair[0], p = (pair[1]||"").trim().toLowerCase();
+        if(matches.includes(p)){ total++; f[fn]++; }
       });
     });
   });
@@ -1077,8 +1132,7 @@ function levelLabel(x){ return x === "high" ? "Alta" : x === "medium" ? "Média"
 ========================================================== */
 function podeVer(aba){
   if(perfilAtual === "admin" || perfilAtual === "coordenador") return true;
-  if(aba === "dashboard" || aba === "treinamentos") return true;
-  if(aba === "escala") return true;
+  if(aba === "dashboard" || aba === "treinamentos" || aba === "escala") return true;
   if(aba === "producao"){
     const funcs = (usuarioAtual && usuarioAtual.functions || "").toLowerCase();
     return funcs.includes("story") || funcs.includes("fotografia") || funcs.includes("foto");
@@ -1095,9 +1149,8 @@ function podeEditar(area){
   return false;
 }
 
-function podeEditarEscala(){
-  return perfilAtual === "admin" || perfilAtual === "coordenador";
-}
+function podeEditarEscala(){ return perfilAtual === "admin" || perfilAtual === "coordenador"; }
+function podeEditarAvisos(){ return perfilAtual === "admin" || perfilAtual === "coordenador"; }
 
 /* ==========================================================
    PERSISTÊNCIA
@@ -1116,27 +1169,29 @@ function loadLocal(){
       if(data.recordings)  DB.recordings  = data.recordings;
       if(data.trainings)   DB.trainings   = data.trainings;
       if(data.senhas)      DB.senhas      = data.senhas;
+      if(data.avisos)      DB.avisos      = data.avisos;
     }
   }catch(e){ console.warn("Erro ao carregar:", e); }
 }
 
 /* ==========================================================
-   SEED — dados iniciais (rodar só se estiver vazio)
+   SEED — dados iniciais
 ========================================================== */
 function seedDados(){
   if(DB.volunteers.length && DB.scale["09"]) return;
 
-  // Voluntários
+  // Voluntários (com dados completos dos 4 novos)
   DB.volunteers = [
-    {name:"Thiago",  user:"thiago",  email:"", phone:"", birth:"", functions:"Admin",                     availability:"Qui, Dom", notes:""},
-    {name:"Hilary",  user:"hilary",  email:"", phone:"", birth:"", functions:"Coordenadora, Story, Datashow", availability:"Qui, Dom", notes:""},
-    {name:"Duda",    user:"duda",    email:"", phone:"", birth:"", functions:"Story, Fotografia",            availability:"Qui, Dom", notes:""},
-    {name:"Ana",     user:"ana",     email:"", phone:"", birth:"", functions:"Story, Fotografia",            availability:"Qui, Dom", notes:""},
-    {name:"Sophia",  user:"sophia",  email:"", phone:"", birth:"", functions:"Fotografia",                   availability:"Qui, Dom", notes:""},
-    {name:"Nayane",  user:"nayane",  email:"", phone:"", birth:"", functions:"Story, Fotografia",            availability:"Qui, Dom", notes:""},
-    {name:"Cad",     user:"cad",     email:"", phone:"", birth:"", functions:"Datashow, Som",                availability:"Qui, Dom", notes:""},
-    {name:"Jair",    user:"jair",    email:"", phone:"", birth:"", functions:"Som",                          availability:"Qui, Dom", notes:""},
-    {name:"Lucas",   user:"lucas",   email:"", phone:"", birth:"", functions:"Datashow",                     availability:"Qui, Dom", notes:""}
+    {name:"Thiago",     user:"thiago",  email:"",                              phone:"",           birth:"",             functions:"Admin",                          availability:"Qui, Dom", notes:""},
+    {name:"Hilary",     user:"hilary",  email:"",                              phone:"",           birth:"",             functions:"Coordenadora, Story, Datashow",  availability:"Qui, Dom", notes:""},
+    {name:"Ana L.",     user:"ana",     email:"analubt21@gmail.com",           phone:"47992560531", birth:"2008-01-24",  functions:"Story, Fotografia",              availability:"Qui, Dom", notes:"Ana Luisa Frederico"},
+    {name:"Duda",       user:"duda",    email:"maria13duda5@gmail.com",        phone:"47984834529", birth:"2009-07-21",  functions:"Story, Fotografia, Datashow",    availability:"Qui, Dom", notes:"Maria Eduarda Martins Chagas"},
+    {name:"Thaiane G.", user:"thaiane", email:"goncalvesdelimathaiane@gmail.com", phone:"47996861442", birth:"2008-04-09",  functions:"Story, Fotografia, Datashow",    availability:"Qui, Dom", notes:"Thaiane Gonçalves de Lima"},
+    {name:"Lucas P.",   user:"lucas",   email:"pradolucasfabricio@gmail.com",  phone:"47996993869", birth:"2008-10-13",  functions:"Datashow",                       availability:"Qui, Dom", notes:"Lucas Fabrício Prado"},
+    {name:"Sophia",     user:"sophia",  email:"",                              phone:"",           birth:"",             functions:"Fotografia",                     availability:"Qui, Dom", notes:""},
+    {name:"Nayane",     user:"nayane",  email:"",                              phone:"",           birth:"",             functions:"Story, Fotografia",              availability:"Qui, Dom", notes:""},
+    {name:"Cad",        user:"cad",     email:"",                              phone:"",           birth:"",             functions:"Datashow, Som",                  availability:"Qui, Dom", notes:""},
+    {name:"Jair",       user:"jair",    email:"",                              phone:"",           birth:"",             functions:"Som",                            availability:"Qui, Dom", notes:""}
   ];
 
   // Senhas padrão
@@ -1206,7 +1261,7 @@ function seedDados(){
     ]
   };
 
-  // Sincroniza produção automática com a escala cadastrada
+  // Produção automática
   DB.production = {};
   Object.keys(DB.scale).forEach(mes=>{
     DB.production[mes] = [];
@@ -1226,6 +1281,7 @@ function seedDados(){
   });
 
   DB.recordings = { "08":[], "09":[], "10":[], "11":[], "12":[] };
+  DB.avisos = [];
 
   saveLocal();
 }
@@ -1238,30 +1294,17 @@ function fazerLogin(){
   const pass = document.getElementById("loginPass").value;
   const erro = document.getElementById("loginErro");
 
-  if(!user || !pass){
-    erro.textContent = "❌ Preencha usuário e senha.";
-    return;
-  }
+  if(!user || !pass){ erro.textContent = "❌ Preencha usuário e senha."; return; }
 
   const senhaEsperada = DB.senhas[user];
-  if(!senhaEsperada){
-    erro.textContent = "❌ Usuário não encontrado.";
-    return;
-  }
-  if(senhaEsperada !== pass){
-    erro.textContent = "❌ Senha incorreta.";
-    return;
-  }
+  if(!senhaEsperada){ erro.textContent = "❌ Usuário não encontrado."; return; }
+  if(senhaEsperada !== pass){ erro.textContent = "❌ Senha incorreta."; return; }
 
   const vol = DB.volunteers.find(v => v.user === user);
-  if(!vol){
-    erro.textContent = "❌ Cadastro não localizado.";
-    return;
-  }
+  if(!vol){ erro.textContent = "❌ Cadastro não localizado."; return; }
 
   usuarioAtual = vol;
   definirPerfil(vol);
-
   sessionStorage.setItem("mh_logado_user", user);
   abrirApp();
   alert("✅ Bem-vindo(a), " + vol.name + "!");
@@ -1287,7 +1330,6 @@ function abrirApp(){
   document.getElementById("tabsNav").classList.remove("hidden");
   document.getElementById("monthNav").classList.remove("hidden");
   document.getElementById("appMain").classList.remove("hidden");
-
   aplicarPermissoes();
   renderAll();
 }
@@ -1299,10 +1341,9 @@ function fazerLogout(){
 }
 
 function aplicarPermissoes(){
-  // Badge do usuário
   const badge = document.getElementById("userBadge");
   if(usuarioAtual){
-    badge.textContent = "👤 " + usuarioAtual.name + " (" + (perfilAtual === "admin" ? "admin" : perfilAtual) + ")";
+    badge.textContent = "👤 " + usuarioAtual.name + " (" + perfilAtual + ")";
     badge.classList.remove("hidden");
   } else {
     badge.textContent = "👤 Visitante";
@@ -1311,32 +1352,20 @@ function aplicarPermissoes(){
   document.getElementById("btnSair").classList.remove("hidden");
   document.getElementById("btnPerfil").classList.toggle("hidden", !usuarioAtual);
 
-  // Abas visíveis
   document.querySelectorAll("#tabsNav button").forEach(b=>{
-    const aba = b.dataset.aba;
-    b.classList.toggle("hidden", !podeVer(aba));
+    b.classList.toggle("hidden", !podeVer(b.dataset.aba));
   });
-
-  // Botões de cadastro (só admin/coord)
   document.querySelectorAll(".btn-admin").forEach(b=>{
-    b.classList.toggle("hidden", perfilAtual !== "admin" && perfilAtual !== "coordenador");
+    b.classList.toggle("hidden", !podeEditarAvisos());
   });
-
-  // Botões de escala (só admin/coord)
   document.querySelectorAll(".btn-add-escala").forEach(b=>{
     b.classList.toggle("hidden", !podeEditarEscala());
   });
-
-  // Botões de fluxo (story/foto)
   document.querySelectorAll(".btn-add-grav").forEach(b=>{
     b.classList.toggle("hidden", !podeEditar("fluxo"));
   });
-
-  // Aviso na escala
   const vn = document.getElementById("viewerNotice");
   if(vn) vn.classList.toggle("hidden", podeEditarEscala());
-
-  // Botão de sugestão automática (só admin/coord)
   const boxSug = document.getElementById("boxSugestao");
   if(boxSug) boxSug.classList.toggle("hidden", !podeEditarEscala());
 }
@@ -1352,7 +1381,6 @@ function openTab(id, button){
   if(button) button.classList.add("active");
   renderAll();
 }
-
 function renderMonths(){
   let html = "";
   Object.keys(MONTHS).sort().forEach(m=>{
@@ -1360,8 +1388,115 @@ function renderMonths(){
   });
   document.getElementById("monthNav").innerHTML = html;
 }
-
 function changeMonth(m){ currentMonth = m; renderAll(); }
+
+/* ==========================================================
+   AVISOS E ANIVERSARIANTES (topo do Dashboard)
+========================================================== */
+function renderAvisosTopo(){
+  const box = document.getElementById("avisosTopo");
+  if(!box) return;
+
+  // Aniversariantes do mês atual
+  const aniversariantes = DB.volunteers
+    .filter(v => v.birth && v.birth.substring(5,7) === currentMonth)
+    .sort((a,b) => a.birth.localeCompare(b.birth));
+
+  // Aniversariantes da semana
+  const hoje = new Date();
+  const semanaIni = new Date(hoje); semanaIni.setDate(hoje.getDate() - hoje.getDay());
+  const semanaFim = new Date(semanaIni); semanaFim.setDate(semanaIni.getDate() + 7);
+
+  const daSemana = aniversariantes.filter(v=>{
+    const dia = parseInt(v.birth.substring(8,10));
+    const mes = parseInt(v.birth.substring(5,7));
+    const dataAniv = new Date(hoje.getFullYear(), mes-1, dia);
+    return dataAniv >= semanaIni && dataAniv < semanaFim;
+  });
+
+  // Avisos ordenados (mais recentes primeiro)
+  const avisos = (DB.avisos || []).slice().sort((a,b) => (b.criadoEm||"").localeCompare(a.criadoEm||""));
+
+  // Blocos que vão aparecer
+  const blocos = [];
+
+  // Bloco de aniversariantes (só se tiver)
+  if(aniversariantes.length){
+    let conteudo = '';
+    if(daSemana.length){
+      conteudo += '<div style="margin-bottom:12px;padding:10px 14px;background:rgba(236,72,153,.15);border-radius:6px;border-left:3px solid #ec4899">' +
+        '<b style="color:#f9a8d4">🎉 Esta semana!</b><br>' +
+        daSemana.map(v => '🎂 <b>' + esc(v.name) + '</b> — ' + v.birth.substring(8,10) + '/' + v.birth.substring(5,7)).join('<br>') +
+      '</div>';
+    }
+    conteudo += aniversariantes.map(v => '🎈 <b>' + esc(v.name) + '</b> — dia ' + v.birth.substring(8,10)).join('<br>');
+    blocos.push({
+      tipo: "aniversarios",
+      titulo: "🎂 Aniversariantes de " + monthName(),
+      conteudo: conteudo
+    });
+  }
+
+  // Bloco de avisos (só se tiver)
+  if(avisos.length){
+    const conteudo = avisos.slice(0,5).map(a => 
+      '<div class="aviso-item">' +
+        '<div class="data">' + (a.criadoEm ? new Date(a.criadoEm).toLocaleDateString("pt-BR") : "") + '</div>' +
+        '<div class="titulo">' + esc(a.titulo) + '</div>' +
+        (a.texto ? '<div class="texto">' + esc(a.texto) + '</div>' : '') +
+      '</div>'
+    ).join("");
+    blocos.push({
+      tipo: "avisos",
+      titulo: "📢 Avisos importantes",
+      conteudo: conteudo,
+      acao: podeEditarAvisos() ? '<button class="primary btn-sm" onclick="abrirNovoAviso()">＋ Novo aviso</button>' : ""
+    });
+  } else if(podeEditarAvisos()){
+    // Sem avisos, mas admin pode criar
+    blocos.push({
+      tipo: "avisos",
+      titulo: "📢 Avisos importantes",
+      conteudo: '<div class="vazio">Nenhum aviso cadastrado. Clique em "＋ Novo aviso" para criar.</div>',
+      acao: '<button class="primary btn-sm" onclick="abrirNovoAviso()">＋ Novo aviso</button>'
+    });
+  }
+
+  // Se não tem nada, esconde
+  if(!blocos.length){ box.innerHTML = ""; return; }
+
+  // Renderiza
+  box.innerHTML = blocos.map(b => 
+    '<div class="aviso-card ' + b.tipo + '">' +
+      '<h3>' + b.titulo + (b.acao ? '<span style="margin-left:auto">' + b.acao + '</span>' : '') + '</h3>' +
+      '<div class="conteudo">' + b.conteudo + '</div>' +
+    '</div>'
+  ).join("");
+}
+
+function abrirNovoAviso(){
+  const titulo = prompt("Título do aviso:");
+  if(!titulo) return;
+  const texto = prompt("Texto complementar (opcional):", "") || "";
+  DB.avisos.push({
+    id: uid(),
+    titulo: titulo.trim(),
+    texto: texto.trim(),
+    criadoPor: usuarioAtual ? usuarioAtual.name : "—",
+    criadoEm: new Date().toISOString()
+  });
+  saveLocal();
+  renderAvisosTopo();
+  alert("✅ Aviso publicado!");
+}
+
+function excluirAviso(id){
+  if(!podeEditarAvisos()) return;
+  if(!confirm("Excluir este aviso?")) return;
+  DB.avisos = DB.avisos.filter(a => a.id !== id);
+  saveLocal();
+  renderAvisosTopo();
+}
 
 /* ==========================================================
    DASHBOARD
@@ -1392,6 +1527,7 @@ function renderDashboard(){
   });
   document.getElementById("dashTable").innerHTML = html || '<tr><td colspan="5" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum culto neste mês.</td></tr>';
 
+  renderAvisosTopo();
   renderBirthdayNotice();
 }
 
@@ -1450,7 +1586,6 @@ function addScaleDay(){
     date:date.trim(), event:event.trim()||"Culto / evento", day:day.trim(),
     type:"regular", story:"", photo:"", data:"", sound:"", status:"A Fazer"
   });
-  // Gera produção automática
   gerarProducaoAuto(date.trim(), event.trim());
   saveLocal(); renderAll();
 }
@@ -1477,7 +1612,6 @@ function deleteScale(i){
   if(!item) return;
   if(!confirm("⚠️ Excluir esta data?\n\n" + item.date + " — " + item.event + "\n\nA produção vinculada também será removida.")) return;
   scale().splice(i,1);
-  // Remove produção vinculada
   const chave = item.date + "|" + item.event;
   const prodMes = production();
   for(let j = prodMes.length - 1; j >= 0; j--){
@@ -1492,7 +1626,6 @@ function gerarProducaoAuto(date, event){
   if(!date || !event) return;
   const chave = date + "|" + event;
   const prodMes = production();
-  // Verifica se já existe
   if(prodMes.some(p => p.cultoId === chave)) return;
   PRODUCOES_PADRAO.forEach(prod=>{
     prodMes.push({
@@ -1605,7 +1738,7 @@ function deleteProduction(i){
 }
 
 /* ==========================================================
-   DEVOCIONAIS / PROGRAMAÇÃO DE GRAVAÇÃO
+   DEVOCIONAIS
 ========================================================== */
 function renderRecordings(){
   document.getElementById("recordMonth").textContent = monthName();
@@ -1659,17 +1792,11 @@ function criarDevocionaisMes(){
   const ano = 2026;
   const mes = parseInt(currentMonth);
   const quintas = [];
-
-  // Encontra todas as quintas-feiras do mês
   const d = new Date(ano, mes-1, 1);
   while(d.getMonth() === mes - 1){
-    if(d.getDay() === 4){ // quinta
-      quintas.push(d.getDate());
-    }
+    if(d.getDay() === 4) quintas.push(d.getDate());
     d.setDate(d.getDate() + 1);
   }
-
-  // Pega até 4 quintas
   const semanas = quintas.slice(0, 4);
 
   semanas.forEach((dia, idx)=>{
@@ -1687,7 +1814,7 @@ function criarDevocionaisMes(){
   });
 
   saveLocal(); renderRecordings();
-  alert("✅ Criados " + semanas.length + " devocionais em " + monthName() + ". Edite as datas se precisar.");
+  alert("✅ Criados " + semanas.length + " devocionais em " + monthName() + ".");
 }
 
 function deleteRecording(i){
@@ -1699,14 +1826,14 @@ function deleteRecording(i){
    VOLUNTÁRIOS
 ========================================================== */
 function newVolunteer(){
-  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
+  if(!podeEditarAvisos()) return alert("Você não tem permissão.");
   editingVolunteer = -1;
   ["vName","vUser","vEmail","vPhone","vBirth","vFunctions","vAvailability","vNotes"].forEach(id=>document.getElementById(id).value = "");
   document.getElementById("volModal").classList.add("show");
 }
 
 function editVolunteer(i){
-  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
+  if(!podeEditarAvisos()) return alert("Você não tem permissão.");
   editingVolunteer = i;
   const v = DB.volunteers[i];
   document.getElementById("vName").value = v.name || "";
@@ -1726,13 +1853,11 @@ function saveVolunteer(){
   if(!name){ alert("Informe o nome."); return; }
   if(!user){ alert("Informe o usuário de login."); return; }
 
-  // Verifica se usuário já existe
   const duplicado = DB.volunteers.some((v, idx)=> v.user === user && idx !== editingVolunteer);
-  if(duplicado){ alert("⚠️ Este usuário já está em uso. Escolha outro."); return; }
+  if(duplicado){ alert("⚠️ Este usuário já está em uso."); return; }
 
   const v = {
-    name: name,
-    user: user,
+    name: name, user: user,
     email: document.getElementById("vEmail").value.trim(),
     phone: document.getElementById("vPhone").value.trim(),
     birth: document.getElementById("vBirth").value,
@@ -1743,7 +1868,7 @@ function saveVolunteer(){
 
   if(editingVolunteer < 0){
     DB.volunteers.push(v);
-    DB.senhas[user] = user + "123"; // senha padrão
+    DB.senhas[user] = user + "123";
   } else {
     const antigoUser = DB.volunteers[editingVolunteer].user;
     DB.volunteers[editingVolunteer] = v;
@@ -1758,7 +1883,7 @@ function saveVolunteer(){
 }
 
 function deleteVolunteer(i){
-  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
+  if(!podeEditarAvisos()) return alert("Você não tem permissão.");
   const v = DB.volunteers[i];
   if(!v) return;
   if(!confirm("Excluir cadastro de " + v.name + "?\n\nO histórico nas escalas permanece, mas o acesso será removido.")) return;
@@ -1770,7 +1895,7 @@ function deleteVolunteer(i){
 function renderVolunteers(){
   const q = (document.getElementById("volSearch").value||"").toLowerCase();
   const af = (document.getElementById("availabilityFilter").value||"all").toLowerCase();
-  const podeEditarVol = (perfilAtual === "admin" || perfilAtual === "coordenador");
+  const podeEdit = podeEditarAvisos();
   let html = "";
 
   DB.volunteers.forEach((v,i)=>{
@@ -1787,7 +1912,7 @@ function renderVolunteers(){
       '<td>' + (esc(v.availability)||"—") + '</td>' +
       '<td>' + total + '</td>' +
       '<td class="col-acao">' +
-        (podeEditarVol ? '<button class="dark btn-sm" onclick="editVolunteer(' + i + ')">Editar</button> <button class="danger btn-del" onclick="deleteVolunteer(' + i + ')">✕</button>' : "—") +
+        (podeEdit ? '<button class="dark btn-sm" onclick="editVolunteer(' + i + ')">Editar</button> <button class="danger btn-del" onclick="deleteVolunteer(' + i + ')">✕</button>' : "—") +
       '</td>' +
     '</tr>';
   });
@@ -1799,55 +1924,34 @@ function renderVolunteers(){
 /* ==========================================================
    ANIVERSÁRIOS
 ========================================================== */
-function mondayOfWeek(d){
-  const x = new Date(d.getFullYear(),d.getMonth(),d.getDate());
-  const day = x.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  x.setDate(x.getDate() + diff);
-  x.setHours(0,0,0,0);
-  return x;
-}
-function birthdayDateForYear(birth, year){
-  const p = birth.split("-");
-  return new Date(year, Number(p[1])-1, Number(p[2]));
-}
-function birthdayWindow(){
-  const today = new Date();
-  const start = mondayOfWeek(today);
-  const end = new Date(start);
-  end.setDate(start.getDate() + 7);
-  end.setHours(23,59,59,999);
-  return {start:start, end:end};
-}
-function birthdayInWindow(birth){
-  if(!birth) return false;
-  const today = new Date();
-  const w = birthdayWindow();
-  const y = today.getFullYear();
-  let b = birthdayDateForYear(birth, y);
-  if(b < w.start) b = birthdayDateForYear(birth, y+1);
-  return b >= w.start && b <= w.end;
-}
-function birthdayText(birth){
-  const p = birth.split("-");
-  return p[2] + "/" + p[1];
-}
 function renderBirthdayNotice(){
-  const people = DB.volunteers.filter(v => birthdayInWindow(v.birth));
+  const hoje = new Date();
+  const semanaIni = new Date(hoje); semanaIni.setDate(hoje.getDate() - hoje.getDay()); semanaIni.setHours(0,0,0,0);
+  const semanaFim = new Date(semanaIni); semanaFim.setDate(semanaIni.getDate() + 7);
+
+  const people = DB.volunteers.filter(v=>{
+    if(!v.birth) return false;
+    const dia = parseInt(v.birth.substring(8,10));
+    const mes = parseInt(v.birth.substring(5,7));
+    const dataAniv = new Date(hoje.getFullYear(), mes-1, dia);
+    return dataAniv >= semanaIni && dataAniv < semanaFim;
+  });
+
   const box = document.getElementById("birthdayNotice");
+  if(!box) return;
   if(!people.length){ box.innerHTML = ""; return; }
-  const w = birthdayWindow();
+
   box.innerHTML = '<div class="notice birthday">' +
     '<b>🎂 Aniversários desta semana</b><br>' +
-    '<small>' + w.start.toLocaleDateString("pt-BR") + ' até ' + w.end.toLocaleDateString("pt-BR") + '</small><br><br>' +
-    people.map(v => '🎉 <b>' + esc(v.name) + '</b> — ' + birthdayText(v.birth)).join("<br>") +
+    people.map(v => '🎉 <b>' + esc(v.name) + '</b> — ' + v.birth.substring(8,10) + '/' + v.birth.substring(5,7)).join("<br>") +
   '</div>';
 }
+
 function renderBirthdaysByMonth(){
   document.getElementById("birthdayMonth").textContent = monthName();
   const people = DB.volunteers.filter(v => v.birth && v.birth.substring(5,7) === currentMonth);
   document.getElementById("birthdayMonthList").innerHTML = people.length
-    ? people.sort((a,b)=>a.birth.localeCompare(b.birth)).map(v => '🎂 <b>' + esc(v.name) + '</b> — ' + birthdayText(v.birth)).join("<br><br>")
+    ? people.sort((a,b)=>a.birth.localeCompare(b.birth)).map(v => '🎂 <b>' + esc(v.name) + '</b> — ' + v.birth.substring(8,10) + '/' + v.birth.substring(5,7)).join("<br><br>")
     : "Nenhum aniversário cadastrado neste mês.";
 }
 
@@ -1855,7 +1959,7 @@ function renderBirthdaysByMonth(){
    TREINAMENTOS
 ========================================================== */
 function newTraining(){
-  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
+  if(!podeEditarAvisos()) return alert("Você não tem permissão.");
   ["tName","tArea","tMentor","tAvailability","tLast","tNext"].forEach(id => document.getElementById(id).value = "");
   document.getElementById("tStage").value = "Interesse";
   document.getElementById("trainModal").classList.add("show");
@@ -1875,7 +1979,7 @@ function saveTraining(){
   closeModal("trainModal"); saveLocal(); renderAll();
 }
 function renderTrainings(){
-  const podeEdit = (perfilAtual === "admin" || perfilAtual === "coordenador");
+  const podeEdit = podeEditarAvisos();
   let html = "";
   DB.trainings.forEach((t,i)=>{
     html += '<tr>' +
@@ -1888,7 +1992,7 @@ function renderTrainings(){
   document.getElementById("trainingTable").innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum treinamento cadastrado.</td></tr>';
 }
 function deleteTraining(i){
-  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
+  if(!podeEditarAvisos()) return alert("Você não tem permissão.");
   if(confirm("Excluir este talento?")){ DB.trainings.splice(i,1); saveLocal(); renderAll(); }
 }
 
@@ -1933,11 +2037,9 @@ function renderLoad(){
     const level = workloadLevel(month.total);
     if(filter !== "all" && level !== filter) return;
     const pct = Math.min(100, month.total * 12.5);
-    const advice = level === "high"
-      ? "⚠️ Evitar nova escala neste mês."
-      : level === "medium"
-      ? "Equilibrar com voluntários de menor carga."
-      : "Boa opção para a próxima escala.";
+    const advice = level === "high" ? "⚠️ Evitar nova escala neste mês."
+                 : level === "medium" ? "Equilibrar com voluntários de menor carga."
+                 : "Boa opção para a próxima escala.";
     html += '<tr>' +
       '<td><b>' + esc(v.name) + '</b></td>' +
       '<td>' + (esc(v.functions) || "—") + '</td>' +
@@ -1971,15 +2073,9 @@ function salvarNovaSenha(){
   const err = document.getElementById("perfilErro");
 
   if(!usuarioAtual) return;
-  if(atual !== DB.senhas[usuarioAtual.user]){
-    err.textContent = "❌ Senha atual incorreta."; return;
-  }
-  if(nova.length < 4){
-    err.textContent = "⚠️ A nova senha precisa ter ao menos 4 caracteres."; return;
-  }
-  if(nova !== nova2){
-    err.textContent = "❌ As senhas não coincidem."; return;
-  }
+  if(atual !== DB.senhas[usuarioAtual.user]){ err.textContent = "❌ Senha atual incorreta."; return; }
+  if(nova.length < 4){ err.textContent = "⚠️ A nova senha precisa ter ao menos 4 caracteres."; return; }
+  if(nova !== nova2){ err.textContent = "❌ As senhas não coincidem."; return; }
   DB.senhas[usuarioAtual.user] = nova;
   saveLocal();
   closeModal("perfilModal");
@@ -2020,7 +2116,6 @@ function renderAll(){
 loadLocal();
 seedDados();
 
-// Verifica se já estava logado
 const userLogado = sessionStorage.getItem("mh_logado_user");
 if(userLogado){
   const vol = DB.volunteers.find(v => v.user === userLogado);
