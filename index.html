@@ -9,39 +9,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* Camadas de fundo (elevação) */
-  --bg-nivel-0:#071426;      /* fundo geral */
-  --bg-nivel-1:#0e2444;      /* cards, boxes */
-  --bg-nivel-2:#0a1e3d;      /* cabeçalho de tabela, abas */
-  --bg-nivel-3:#16335c;      /* hover, destaque */
-
-  /* Bordas */
+  --bg-nivel-0:#071426;
+  --bg-nivel-1:#0e2444;
+  --bg-nivel-2:#0a1e3d;
+  --bg-nivel-3:#16335c;
   --borda:#1e3a5f;
   --borda-clara:#2a4d7a;
-
-  /* Texto (opacidades) */
   --texto:#e8eef7;
   --texto-70:rgba(232,238,247,.7);
   --texto-55:rgba(232,238,247,.55);
   --texto-40:rgba(232,238,247,.4);
-
-  /* Dourado equilibrado */
   --dourado:#c9a961;
   --dourado-claro:#e6c980;
   --dourado-escuro:#a88945;
   --dourado-10:rgba(201,169,97,.1);
   --dourado-20:rgba(201,169,97,.2);
   --dourado-30:rgba(201,169,97,.3);
-
-  /* Status */
   --verde:#4ade80;
+  --verde-forte:#22c55e;
   --vermelho:#f87171;
   --amarelo:#fbbf24;
 }
-
 *{box-sizing:border-box}
 html,body{height:100%}
-
 body{
   margin:0;
   font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
@@ -52,84 +42,114 @@ body{
   overflow-x:hidden;
   min-height:100vh;
 }
-
-/* Textura de ruído + aura radial */
 body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:0;
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:
     radial-gradient(ellipse at 50% 0%, rgba(30,58,95,.55) 0%, transparent 55%),
     url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-
-/* Montanha ao fundo */
 body::after{
-  content:"";
-  position:fixed;
-  bottom:0;left:0;right:0;
-  height:45vh;
+  content:"";position:fixed;bottom:0;left:0;right:0;height:45vh;
   background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400' preserveAspectRatio='xMidYMax slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%232a4d7a' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%232a4d7a' stop-opacity='0.22'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M0,400 L0,300 L120,220 L200,270 L320,150 L440,240 L560,120 L680,220 L820,80 L960,200 L1100,140 L1240,240 L1360,180 L1440,260 L1440,400 Z'/%3E%3C/svg%3E");
-  background-size:100% auto;
-  background-position:bottom center;
-  background-repeat:no-repeat;
-  pointer-events:none;
-  z-index:0;
-  opacity:.55;
+  background-size:100% auto;background-position:bottom center;background-repeat:no-repeat;
+  pointer-events:none;z-index:0;opacity:.55;
 }
-
 main,header,nav,div,section,table{position:relative;z-index:1}
 
-/* ==========================================================
-   HEADER CENTRALIZADO COM GRID
-========================================================== */
+/* LOGIN */
+#loginScreen{
+  position:fixed;inset:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  background:linear-gradient(135deg,#071426 0%,#0a1e3d 100%);
+}
+#loginScreen.hidden{display:none}
+.login-card{
+  background:var(--bg-nivel-1);
+  border:1px solid var(--borda-clara);
+  border-radius:16px;
+  padding:40px 36px;
+  width:min(420px,100%);
+  text-align:center;
+  box-shadow:0 25px 70px rgba(0,0,0,.7);
+  animation:fadeIn .4s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.login-card .logo-svg{
+  width:80px;height:80px;margin:0 auto 18px;display:block;
+  filter:drop-shadow(0 4px 20px rgba(201,169,97,.3));
+}
+.login-card h1{
+  margin:0 0 6px;
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:22px;
+  letter-spacing:4px;
+  color:#fff;
+}
+.login-card h1 span{color:var(--dourado);font-weight:900}
+.login-card p{
+  margin:0 0 28px;
+  font-size:12px;
+  color:var(--texto-70);
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.login-card input{
+  width:100%;padding:14px;
+  border:1px solid var(--borda);
+  border-radius:10px;
+  font-size:15px;
+  font-family:inherit;
+  background:var(--bg-nivel-0);
+  color:var(--texto);
+  transition:all .18s;
+  margin-bottom:10px;
+}
+.login-card input:focus{
+  outline:none;
+  border-color:var(--dourado);
+  box-shadow:0 0 0 3px var(--dourado-20);
+}
+.login-card button{
+  width:100%;margin-top:8px;
+  padding:14px;
+  font-size:14px;
+  letter-spacing:1px;
+}
+.login-card .erro{
+  color:var(--vermelho);
+  font-size:12px;
+  margin-top:12px;
+  min-height:18px;
+}
+.login-card .link-visitante{
+  display:block;
+  margin-top:20px;
+  color:var(--texto-55);
+  font-size:12px;
+  text-decoration:none;
+  cursor:pointer;
+}
+.login-card .link-visitante:hover{color:var(--dourado)}
+
+/* HEADER */
 header{
   display:grid;
   grid-template-columns:1fr auto 1fr;
   align-items:center;
-  padding:28px 40px;
+  padding:24px 40px;
   min-height:130px;
   background:linear-gradient(180deg,#0a1a30 0%,#071426 100%);
   border-bottom:1px solid var(--dourado-30);
   box-shadow:0 4px 32px rgba(0,0,0,.5);
   position:sticky;top:0;z-index:30;
 }
-.header-left{min-width:0}
-.header-center{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  position:relative;
-}
-.header-center::after{
-  content:"";
-  position:absolute;
-  bottom:-15px;
-  left:50%;
-  transform:translateX(-50%);
-  width:80px;height:2px;
-  background:linear-gradient(90deg,transparent,var(--dourado),transparent);
-  opacity:.6;
-}
-.header-right{
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-  align-items:center;
-}
-.logo-wrap{
-  display:flex;
-  align-items:center;
-  gap:20px;
-  justify-content:center;
-}
+.header-left{display:flex;align-items:center;gap:10px;min-width:0}
+.header-center{display:flex;flex-direction:column;align-items:center;gap:4px}
+.logo-wrap{display:flex;align-items:center;gap:16px;justify-content:center}
 .logo-svg{
-  width:80px;
-  height:80px;
-  flex-shrink:0;
+  width:64px;height:64px;flex-shrink:0;
   filter:drop-shadow(0 4px 20px rgba(201,169,97,.22));
 }
 .titulo-grupo{display:flex;flex-direction:column;line-height:1}
@@ -137,27 +157,23 @@ header{
   margin:0;
   font-family:'Cinzel',serif;
   font-weight:700;
-  font-size:38px;
-  letter-spacing:6px;
+  font-size:28px;
+  letter-spacing:5px;
   color:#fff;
-  text-shadow:0 2px 8px rgba(0,0,0,.6);
   white-space:nowrap;
 }
-.titulo-grupo h1 span{
-  color:var(--dourado);
-  font-weight:900;
-}
+.titulo-grupo h1 span{color:var(--dourado);font-weight:900}
+.header-right{display:flex;justify-content:flex-end;gap:8px;align-items:center}
 .user-badge{
   background:var(--dourado-10);
   color:var(--dourado-claro);
   border:1px solid var(--dourado-30);
-  padding:7px 15px;border-radius:20px;
+  padding:6px 14px;border-radius:20px;
   font-size:12px;font-weight:600;letter-spacing:.3px;
+  white-space:nowrap;
 }
 
-/* ==========================================================
-   BOTÕES
-========================================================== */
+/* BOTÕES */
 button{
   border:0;border-radius:8px;
   padding:11px 18px;cursor:pointer;
@@ -170,7 +186,6 @@ button{
 button:hover{transform:translateY(-1px)}
 button:active{transform:translateY(0)}
 button:disabled{opacity:.4;cursor:not-allowed;transform:none}
-
 .primary{
   background:linear-gradient(180deg,var(--dourado) 0%,var(--dourado-escuro) 100%);
   color:#1a1206;
@@ -181,132 +196,83 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   background:linear-gradient(180deg,var(--dourado-claro) 0%,var(--dourado) 100%);
   box-shadow:0 6px 18px rgba(201,169,97,.45);
 }
-.dark{
-  background:var(--bg-nivel-3);
-  color:var(--texto);
-  border:1px solid var(--borda-clara);
-}
+.dark{background:var(--bg-nivel-3);color:var(--texto);border:1px solid var(--borda-clara)}
 .dark:hover{background:#1e4074;border-color:var(--dourado)}
-.danger{
-  background:#7f1d1d;color:#fca5a5;
-  padding:7px 13px;font-size:12px;
-  border:1px solid #991b1b;
-}
+.danger{background:#7f1d1d;color:#fca5a5;padding:7px 13px;font-size:12px;border:1px solid #991b1b}
 .danger:hover{background:#991b1b;color:#fff}
-.green{
-  background:#166534;color:#bbf7d0;
-  border:1px solid #14532d;
-}
+.green{background:#166534;color:#bbf7d0;border:1px solid #14532d}
 .green:hover{background:#15803d;color:#fff}
-.blue{
-  background:#1e40af;color:#dbeafe;
-  border:1px solid #1e3a8a;
-}
+.blue{background:#1e40af;color:#dbeafe;border:1px solid #1e3a8a}
 .blue:hover{background:#1d4ed8}
-.ghost{
-  background:transparent;
-  color:var(--texto-70);
-  border:1px solid var(--borda);
-}
-.ghost:hover{
-  background:var(--dourado-10);
-  color:var(--dourado-claro);
-  border-color:var(--dourado);
-}
+.ghost{background:transparent;color:var(--texto-70);border:1px solid var(--borda)}
+.ghost:hover{background:var(--dourado-10);color:var(--dourado-claro);border-color:var(--dourado)}
+.btn-sm{padding:6px 12px;font-size:12px}
 
-/* ==========================================================
-   ABAS
-========================================================== */
+/* ABAS */
 .tabs{
-  display:flex;gap:2px;overflow-x:auto;
+  display:flex;justify-content:center;align-items:center;gap:4px;
   background:rgba(10,30,61,.85);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   padding:0 20px;
   border-bottom:1px solid var(--borda);
-  position:sticky;
-  top:130px;
-  z-index:25;
+  position:sticky;top:130px;z-index:25;
   box-shadow:0 2px 12px rgba(0,0,0,.3);
+  overflow-x:auto;
 }
+.tabs::-webkit-scrollbar{height:0}
+.tabs{scrollbar-width:none;-ms-overflow-style:none}
 .tabs button{
-  background:transparent;
-  color:var(--texto-55);
-  white-space:nowrap;
-  padding:17px 18px;
+  background:transparent;color:var(--texto-55);
+  white-space:nowrap;padding:17px 20px;
   font-size:13px;font-weight:600;
-  border-radius:0;
-  border-bottom:2px solid transparent;
+  border-radius:0;border-bottom:2px solid transparent;
   transition:all .2s;
 }
 .tabs button:hover{color:var(--dourado-claro);transform:none;background:rgba(201,169,97,.05)}
 .tabs button.active{
-  background:transparent;
-  color:var(--dourado);
-  border-bottom:2px solid var(--dourado);
-  font-weight:700;
+  background:transparent;color:var(--dourado);
+  border-bottom:2px solid var(--dourado);font-weight:700;
 }
 
-/* ==========================================================
-   MESES
-========================================================== */
+/* MESES */
 .months{
-  display:flex;gap:6px;overflow-x:auto;
+  display:flex;justify-content:center;align-items:center;gap:8px;
   background:rgba(7,20,38,.95);
   backdrop-filter:blur(8px);
-  padding:13px 20px;
+  padding:14px 20px;
   border-bottom:1px solid var(--borda);
-  position:sticky;
-  top:178px;
-  z-index:24;
+  position:sticky;top:178px;z-index:24;
+  overflow-x:auto;
 }
+.months::-webkit-scrollbar{height:0}
+.months{scrollbar-width:none;-ms-overflow-style:none}
 .months button{
-  background:transparent;
-  color:var(--texto-55);
-  white-space:nowrap;
-  padding:8px 15px;
+  background:transparent;color:var(--texto-55);
+  white-space:nowrap;padding:8px 15px;
   font-size:12px;font-weight:600;
-  border-radius:20px;
-  border:1px solid transparent;
+  border-radius:20px;border:1px solid transparent;
   transition:all .18s;
 }
-.months button:hover{
-  color:var(--dourado-claro);
-  border-color:var(--dourado-30);
-  transform:none;
-}
-.months button.active{
-  background:var(--dourado);
-  color:#1a1206;
-  border-color:var(--dourado);
-  font-weight:700;
-}
+.months button:hover{color:var(--dourado-claro);border-color:var(--dourado-30);transform:none}
+.months button.active{background:var(--dourado);color:#1a1206;border-color:var(--dourado);font-weight:700}
 
-/* ==========================================================
-   LAYOUT
-========================================================== */
+/* LAYOUT */
 .container{max-width:1500px;margin:auto;padding:28px 20px 80px}
 .page{display:none;animation:fadeIn .35s ease}
 .page.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ==========================================================
-   CARDS
-========================================================== */
+/* CARDS */
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:26px}
 .card{
   background:linear-gradient(180deg,var(--bg-nivel-1) 0%,#0a1e3d 100%);
   border:1px solid var(--borda);
   border-radius:12px;
   padding:24px;
-  transition:all .25s cubic-bezier(.4,0,.2,1);
-  position:relative;
-  overflow:hidden;
+  transition:all .25s;
+  position:relative;overflow:hidden;
 }
 .card::before{
-  content:"";
-  position:absolute;left:0;top:0;bottom:0;
-  width:3px;
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
   background:linear-gradient(180deg,var(--dourado) 0%,transparent 100%);
 }
 .card:hover{
@@ -315,26 +281,16 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   box-shadow:0 12px 32px rgba(0,0,0,.4);
 }
 .card span{
-  font-size:11px;
-  color:var(--texto-55);
-  font-weight:600;
-  letter-spacing:1px;
-  text-transform:uppercase;
+  font-size:11px;color:var(--texto-55);
+  font-weight:600;letter-spacing:1px;text-transform:uppercase;
 }
 .card strong{
-  display:block;
-  font-size:36px;
-  margin:12px 0 4px;
-  color:var(--dourado);
-  font-weight:800;
-  font-family:'Cinzel',serif;
-  letter-spacing:2px;
-  line-height:1;
+  display:block;font-size:36px;margin:12px 0 4px;
+  color:var(--dourado);font-weight:800;
+  font-family:'Cinzel',serif;letter-spacing:2px;line-height:1;
 }
 
-/* ==========================================================
-   BOXES
-========================================================== */
+/* BOXES */
 .box{
   background:var(--bg-nivel-1);
   border:1px solid var(--borda);
@@ -347,22 +303,21 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   background:var(--bg-nivel-2);
   color:var(--texto);
   padding:18px 24px;
-  font-weight:700;
-  font-size:14px;
+  font-weight:700;font-size:14px;
   border-bottom:1px solid var(--borda);
   letter-spacing:.8px;
   display:flex;align-items:center;gap:10px;
+  justify-content:space-between;
 }
-.box-title::before{
-  content:"";
-  width:3px;height:18px;
-  background:var(--dourado);
-  border-radius:2px;
+.box-title .titulo-esq{
+  display:flex;align-items:center;gap:10px;
+}
+.box-title .titulo-esq::before{
+  content:"";width:3px;height:18px;
+  background:var(--dourado);border-radius:2px;
 }
 
-/* ==========================================================
-   AVISOS
-========================================================== */
+/* AVISOS */
 .notice{
   padding:15px 20px;
   border-left:3px solid var(--dourado);
@@ -372,30 +327,17 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   font-size:13px;line-height:1.65;
   color:var(--texto);
 }
-.notice.birthday{
-  background:rgba(236,72,153,.1);
-  border-left-color:#ec4899;
-  color:#fbcfe8;
-}
-.notice.info{
-  background:rgba(59,130,246,.08);
-  border-left-color:#3b82f6;
-  color:#bfdbfe;
-}
-.notice.warn{
-  background:rgba(251,191,36,.08);
-  border-left-color:#fbbf24;
-  color:#fef3c7;
-}
+.notice.info{background:rgba(59,130,246,.08);border-left-color:#3b82f6;color:#bfdbfe}
+.notice.warn{background:rgba(251,191,36,.08);border-left-color:#fbbf24;color:#fef3c7}
+.notice.birthday{background:rgba(236,72,153,.1);border-left-color:#ec4899;color:#fbcfe8}
 
-/* ==========================================================
-   TOOLBAR
-========================================================== */
+/* TOOLBAR */
 .toolbar{
   display:flex;gap:10px;flex-wrap:wrap;
   padding:16px 24px;
   border-bottom:1px solid var(--borda);
   background:rgba(7,20,38,.5);
+  align-items:center;
 }
 .toolbar input,.toolbar select{
   padding:10px 14px;
@@ -409,14 +351,11 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 }
 .toolbar input::placeholder{color:var(--texto-40)}
 .toolbar input:focus,.toolbar select:focus{
-  outline:none;
-  border-color:var(--dourado);
+  outline:none;border-color:var(--dourado);
   box-shadow:0 0 0 3px var(--dourado-20);
 }
 
-/* ==========================================================
-   TABELAS — com contraste correto
-========================================================== */
+/* TABELAS */
 .table-wrap{overflow-x:auto;background:var(--bg-nivel-2)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{
@@ -426,17 +365,13 @@ th{
   text-align:left;
   border-bottom:2px solid var(--borda-clara);
   white-space:nowrap;
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:1.2px;
-  font-weight:700;
-  font-family:'Inter',sans-serif;
+  font-size:11px;text-transform:uppercase;
+  letter-spacing:1.2px;font-weight:700;
 }
 td{
   padding:12px 16px;
   border-bottom:1px solid rgba(30,58,95,.6);
   vertical-align:middle;
-  line-height:1.5;
   color:var(--texto);
   font-weight:500;
   background:var(--bg-nivel-1);
@@ -456,48 +391,33 @@ td.cult input{
 }
 td.cult input:focus{
   background:var(--bg-nivel-0);
-  outline:2px solid var(--dourado);
-  outline-offset:0;
+  outline:2px solid var(--dourado);outline-offset:0;
 }
 td.cult input:first-child{
-  color:var(--dourado);
-  font-weight:700;
-  font-size:12px;
-  letter-spacing:.5px;
+  color:var(--dourado);font-weight:700;
+  font-size:12px;letter-spacing:.5px;
 }
 td.cult input:first-child::after{
-  content:"·";
-  color:var(--texto-40);
-  margin:0 6px;
-  font-weight:400;font-size:16px;
-  vertical-align:-1px;
+  content:"·";color:var(--texto-40);
+  margin:0 6px;font-weight:400;font-size:16px;vertical-align:-1px;
 }
 td.cult input:nth-child(2){
-  color:var(--texto-70);
-  font-style:italic;
-  font-size:12px;
-  font-weight:600;
+  color:var(--texto-70);font-style:italic;
+  font-size:12px;font-weight:600;
 }
 td.cult input:nth-child(2)::after{
-  content:"·";
-  color:var(--texto-40);
-  margin:0 6px;
-  font-style:normal;
-  font-weight:400;font-size:16px;
-  vertical-align:-1px;
+  content:"·";color:var(--texto-40);
+  margin:0 6px;font-style:normal;
+  font-weight:400;font-size:16px;vertical-align:-1px;
 }
 td.cult input:nth-child(3){
-  color:var(--texto);
-  font-weight:700;
-  font-size:13px;
+  color:var(--texto);font-weight:700;font-size:13px;
 }
 
-/* Colunas de função */
+/* Colunas função */
 td.story,td.foto,td.data,td.som{
-  padding:12px 16px;
-  font-size:13px;
-  vertical-align:middle;
-  font-weight:500;
+  padding:12px 16px;font-size:13px;
+  vertical-align:middle;font-weight:500;
 }
 td.story{background:rgba(30,58,95,.5);color:#c7d2fe}
 td.foto{background:rgba(30,58,95,.3);color:#dbeafe}
@@ -506,15 +426,13 @@ td.som{background:rgba(30,58,95,.55);color:#dbeafe}
 td.story input,td.foto input,td.data input,td.som input{
   width:100%;padding:5px 4px;border:0;
   background:transparent;
-  font-family:inherit;
-  font-size:13px;color:inherit;
-  font-weight:600;
+  font-family:inherit;font-size:13px;
+  color:inherit;font-weight:600;
 }
 td input:focus,td select:focus{
   background:var(--bg-nivel-0);
   outline:2px solid var(--dourado);
-  outline-offset:-2px;
-  border-radius:4px;
+  outline-offset:-2px;border-radius:4px;
 }
 td input[readonly],td select:disabled{opacity:.85;cursor:default}
 
@@ -523,28 +441,27 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   display:inline-block;
   padding:5px 12px;
   border-radius:20px;
-  font-size:10px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:1px;
+  font-size:10px;font-weight:800;
+  text-transform:uppercase;letter-spacing:1px;
   border:1px solid transparent;
 }
 .st-a-fazer{background:rgba(251,191,36,.15);color:#fcd34d;border-color:rgba(251,191,36,.3)}
-.st-andamento{background:rgba(59,130,246,.15);color:#93c5fd;border-color:rgba(59,130,246,.3)}
-.st-aprovacao{background:rgba(168,85,247,.15);color:#d8b4fe;border-color:rgba(168,85,247,.3)}
-.st-concluido{background:rgba(34,197,94,.15);color:#86efac;border-color:rgba(34,197,94,.3)}
+.st-agendado{background:rgba(59,130,246,.15);color:#93c5fd;border-color:rgba(59,130,246,.3)}
+.st-gravado{background:rgba(168,85,247,.15);color:#d8b4fe;border-color:rgba(168,85,247,.3)}
+.st-editado{background:rgba(245,158,11,.15);color:#fcd34d;border-color:rgba(245,158,11,.3)}
+.st-publicado{background:rgba(34,197,94,.15);color:#86efac;border-color:rgba(34,197,94,.3)}
 .st-cancelado{background:rgba(239,68,68,.15);color:#fca5a5;border-color:rgba(239,68,68,.3)}
+.st-concluido{background:rgba(34,197,94,.15);color:#86efac;border-color:rgba(34,197,94,.3)}
+.st-andamento{background:rgba(59,130,246,.15);color:#93c5fd;border-color:rgba(59,130,246,.3)}
 
-/* Barra */
+/* Barra de carga */
 .bar{height:6px;background:var(--bg-nivel-0);border-radius:20px;overflow:hidden}
 .bar>span{display:block;height:100%;border-radius:20px;transition:width .5s}
 .low{background:linear-gradient(90deg,#22c55e,#4ade80)}
 .medium{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
 .high{background:linear-gradient(90deg,#dc2626,#f87171)}
 
-/* ==========================================================
-   FLUXO
-========================================================== */
+/* FLUXO */
 .flow{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:24px}
 .flow div{
   background:rgba(30,58,95,.4);
@@ -552,8 +469,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   border-radius:10px;
   padding:18px 12px;
   text-align:center;
-  font-weight:700;
-  font-size:12px;
+  font-weight:700;font-size:12px;
   color:var(--texto);
   letter-spacing:.5px;
   transition:all .25s;
@@ -565,132 +481,84 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   box-shadow:0 8px 20px rgba(0,0,0,.3);
 }
 .flow small{
-  display:block;
-  font-weight:400;
-  margin-top:8px;
-  color:var(--texto-70);
-  font-size:11px;
+  display:block;font-weight:400;
+  margin-top:8px;color:var(--texto-70);font-size:11px;
 }
 
-/* Legenda */
+/* LEGENDA */
 .legend{
   display:flex;gap:10px;flex-wrap:wrap;
-  padding:14px 24px;
-  font-size:12px;
+  padding:14px 24px;font-size:12px;
   background:rgba(7,20,38,.4);
   border-bottom:1px solid var(--borda);
+  justify-content:center;
 }
 .legend span{
-  padding:5px 12px;
-  border-radius:14px;
-  font-weight:600;
-  letter-spacing:.3px;
+  padding:5px 12px;border-radius:14px;
+  font-weight:600;letter-spacing:.3px;
   border:1px solid var(--borda-clara);
 }
 
-/* ==========================================================
-   MODAL
-========================================================== */
+/* MODAL */
 .modal{
-  display:none;
-  position:fixed;
-  inset:0;
+  display:none;position:fixed;inset:0;
   background:rgba(2,8,20,.8);
   z-index:100;
-  align-items:center;
-  justify-content:center;
+  align-items:center;justify-content:center;
   padding:20px;
   backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
 }
 .modal.show{display:flex}
 .modal-content{
   background:linear-gradient(180deg,var(--bg-nivel-1) 0%,#0a1e3d 100%);
   border:1px solid var(--borda-clara);
   width:min(720px,100%);
-  max-height:92vh;
-  overflow-y:auto;
+  max-height:92vh;overflow-y:auto;
   border-radius:14px;
   padding:32px;
   box-shadow:0 25px 70px rgba(0,0,0,.7);
 }
 .modal-content h2{
   margin:0 0 22px;
-  font-size:18px;
-  color:var(--dourado);
-  font-weight:700;
-  font-family:'Cinzel',serif;
-  letter-spacing:1.5px;
+  font-size:18px;color:var(--dourado);
+  font-family:'Cinzel',serif;letter-spacing:1.5px;
 }
 .form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .form label{
-  font-size:11px;
-  font-weight:700;
+  font-size:11px;font-weight:700;
   color:var(--texto-70);
-  display:block;
-  letter-spacing:.8px;
+  display:block;letter-spacing:.8px;
   text-transform:uppercase;
 }
 .form input,.form select,.form textarea{
-  width:100%;
-  padding:12px;
-  margin-top:7px;
+  width:100%;padding:12px;margin-top:7px;
   border:1px solid var(--borda);
   border-radius:8px;
-  font-family:inherit;
-  font-size:14px;
+  font-family:inherit;font-size:14px;
   background:var(--bg-nivel-0);
   color:var(--texto);
   transition:all .18s;
 }
 .form input::placeholder{color:var(--texto-40)}
 .form input:focus,.form select:focus,.form textarea:focus{
-  outline:none;
-  border-color:var(--dourado);
+  outline:none;border-color:var(--dourado);
   box-shadow:0 0 0 3px var(--dourado-20);
 }
 .full{grid-column:1/-1}
 .modal-actions{
   display:flex;gap:10px;justify-content:flex-end;
-  margin-top:24px;
-  padding-top:20px;
+  margin-top:24px;padding-top:20px;
   border-top:1px solid var(--borda);
 }
-
-/* Login */
-.login-box{text-align:center;padding:14px 0}
-.login-box input{
-  width:100%;
-  padding:14px;
-  margin:9px 0;
-  border:1px solid var(--borda);
-  border-radius:10px;
-  font-size:15px;
-  text-align:center;
-  font-family:inherit;
-  background:var(--bg-nivel-0);
-  color:var(--texto);
-  transition:all .18s;
-}
-.login-box input::placeholder{color:var(--texto-40)}
-.login-box input:focus{
-  outline:none;
-  border-color:var(--dourado);
-  box-shadow:0 0 0 3px var(--dourado-20);
-  text-align:left;
-}
-
 .hidden{display:none !important}
 
-/* ==========================================================
-   RESPONSIVO
-========================================================== */
+/* RESPONSIVO */
 @media(max-width:1000px){
   .cards{grid-template-columns:repeat(2,1fr)}
   .flow{grid-template-columns:repeat(3,1fr)}
   header{padding:22px 24px;min-height:110px}
-  .logo-svg{width:64px;height:64px}
-  .titulo-grupo h1{font-size:30px;letter-spacing:4px}
+  .logo-svg{width:56px;height:56px}
+  .titulo-grupo h1{font-size:24px;letter-spacing:4px}
   .tabs{top:110px}
   .months{top:158px}
 }
@@ -699,48 +567,68 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   .form{grid-template-columns:1fr}
   .flow{grid-template-columns:1fr 1fr}
   header{
-    padding:18px 16px;
-    min-height:90px;
-    grid-template-columns:auto 1fr;
-    gap:12px;
+    padding:18px 16px;min-height:90px;
+    grid-template-columns:1fr;gap:12px;
   }
-  .header-center{grid-column:1/-1;order:-1}
-  .header-left{display:none}
-  .header-right{grid-column:1/-1;justify-content:center;flex-wrap:wrap}
+  .header-left,.header-right{justify-content:center;flex-wrap:wrap}
   .logo-svg{width:48px;height:48px}
-  .titulo-grupo h1{font-size:22px;letter-spacing:3px}
-  .tabs{top:158px;padding:0 12px}
-  .months{top:206px;padding:10px 12px}
+  .titulo-grupo h1{font-size:20px;letter-spacing:3px}
+  .tabs{top:auto;position:relative;padding:0 8px}
+  .months{top:auto;position:relative;padding:10px 12px}
   .tabs button{padding:13px 12px;font-size:12px}
   .container{padding:16px 12px 60px}
   .box-title{padding:14px 16px;font-size:13px}
   .toolbar{padding:12px 16px}
-  td,th{padding:10px 12px;font-size:12px}
+  th,td{padding:10px 12px;font-size:12px}
   td.cult input{font-size:11px !important}
   .modal-content{padding:22px}
 }
 
-/* ==========================================================
-   IMPRESSÃO — tema claro automático
-========================================================== */
 @media print{
   body{background:#fff;color:#000}
   body::before,body::after{display:none}
-  header,.tabs,.months,.toolbar,.no-print,.header-actions{display:none !important}
+  header,.tabs,.months,.toolbar,.no-print{display:none !important}
   .box,.card{background:#fff;border:1px solid #ccc;box-shadow:none;color:#000}
   .box-title{background:#eee;color:#000}
   th{background:#eee;color:#000;border-color:#999}
   td{border-color:#ccc;color:#000;background:#fff}
-  td.story,td.foto,td.data,td.som,td.cult{background:#f5f5f5;color:#000}
   .modal{display:none !important}
-  .card strong{color:#000}
 }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-left"></div>
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 75 L28 30 L45 55 L58 22 L78 55 L95 35 L95 75 Z"
+            fill="none" stroke="#e8eef7" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M28 30 L38 48" stroke="#c9a961" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M58 22 L68 42" stroke="#c9a961" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="30" cy="68" r="13" fill="#071426" stroke="#e8eef7" stroke-width="2"/>
+      <circle cx="30" cy="68" r="8" fill="none" stroke="#c9a961" stroke-width="1.5"/>
+      <circle cx="30" cy="68" r="4" fill="#c9a961"/>
+      <path d="M48 65 Q52 55 56 65 T64 65 Q68 55 72 65 T80 65 Q84 58 88 65"
+            fill="none" stroke="#c9a961" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M52 42 L62 48 L52 54 Z" fill="#c9a961" opacity="0.9"/>
+    </svg>
+    <h1>MH <span>COMUNICA</span></h1>
+    <p>Mídia Monte Hermon</p>
+    <input type="text" id="loginUser" placeholder="Usuário" autocomplete="off">
+    <input type="password" id="loginPass" placeholder="Senha" autocomplete="off"
+           onkeydown="if(event.key==='Enter')fazerLogin()">
+    <button class="primary" onclick="fazerLogin()">Entrar</button>
+    <div class="erro" id="loginErro"></div>
+    <a class="link-visitante" onclick="entrarComoVisitante()">👁️ Entrar apenas como visitante</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header id="appHeader" class="hidden">
+  <div class="header-left">
+    <button class="ghost btn-sm" onclick="abrirFinanceiro()">💰 Financeiro</button>
+  </div>
   <div class="header-center">
     <div class="logo-wrap">
       <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -762,247 +650,279 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   </div>
   <div class="header-right">
     <span id="userBadge" class="user-badge hidden"></span>
-    <button class="primary" id="btnLogin" onclick="abrirLogin()">🔐 Entrar</button>
-    <button class="dark hidden" id="btnSenha" onclick="abrirAlterarSenha()">🔑 Senha</button>
+    <button class="ghost btn-sm hidden" id="btnPerfil" onclick="abrirPerfil()">👤</button>
     <button class="ghost hidden" id="btnSair" onclick="fazerLogout()">Sair</button>
   </div>
 </header>
 
-<nav class="tabs" id="tabsNav">
-  <button onclick="openTab('dashboard',this)" class="active">📊 Visualização rápida</button>
-  <button onclick="openTab('escala',this)">📅 Escala</button>
-  <button onclick="openTab('producao',this)" class="equipe-only">🎬 Produção</button>
-  <button onclick="openTab('voluntarios',this)" class="equipe-only">👥 Voluntários</button>
-  <button onclick="openTab('treinamentos',this)" class="equipe-only">🌱 Treinamentos</button>
-  <button onclick="openTab('historico',this)" class="equipe-only">📈 Histórico</button>
+<!-- ABAS -->
+<nav class="tabs hidden" id="tabsNav">
+  <button onclick="openTab('dashboard',this)" class="active" data-aba="dashboard">📊 Visualização</button>
+  <button onclick="openTab('escala',this)" data-aba="escala">📅 Escala</button>
+  <button onclick="openTab('producao',this)" data-aba="producao">🎬 Fluxo + Gravações</button>
+  <button onclick="openTab('voluntarios',this)" data-aba="voluntarios">👥 Voluntários</button>
+  <button onclick="openTab('treinamentos',this)" data-aba="treinamentos">🌱 Treinamentos</button>
+  <button onclick="openTab('historico',this)" data-aba="historico">📈 Histórico</button>
 </nav>
 
-<div class="months" id="monthNav"></div>
+<div class="months hidden" id="monthNav"></div>
 
-<main class="container">
+<!-- CONTEÚDO -->
+<main class="container hidden" id="appMain">
 
-<section id="dashboard" class="page active">
-  <div id="birthdayNotice"></div>
-  <div class="notice info">
-    <b>📌 Para compartilhar no grupo:</b> use esta aba para tirar print da escala do mês ou envie o link direto no grupo. Os voluntários veem tudo sem precisar de login.
-  </div>
-  <div class="cards">
-    <div class="card"><span>Cultos/eventos</span><strong id="kpiCultos">0</strong><span>no mês</span></div>
-    <div class="card"><span>Gravações</span><strong id="kpiGravacoes">0</strong><span>programadas</span></div>
-    <div class="card"><span>Voluntários</span><strong id="kpiVol">0</strong><span>cadastrados</span></div>
-    <div class="card"><span>Treinamentos</span><strong id="kpiTreino">0</strong><span>em formação</span></div>
-    <div class="card"><span>Aniversários</span><strong id="kpiAniv">0</strong><span>no mês</span></div>
-  </div>
-  <div class="box">
-    <div class="box-title">📅 Escala — <span id="dashMonth">—</span></div>
-    <div class="legend">
-      <span style="background:rgba(30,58,95,.5);color:#c7d2fe">Story</span>
-      <span style="background:rgba(30,58,95,.3);color:#dbeafe">Fotografia</span>
-      <span style="background:rgba(30,58,95,.4);color:#bfdbfe">Datashow</span>
-      <span style="background:rgba(30,58,95,.55);color:#dbeafe">Mesa de som</span>
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="page active">
+    <div id="birthdayNotice"></div>
+    <div class="notice info">
+      <b>📌 Para compartilhar no grupo:</b> use esta aba para tirar print da escala do mês. Os voluntários veem tudo sem precisar de login.
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>CULTO / EVENTO</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th></tr></thead>
-        <tbody id="dashTable"></tbody>
-      </table>
+    <div class="cards">
+      <div class="card"><span>Cultos/eventos</span><strong id="kpiCultos">0</strong><span>no mês</span></div>
+      <div class="card"><span>Gravações</span><strong id="kpiGravacoes">0</strong><span>programadas</span></div>
+      <div class="card"><span>Voluntários</span><strong id="kpiVol">0</strong><span>cadastrados</span></div>
+      <div class="card"><span>Treinamentos</span><strong id="kpiTreino">0</strong><span>em formação</span></div>
+      <div class="card"><span>Aniversários</span><strong id="kpiAniv">0</strong><span>no mês</span></div>
     </div>
-  </div>
-</section>
+    <div class="box">
+      <div class="box-title"><span class="titulo-esq">📅 Escala — <span id="dashMonth">—</span></span></div>
+      <div class="legend">
+        <span style="background:rgba(30,58,95,.5);color:#c7d2fe">Story</span>
+        <span style="background:rgba(30,58,95,.3);color:#dbeafe">Fotografia</span>
+        <span style="background:rgba(30,58,95,.4);color:#bfdbfe">Datashow</span>
+        <span style="background:rgba(30,58,95,.55);color:#dbeafe">Mesa de som</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>CULTO / EVENTO</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th></tr></thead>
+          <tbody id="dashTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
-<section id="escala" class="page">
-  <div class="box">
-    <div class="box-title">📅 Escala — <span id="scaleMonth">—</span></div>
-    <div class="toolbar equipe-only">
-      <button class="primary" onclick="addScaleDay()">＋ Adicionar dia</button>
-      <button class="primary" onclick="addSpecialEvent()">＋ Evento especial</button>
-      <button class="blue" onclick="autoScale()">🤖 Escala automática</button>
-      <input id="scaleSearch" placeholder="🔎 Buscar culto/evento..." oninput="renderScale()">
-      <select id="scaleType" onchange="renderScale()">
-        <option value="all">Todos</option>
-        <option value="regular">Cultos</option>
-        <option value="special">Eventos especiais</option>
-      </select>
+  <!-- ESCALA -->
+  <section id="escala" class="page">
+    <div class="box">
+      <div class="box-title">
+        <span class="titulo-esq">📅 Escala — <span id="scaleMonth">—</span></span>
+      </div>
+      <div class="toolbar" id="toolbarEscala">
+        <button class="primary btn-add-escala" onclick="addScaleDay()">＋ Adicionar dia</button>
+        <button class="primary btn-add-escala" onclick="addSpecialEvent()">＋ Evento especial</button>
+        <button class="blue btn-add-escala" onclick="autoScale()">🤖 Escala automática</button>
+        <input id="scaleSearch" placeholder="🔎 Buscar culto/evento..." oninput="renderScale()">
+        <select id="scaleType" onchange="renderScale()">
+          <option value="all">Todos</option>
+          <option value="regular">Cultos</option>
+          <option value="special">Eventos especiais</option>
+        </select>
+      </div>
+      <div class="notice info" id="viewerNotice" style="margin:16px 20px 0">
+        👀 <b>Modo visualização.</b> Esta é a escala oficial do mês. Em caso de troca, entre em contato com a coordenação.
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>CULTO / EVENTO</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th><th>STATUS</th><th class="col-acao">AÇÃO</th></tr></thead>
+          <tbody id="scaleTable"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="notice info" id="viewerNotice" style="margin:16px 20px 0">
-      👀 <b>Modo visualização.</b> Esta é a escala oficial do mês. Em caso de troca, entre em contato com a coordenação.
+    <div class="box" id="boxSugestao">
+      <div class="box-title"><span class="titulo-esq">🤖 Sugestão automática de equipe</span></div>
+      <div id="suggestions" style="padding:20px">Clique em <b>Escala automática</b> para analisar disponibilidade + histórico.</div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>CULTO / EVENTO</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th><th>STATUS</th><th class="equipe-only">AÇÃO</th></tr></thead>
-        <tbody id="scaleTable"></tbody>
-      </table>
-    </div>
-  </div>
-  <div class="box equipe-only">
-    <div class="box-title">🤖 Sugestão automática de equipe</div>
-    <div id="suggestions" style="padding:20px">Clique em <b>Escala automática</b> para analisar disponibilidade + histórico.</div>
-  </div>
-</section>
+  </section>
 
-<section id="producao" class="page">
-  <div class="box">
-    <div class="box-title">🔄 Fluxo de produção</div>
-    <div class="flow">
-      <div>1. PEDIDO<small>Briefing</small></div>
-      <div>2. PLANEJAMENTO<small>Prazo e equipe</small></div>
-      <div>3. PRODUÇÃO<small>Arte / vídeo / foto</small></div>
-      <div>4. APROVAÇÃO<small>Conferência</small></div>
-      <div>5. PUBLICAÇÃO<small>Feed / Story</small></div>
-      <div>6. ARQUIVO<small>Organização</small></div>
+  <!-- PRODUÇÃO / FLUXO -->
+  <section id="producao" class="page">
+    <div class="box">
+      <div class="box-title"><span class="titulo-esq">🔄 Fluxo de produção</span></div>
+      <div class="flow">
+        <div>1. PEDIDO<small>Briefing</small></div>
+        <div>2. PLANEJAMENTO<small>Prazo e equipe</small></div>
+        <div>3. PRODUÇÃO<small>Arte / vídeo / foto</small></div>
+        <div>4. APROVAÇÃO<small>Conferência</small></div>
+        <div>5. PUBLICAÇÃO<small>Feed / Story</small></div>
+        <div>6. ARQUIVO<small>Organização</small></div>
+      </div>
     </div>
-  </div>
-  <div class="box">
-    <div class="box-title">🎬 Produção — <span id="prodMonth">—</span></div>
-    <div class="toolbar">
-      <button class="primary" onclick="addProduction()">＋ Nova produção</button>
-      <select id="prodFilter" onchange="renderProduction()">
-        <option value="all">Todos os status</option>
-        <option>A Fazer</option><option>Em andamento</option><option>Aprovação</option><option>Concluído</option><option>Cancelado</option>
-      </select>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>DATA</th><th>CULTO / EVENTO</th><th>PRODUÇÃO</th><th>RESPONSÁVEL</th><th>PRAZO</th><th>STATUS</th><th>AÇÃO</th></tr></thead>
-        <tbody id="productionTable"></tbody>
-      </table>
-    </div>
-  </div>
-  <div class="box">
-    <div class="box-title">🎥 Programação de gravação — <span id="recordMonth">—</span></div>
-    <div class="toolbar">
-      <button class="primary" onclick="addRecording()">＋ Adicionar gravação</button>
-      <select id="recordFilter" onchange="renderRecordings()">
-        <option value="all">Todos</option>
-        <option>A Fazer</option><option>Agendado</option><option>Gravado</option>
-        <option>Em edição</option><option>Aprovado</option><option>Publicado</option>
-      </select>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>DATA</th><th>CONTEÚDO</th><th>OBREIRO / PRELETOR</th><th>RESPONSÁVEL</th><th>EDIÇÃO</th><th>PUBLICAÇÃO</th><th>STATUS</th><th>AÇÃO</th></tr></thead>
-        <tbody id="recordTable"></tbody>
-      </table>
-    </div>
-  </div>
-</section>
 
-<section id="voluntarios" class="page">
-  <div id="birthdayListNotice"></div>
-  <div class="box">
-    <div class="box-title">👥 Cadastro de voluntários</div>
-    <div class="toolbar">
-      <button class="primary" onclick="newVolunteer()">＋ Cadastrar voluntário</button>
-      <input id="volSearch" placeholder="🔎 Nome, função ou e-mail..." oninput="renderVolunteers()">
-      <select id="availabilityFilter" onchange="renderVolunteers()">
-        <option value="all">Qualquer disponibilidade</option>
-        <option>Seg</option><option>Ter</option><option>Qua</option><option>Qui</option>
-        <option>Sex</option><option>Sáb</option><option>Dom</option>
-      </select>
+    <!-- Produção vinculada à escala -->
+    <div class="box">
+      <div class="box-title">
+        <span class="titulo-esq">🎬 Produção vinculada ao culto — <span id="prodMonth">—</span></span>
+      </div>
+      <div class="toolbar">
+        <select id="prodFilter" onchange="renderProduction()">
+          <option value="all">Todos os status</option>
+          <option>A Fazer</option>
+          <option>Agendado</option>
+          <option>Gravado</option>
+          <option>Editado</option>
+          <option>Publicado</option>
+        </select>
+        <span style="padding:10px;color:var(--texto-70);font-size:13px">
+          💡 A produção é gerada automaticamente ao cadastrar cultos na escala.
+        </span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>DATA</th>
+              <th>CULTO / EVENTO</th>
+              <th>PRODUÇÃO</th>
+              <th>RESPONSÁVEL</th>
+              <th>STATUS</th>
+              <th style="text-align:right">AÇÃO</th>
+            </tr>
+          </thead>
+          <tbody id="productionTable"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>NOME</th><th>E-MAIL</th><th>TELEFONE</th><th>NASCIMENTO</th><th>FUNÇÕES</th><th>DISPONIBILIDADE</th><th>PARTICIPAÇÕES</th><th>AÇÃO</th></tr></thead>
-        <tbody id="volTable"></tbody>
-      </table>
-    </div>
-  </div>
-  <div class="box">
-    <div class="box-title">🎂 Aniversários de <span id="birthdayMonth">—</span></div>
-    <div id="birthdayMonthList" style="padding:20px">Nenhum aniversário cadastrado neste mês.</div>
-  </div>
-</section>
 
-<section id="treinamentos" class="page">
-  <div class="notice info">
-    🌱 O treinamento deve acontecer com acompanhamento de alguém mais experiente antes da pessoa entrar sozinha na escala.
-  </div>
-  <div class="box">
-    <div class="box-title">🌱 Potenciais talentos</div>
-    <div class="toolbar">
-      <button class="primary" onclick="newTraining()">＋ Adicionar talento</button>
+    <!-- Devocionais / Programação de Gravação -->
+    <div class="box">
+      <div class="box-title">
+        <span class="titulo-esq">📹 Programação de gravação (devocionais) — <span id="recordMonth">—</span></span>
+      </div>
+      <div class="toolbar">
+        <button class="primary btn-add-grav" onclick="criarDevocionaisMes()">＋ Criar devocionais do mês</button>
+        <button class="dark btn-add-grav" onclick="addRecording()">＋ Adicionar devocional</button>
+        <select id="recordFilter" onchange="renderRecordings()">
+          <option value="all">Todos</option>
+          <option>A Fazer</option>
+          <option>Agendado</option>
+          <option>Gravado</option>
+          <option>Editado</option>
+          <option>Publicado</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>DATA</th>
+              <th>CONTEÚDO</th>
+              <th>OBREIRO / PRELETOR</th>
+              <th>RESPONSÁVEL</th>
+              <th>EDIÇÃO</th>
+              <th>PUBLICAÇÃO</th>
+              <th>STATUS</th>
+              <th style="text-align:right">AÇÃO</th>
+            </tr>
+          </thead>
+          <tbody id="recordTable"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>NOME</th><th>ÁREA</th><th>MENTOR</th><th>ETAPA</th><th>DISPONIBILIDADE</th><th>ÚLTIMO ACOMPANHAMENTO</th><th>PRÓXIMO PASSO</th><th>AÇÃO</th></tr></thead>
-        <tbody id="trainingTable"></tbody>
-      </table>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section id="historico" class="page">
-  <div class="notice info">
-    📈 O histórico é acumulativo e ajuda no rodízio para evitar que sempre as mesmas pessoas sejam escaladas.
-  </div>
-  <div class="box">
-    <div class="box-title">📊 Histórico de participação</div>
-    <div class="toolbar">
-      <select id="historyMonth" onchange="renderHistory()"><option value="all">Todos os meses</option></select>
-      <select id="historyFunction" onchange="renderHistory()">
-        <option value="all">Todas as funções</option>
-        <option>Story</option><option>Fotografia</option><option>Datashow</option><option>Som</option>
-      </select>
+  <!-- VOLUNTÁRIOS -->
+  <section id="voluntarios" class="page">
+    <div class="box">
+      <div class="box-title"><span class="titulo-esq">👥 Cadastro de voluntários</span></div>
+      <div class="toolbar">
+        <button class="primary btn-admin" onclick="newVolunteer()">＋ Cadastrar voluntário</button>
+        <input id="volSearch" placeholder="🔎 Nome, função ou e-mail..." oninput="renderVolunteers()">
+        <select id="availabilityFilter" onchange="renderVolunteers()">
+          <option value="all">Qualquer disponibilidade</option>
+          <option>Seg</option><option>Ter</option><option>Qua</option><option>Qui</option>
+          <option>Sex</option><option>Sáb</option><option>Dom</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>NOME</th><th>USUÁRIO</th><th>E-MAIL</th><th>TELEFONE</th><th>FUNÇÕES</th><th>DISPONIBILIDADE</th><th>PARTICIPAÇÕES</th><th class="col-acao">AÇÃO</th></tr></thead>
+          <tbody id="volTable"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>VOLUNTÁRIO</th><th>TOTAL</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th><th>NÍVEL</th></tr></thead>
-        <tbody id="historyTable"></tbody>
-      </table>
+    <div class="box">
+      <div class="box-title"><span class="titulo-esq">🎂 Aniversários de <span id="birthdayMonth">—</span></span></div>
+      <div id="birthdayMonthList" style="padding:20px">Nenhum aniversário cadastrado neste mês.</div>
     </div>
-  </div>
+  </section>
 
-  <div class="box">
-    <div class="box-title">⚠️ Painel de sobrecarga por voluntário</div>
-    <div class="toolbar">
-      <select id="loadFilter" onchange="renderLoad()">
-        <option value="all">Todos</option>
-        <option value="high">Alta carga</option>
-        <option value="medium">Carga média</option>
-        <option value="low">Baixa carga</option>
-      </select>
-      <span style="padding:10px;color:var(--texto-70);font-size:13px;display:flex;align-items:center">
-        Total = histórico completo · Mês = <span id="loadMonthName" style="margin-left:6px;color:var(--dourado);font-weight:700">—</span>
-      </span>
+  <!-- TREINAMENTOS -->
+  <section id="treinamentos" class="page">
+    <div class="notice info">
+      🌱 O treinamento deve acontecer com acompanhamento de alguém mais experiente antes da pessoa entrar sozinha na escala.
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>VOLUNTÁRIO</th><th>FUNÇÕES</th><th>HISTÓRICO</th><th>MÊS</th><th>NÍVEL</th><th>CARGA</th><th>ORIENTAÇÃO</th></tr></thead>
-        <tbody id="loadTable"></tbody>
-      </table>
+    <div class="box">
+      <div class="box-title"><span class="titulo-esq">🌱 Potenciais talentos</span></div>
+      <div class="toolbar">
+        <button class="primary btn-admin" onclick="newTraining()">＋ Adicionar talento</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>NOME</th><th>ÁREA</th><th>MENTOR</th><th>ETAPA</th><th>DISPONIBILIDADE</th><th>ÚLTIMO ACOMPANHAMENTO</th><th>PRÓXIMO PASSO</th><th class="col-acao">AÇÃO</th></tr></thead>
+          <tbody id="trainingTable"></tbody>
+        </table>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- HISTÓRICO -->
+  <section id="historico" class="page">
+    <div class="notice info">
+      📈 O histórico é acumulativo e ajuda no rodízio para evitar que sempre as mesmas pessoas sejam escaladas.
+    </div>
+    <div class="box">
+      <div class="box-title"><span class="titulo-esq">📊 Histórico de participação</span></div>
+      <div class="toolbar">
+        <select id="historyMonth" onchange="renderHistory()"><option value="all">Todos os meses</option></select>
+        <select id="historyFunction" onchange="renderHistory()">
+          <option value="all">Todas as funções</option>
+          <option>Story</option><option>Fotografia</option><option>Datashow</option><option>Som</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>VOLUNTÁRIO</th><th>TOTAL</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th><th>NÍVEL</th></tr></thead>
+          <tbody id="historyTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-title"><span class="titulo-esq">⚠️ Painel de sobrecarga por voluntário</span></div>
+      <div class="toolbar">
+        <select id="loadFilter" onchange="renderLoad()">
+          <option value="all">Todos</option>
+          <option value="high">Alta carga</option>
+          <option value="medium">Carga média</option>
+          <option value="low">Baixa carga</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>VOLUNTÁRIO</th><th>FUNÇÕES</th><th>HISTÓRICO</th><th>MÊS</th><th>NÍVEL</th><th>CARGA</th><th>ORIENTAÇÃO</th></tr></thead>
+          <tbody id="loadTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
 </main>
 
-<div class="modal" id="loginModal">
-  <div class="modal-content" style="max-width:420px">
-    <h2>🔐 Entrar como equipe</h2>
-    <div class="login-box">
-      <p style="color:var(--texto-70);margin:0 0 12px;font-size:13px">Digite seu usuário e senha</p>
-      <input id="loginUser" placeholder="Usuário" autocomplete="off">
-      <input id="loginPass" type="password" placeholder="Senha" autocomplete="off" onkeydown="if(event.key==='Enter')fazerLogin()">
-      <div id="loginError" style="color:#f87171;font-size:13px;margin-top:10px;min-height:18px"></div>
-    </div>
-    <div class="modal-actions">
-      <button onclick="closeModal('loginModal')">Cancelar</button>
-      <button class="primary" onclick="fazerLogin()">Entrar</button>
-    </div>
-  </div>
-</div>
-
+<!-- MODAIS -->
 <div class="modal" id="volModal">
   <div class="modal-content">
     <h2>👤 Voluntário</h2>
     <div class="form">
       <label>Nome *<input id="vName"></label>
+      <label>Usuário (login) *<input id="vUser" placeholder="ex: ana"></label>
       <label>E-mail<input id="vEmail" type="email"></label>
       <label>Telefone<input id="vPhone"></label>
       <label>Data de nascimento<input id="vBirth" type="date"></label>
-      <label class="full">Funções (separe por vírgula)<input id="vFunctions" placeholder="Story, Fotografia, Datashow, Som"></label>
+      <label>Funções (separe por vírgula)<input id="vFunctions" placeholder="Story, Fotografia"></label>
       <label class="full">Disponibilidade (dias)<input id="vAvailability" placeholder="Qui, Dom, Sáb"></label>
       <label class="full">Observações<textarea id="vNotes" rows="3"></textarea></label>
+    </div>
+    <div class="notice info" style="margin-top:16px">
+      💡 Senha inicial: <b>usuário + 123</b> (ex: se o usuário for <code>ana</code>, a senha será <code>ana123</code>). A pessoa pode trocar depois.
     </div>
     <div class="modal-actions">
       <button onclick="closeModal('volModal')">Cancelar</button>
@@ -1034,21 +954,21 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   </div>
 </div>
 
-<div class="modal" id="senhaModal">
+<div class="modal" id="perfilModal">
   <div class="modal-content" style="max-width:480px">
-    <h2>🔑 Alterar senha</h2>
+    <h2>👤 Meu perfil</h2>
     <div class="notice info" style="margin-bottom:16px">
-      A nova senha vale para <b>este navegador</b>. Se trocar aqui, avise a outra pessoa para atualizar no dispositivo dela.
+      Você pode alterar sua própria senha aqui.
     </div>
     <div class="form">
-      <label class="full">Usuário<input id="sUser" readonly></label>
-      <label class="full">Senha atual<input id="sAtual" type="password"></label>
-      <label class="full">Nova senha<input id="sNova" type="password"></label>
-      <label class="full">Confirmar nova senha<input id="sNova2" type="password"></label>
+      <label class="full">Usuário<input id="perfilUser" readonly></label>
+      <label class="full">Senha atual<input id="perfilAtual" type="password"></label>
+      <label class="full">Nova senha<input id="perfilNova" type="password"></label>
+      <label class="full">Confirmar nova senha<input id="perfilNova2" type="password"></label>
     </div>
-    <div id="senhaError" style="color:#f87171;font-size:13px;margin-top:10px;min-height:18px"></div>
+    <div id="perfilErro" style="color:#f87171;font-size:13px;margin-top:10px;min-height:18px"></div>
     <div class="modal-actions">
-      <button onclick="closeModal('senhaModal')">Cancelar</button>
+      <button onclick="closeModal('perfilModal')">Cancelar</button>
       <button class="primary" onclick="salvarNovaSenha()">Salvar nova senha</button>
     </div>
   </div>
@@ -1057,131 +977,160 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 <script>
 "use strict";
 
+/* ==========================================================
+   CONSTANTES
+========================================================== */
 const MONTHS = {
   "01":"Janeiro","02":"Fevereiro","03":"Março","04":"Abril",
   "05":"Maio","06":"Junho","07":"Julho","08":"Agosto",
   "09":"Setembro","10":"Outubro","11":"Novembro","12":"Dezembro"
 };
 
+const CHAVE_STORAGE = "mh_comunica_v2";
+
+const STATUS_FLUXO = ["A Fazer","Agendado","Gravado","Editado","Publicado"];
+
+const PRODUCOES_PADRAO = ["Arte/Story", "Chamada"];
+
 let currentMonth = "09";
 let editingVolunteer = -1;
-let usuarioAtual = null;
+let usuarioAtual = null;      // objeto do usuário logado
+let perfilAtual = "visitante"; // visitante | voluntario | coordenador | admin
 
-const USERS = {
-  thiago: { nome: "Thiago", perfil: "admin", podeEditar: ["escala","producao","gravacoes","voluntarios","treinamentos","historico"] },
-  hilary: { nome: "Hilary", perfil: "coordenadora", podeEditar: ["escala","voluntarios","treinamentos"] }
-};
-
-const SENHAS_PADRAO = {
-  thiago: "Thiagoadm2026",
-  hilary: "Hilary2026"
-};
-
-function getSenha(user){
-  const custom = localStorage.getItem("mh_senha_" + user);
-  return custom || SENHAS_PADRAO[user];
-}
-function setSenha(user, nova){ localStorage.setItem("mh_senha_" + user, nova); }
-function podeEditar(area){
-  if(!usuarioAtual) return false;
-  return USERS[usuarioAtual].podeEditar.includes(area);
-}
-
-function aplicarPermissoes(){
-  const logado = !!usuarioAtual;
-  document.querySelectorAll(".equipe-only").forEach(el=>{
-    el.classList.toggle("hidden", !logado);
-  });
-  const tabs = document.querySelectorAll("#tabsNav button");
-  tabs.forEach(t=>{
-    const txt = t.textContent.toLowerCase();
-    if(txt.includes("produção") && logado && !podeEditar("producao")) t.classList.add("hidden");
-    else if(txt.includes("voluntários") && logado && !podeEditar("voluntarios")) t.classList.add("hidden");
-    else if(txt.includes("treinamentos") && logado && !podeEditar("treinamentos")) t.classList.add("hidden");
-    else if(txt.includes("histórico") && logado && !podeEditar("historico")) t.classList.add("hidden");
-  });
-  document.getElementById("btnLogin").classList.toggle("hidden", logado);
-  document.getElementById("btnSair").classList.toggle("hidden", !logado);
-  const badge = document.getElementById("userBadge");
-  if(logado){
-    badge.textContent = "👤 " + USERS[usuarioAtual].nome + " (" + USERS[usuarioAtual].perfil + ")";
-    badge.classList.remove("hidden");
-  } else {
-    badge.classList.add("hidden");
-  }
-  document.getElementById("btnSenha").classList.toggle("hidden", usuarioAtual !== "thiago");
-  const vn = document.getElementById("viewerNotice");
-  if(vn) vn.classList.toggle("hidden", logado);
-  const editEscala = podeEditar("escala");
-  document.querySelectorAll("#scaleTable input, #scaleTable select").forEach(el=>{
-    el.disabled = !editEscala;
-  });
-  document.querySelectorAll("#scaleTable .btn-del-scale").forEach(b=>{
-    b.classList.toggle("hidden", !editEscala);
-  });
-}
-
-function abrirLogin(){
-  document.getElementById("loginUser").value = "";
-  document.getElementById("loginPass").value = "";
-  document.getElementById("loginError").textContent = "";
-  document.getElementById("loginModal").classList.add("show");
-  setTimeout(()=>document.getElementById("loginUser").focus(), 100);
-}
-
-function fazerLogin(){
-  const u = document.getElementById("loginUser").value.trim().toLowerCase();
-  const p = document.getElementById("loginPass").value;
-  const err = document.getElementById("loginError");
-  if(!USERS[u]){ err.textContent = "❌ Usuário não encontrado."; return; }
-  if(getSenha(u) !== p){ err.textContent = "❌ Senha incorreta."; return; }
-  usuarioAtual = u;
-  sessionStorage.setItem("mh_user", u);
-  closeModal("loginModal");
-  aplicarPermissoes();
-  renderAll();
-  alert("✅ Bem-vindo(a), " + USERS[u].nome + "!");
-}
-
-function fazerLogout(){
-  if(!confirm("Deseja sair do modo edição?")) return;
-  usuarioAtual = null;
-  sessionStorage.removeItem("mh_user");
-  aplicarPermissoes();
-  openTab("dashboard", document.querySelector("#tabsNav button"));
-  renderAll();
-}
-
-function abrirAlterarSenha(){
-  if(usuarioAtual !== "thiago"){
-    alert("Apenas o administrador pode alterar senhas.");
-    return;
-  }
-  document.getElementById("sUser").value = USERS[usuarioAtual].nome;
-  document.getElementById("sAtual").value = "";
-  document.getElementById("sNova").value = "";
-  document.getElementById("sNova2").value = "";
-  document.getElementById("senhaError").textContent = "";
-  document.getElementById("senhaModal").classList.add("show");
-}
-
-function salvarNovaSenha(){
-  const atual = document.getElementById("sAtual").value;
-  const nova  = document.getElementById("sNova").value;
-  const nova2 = document.getElementById("sNova2").value;
-  const err   = document.getElementById("senhaError");
-  if(atual !== getSenha(usuarioAtual)){ err.textContent = "❌ Senha atual incorreta."; return; }
-  if(nova.length < 6){ err.textContent = "⚠️ A nova senha precisa ter ao menos 6 caracteres."; return; }
-  if(nova !== nova2){ err.textContent = "❌ As senhas não coincidem."; return; }
-  const qual = confirm("Clique OK para alterar a SUA senha (Thiago).\nClique CANCELAR para alterar a senha da HILARY.");
-  setSenha(qual ? "thiago" : "hilary", nova);
-  closeModal("senhaModal");
-  alert("✅ Senha alterada com sucesso para " + (qual ? "Thiago" : "Hilary") + ".");
-}
-
+/* ==========================================================
+   BASE DE DADOS
+========================================================== */
 const DB = {
   volunteers: [],
-  scale: {
+  scale: {},
+  production: {},
+  recordings: {},
+  trainings: [],
+  senhas: {}   // { thiago: "thiago123", hilary: "hilary123", ... }
+};
+
+/* ==========================================================
+   HELPERS
+========================================================== */
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+function esc(v){
+  return String(v==null?"":v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+function formatDate(v){
+  if(!v) return "";
+  if(v.indexOf("/") > -1) return v;
+  const p = v.split("-");
+  return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : v;
+}
+function monthName(){ return MONTHS[currentMonth]; }
+function scale(){ if(!DB.scale[currentMonth]) DB.scale[currentMonth] = []; return DB.scale[currentMonth]; }
+function production(){ if(!DB.production[currentMonth]) DB.production[currentMonth] = []; return DB.production[currentMonth]; }
+function records(){ if(!DB.recordings[currentMonth]) DB.recordings[currentMonth] = []; return DB.recordings[currentMonth]; }
+
+function statusClass(s){
+  const x = (s||"").toLowerCase();
+  if(x.includes("public")||x.includes("concl")) return "st-publicado";
+  if(x.includes("edit")) return "st-editado";
+  if(x.includes("grav")) return "st-gravado";
+  if(x.includes("agend")) return "st-agendado";
+  if(x.includes("cancel")) return "st-cancelado";
+  return "st-a-fazer";
+}
+
+function countParticipation(name, monthFilter){
+  monthFilter = monthFilter || "all";
+  if(!name) return {total:0, functions:{Story:0,Fotografia:0,Datashow:0,Som:0}};
+  let total=0, f={Story:0,Fotografia:0,Datashow:0,Som:0};
+  Object.keys(DB.scale).forEach(m=>{
+    if(monthFilter !== "all" && m !== monthFilter) return;
+    (DB.scale[m]||[]).forEach(r=>{
+      [["Story",r.story],["Fotografia",r.photo],["Datashow",r.data],["Som",r.sound]].forEach(pair=>{
+        const fn = pair[0], p = pair[1];
+        if((p||"").trim().toLowerCase() === name.trim().toLowerCase()){ total++; f[fn]++; }
+      });
+    });
+  });
+  return {total, functions:f};
+}
+
+function workloadLevel(t){ if(t >= 8) return "high"; if(t >= 4) return "medium"; return "low"; }
+function levelLabel(x){ return x === "high" ? "Alta" : x === "medium" ? "Média" : "Baixa"; }
+
+/* ==========================================================
+   PERMISSÕES
+========================================================== */
+function podeVer(aba){
+  if(perfilAtual === "admin" || perfilAtual === "coordenador") return true;
+  if(aba === "dashboard" || aba === "treinamentos") return true;
+  if(aba === "escala") return true;
+  if(aba === "producao"){
+    const funcs = (usuarioAtual && usuarioAtual.functions || "").toLowerCase();
+    return funcs.includes("story") || funcs.includes("fotografia") || funcs.includes("foto");
+  }
+  return false;
+}
+
+function podeEditar(area){
+  if(perfilAtual === "admin" || perfilAtual === "coordenador") return true;
+  if(area === "fluxo" || area === "gravacoes"){
+    const funcs = (usuarioAtual && usuarioAtual.functions || "").toLowerCase();
+    return funcs.includes("story") || funcs.includes("fotografia") || funcs.includes("foto");
+  }
+  return false;
+}
+
+function podeEditarEscala(){
+  return perfilAtual === "admin" || perfilAtual === "coordenador";
+}
+
+/* ==========================================================
+   PERSISTÊNCIA
+========================================================== */
+function saveLocal(){
+  try{ localStorage.setItem(CHAVE_STORAGE, JSON.stringify(DB)); }catch(e){ console.warn(e); }
+}
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem(CHAVE_STORAGE);
+    if(raw){
+      const data = JSON.parse(raw);
+      if(data.volunteers)  DB.volunteers  = data.volunteers;
+      if(data.scale)       DB.scale       = data.scale;
+      if(data.production)  DB.production  = data.production;
+      if(data.recordings)  DB.recordings  = data.recordings;
+      if(data.trainings)   DB.trainings   = data.trainings;
+      if(data.senhas)      DB.senhas      = data.senhas;
+    }
+  }catch(e){ console.warn("Erro ao carregar:", e); }
+}
+
+/* ==========================================================
+   SEED — dados iniciais (rodar só se estiver vazio)
+========================================================== */
+function seedDados(){
+  if(DB.volunteers.length && DB.scale["09"]) return;
+
+  // Voluntários
+  DB.volunteers = [
+    {name:"Thiago",  user:"thiago",  email:"", phone:"", birth:"", functions:"Admin",                     availability:"Qui, Dom", notes:""},
+    {name:"Hilary",  user:"hilary",  email:"", phone:"", birth:"", functions:"Coordenadora, Story, Datashow", availability:"Qui, Dom", notes:""},
+    {name:"Duda",    user:"duda",    email:"", phone:"", birth:"", functions:"Story, Fotografia",            availability:"Qui, Dom", notes:""},
+    {name:"Ana",     user:"ana",     email:"", phone:"", birth:"", functions:"Story, Fotografia",            availability:"Qui, Dom", notes:""},
+    {name:"Sophia",  user:"sophia",  email:"", phone:"", birth:"", functions:"Fotografia",                   availability:"Qui, Dom", notes:""},
+    {name:"Nayane",  user:"nayane",  email:"", phone:"", birth:"", functions:"Story, Fotografia",            availability:"Qui, Dom", notes:""},
+    {name:"Cad",     user:"cad",     email:"", phone:"", birth:"", functions:"Datashow, Som",                availability:"Qui, Dom", notes:""},
+    {name:"Jair",    user:"jair",    email:"", phone:"", birth:"", functions:"Som",                          availability:"Qui, Dom", notes:""},
+    {name:"Lucas",   user:"lucas",   email:"", phone:"", birth:"", functions:"Datashow",                     availability:"Qui, Dom", notes:""}
+  ];
+
+  // Senhas padrão
+  DB.senhas = {};
+  DB.volunteers.forEach(v=>{
+    if(v.user) DB.senhas[v.user] = v.user + "123";
+  });
+
+  // Escalas
+  DB.scale = {
     "08": [
       {date:"02/08/2026",event:"Culto de Ceia",day:"Domingo",type:"regular",story:"",photo:"",data:"",sound:"",status:"Concluído"},
       {date:"06/08/2026",event:"Noite do Propósito",day:"Quinta",type:"regular",story:"",photo:"",data:"",sound:"",status:"Concluído"},
@@ -1239,89 +1188,183 @@ const DB = {
       {date:"13/12/2026",event:"Encerramento FT setor 29",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
       {date:"31/12/2026",event:"Culto da Virada",day:"Quinta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"}
     ]
-  },
-  recordings: { "08":[], "09":[], "10":[], "11":[], "12":[] },
-  production: { "08":[], "09":[], "10":[], "11":[], "12":[] },
-  trainings: []
-};
+  };
 
-function arr(obj,key){ if(!obj[key]) obj[key]=[]; return obj[key]; }
-function esc(v){
-  return String(v==null?"":v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-}
-function formatDate(v){
-  if(!v) return "";
-  if(v.indexOf("/")>-1) return v;
-  const p=v.split("-");
-  return p.length===3 ? p[2]+"/"+p[1]+"/"+p[0] : v;
-}
-function monthName(){ return MONTHS[currentMonth]; }
-function scale(){ return arr(DB.scale, currentMonth); }
-function records(){ return arr(DB.recordings, currentMonth); }
-function production(){ return arr(DB.production, currentMonth); }
-
-function statusClass(s){
-  const x=(s||"").toLowerCase();
-  if(x.includes("concl")||x.includes("public")||x.includes("aprov")) return "st-concluido";
-  if(x.includes("andamento")||x.includes("gravado")||x.includes("edição")) return "st-andamento";
-  if(x.includes("cancel")) return "st-cancelado";
-  return "st-a-fazer";
-}
-function statusBadge(s){ return '<span class="status ' + statusClass(s) + '">' + esc(s||"A Fazer") + '</span>'; }
-
-function countParticipation(name, monthFilter){
-  monthFilter = monthFilter || "all";
-  if(!name) return {total:0, functions:{Story:0,Fotografia:0,Datashow:0,Som:0}};
-  let total=0, f={Story:0,Fotografia:0,Datashow:0,Som:0};
-  Object.keys(DB.scale).forEach(m=>{
-    if(monthFilter!=="all" && m!==monthFilter) return;
-    arr(DB.scale,m).forEach(r=>{
-      [["Story",r.story],["Fotografia",r.photo],["Datashow",r.data],["Som",r.sound]].forEach(pair=>{
-        const fn=pair[0], p=pair[1];
-        if((p||"").trim().toLowerCase()===name.trim().toLowerCase()){ total++; f[fn]++; }
+  // Sincroniza produção automática com a escala cadastrada
+  DB.production = {};
+  Object.keys(DB.scale).forEach(mes=>{
+    DB.production[mes] = [];
+    DB.scale[mes].forEach(culto=>{
+      PRODUCOES_PADRAO.forEach(prod=>{
+        DB.production[mes].push({
+          id: uid(),
+          cultoId: culto.date + "|" + culto.event,
+          date: culto.date,
+          event: culto.event,
+          tarefa: prod,
+          responsavel: "",
+          status: "A Fazer"
+        });
       });
     });
   });
-  return {total:total, functions:f};
-}
-function volunteerCan(v,fn,day){
-  const funcs=(v.functions||"").toLowerCase();
-  const days=(v.availability||"").toLowerCase();
-  return funcs.includes(fn.toLowerCase()) && days.includes(day.toLowerCase());
-}
-function workloadLevel(t){ if(t>=8) return "high"; if(t>=4) return "medium"; return "low"; }
-function levelLabel(x){ return x==="high"?"Alta":x==="medium"?"Média":"Baixa"; }
 
+  DB.recordings = { "08":[], "09":[], "10":[], "11":[], "12":[] };
+
+  saveLocal();
+}
+
+/* ==========================================================
+   LOGIN
+========================================================== */
+function fazerLogin(){
+  const user = document.getElementById("loginUser").value.trim().toLowerCase();
+  const pass = document.getElementById("loginPass").value;
+  const erro = document.getElementById("loginErro");
+
+  if(!user || !pass){
+    erro.textContent = "❌ Preencha usuário e senha.";
+    return;
+  }
+
+  const senhaEsperada = DB.senhas[user];
+  if(!senhaEsperada){
+    erro.textContent = "❌ Usuário não encontrado.";
+    return;
+  }
+  if(senhaEsperada !== pass){
+    erro.textContent = "❌ Senha incorreta.";
+    return;
+  }
+
+  const vol = DB.volunteers.find(v => v.user === user);
+  if(!vol){
+    erro.textContent = "❌ Cadastro não localizado.";
+    return;
+  }
+
+  usuarioAtual = vol;
+  definirPerfil(vol);
+
+  sessionStorage.setItem("mh_logado_user", user);
+  abrirApp();
+  alert("✅ Bem-vindo(a), " + vol.name + "!");
+}
+
+function definirPerfil(vol){
+  const funcs = (vol.functions || "").toLowerCase();
+  if(funcs.includes("admin")) perfilAtual = "admin";
+  else if(funcs.includes("coordenador") || funcs.includes("coordenadora")) perfilAtual = "coordenador";
+  else perfilAtual = "voluntario";
+}
+
+function entrarComoVisitante(){
+  usuarioAtual = null;
+  perfilAtual = "visitante";
+  sessionStorage.removeItem("mh_logado_user");
+  abrirApp();
+}
+
+function abrirApp(){
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("appHeader").classList.remove("hidden");
+  document.getElementById("tabsNav").classList.remove("hidden");
+  document.getElementById("monthNav").classList.remove("hidden");
+  document.getElementById("appMain").classList.remove("hidden");
+
+  aplicarPermissoes();
+  renderAll();
+}
+
+function fazerLogout(){
+  if(!confirm("Deseja sair?")) return;
+  sessionStorage.removeItem("mh_logado_user");
+  location.reload();
+}
+
+function aplicarPermissoes(){
+  // Badge do usuário
+  const badge = document.getElementById("userBadge");
+  if(usuarioAtual){
+    badge.textContent = "👤 " + usuarioAtual.name + " (" + (perfilAtual === "admin" ? "admin" : perfilAtual) + ")";
+    badge.classList.remove("hidden");
+  } else {
+    badge.textContent = "👤 Visitante";
+    badge.classList.remove("hidden");
+  }
+  document.getElementById("btnSair").classList.remove("hidden");
+  document.getElementById("btnPerfil").classList.toggle("hidden", !usuarioAtual);
+
+  // Abas visíveis
+  document.querySelectorAll("#tabsNav button").forEach(b=>{
+    const aba = b.dataset.aba;
+    b.classList.toggle("hidden", !podeVer(aba));
+  });
+
+  // Botões de cadastro (só admin/coord)
+  document.querySelectorAll(".btn-admin").forEach(b=>{
+    b.classList.toggle("hidden", perfilAtual !== "admin" && perfilAtual !== "coordenador");
+  });
+
+  // Botões de escala (só admin/coord)
+  document.querySelectorAll(".btn-add-escala").forEach(b=>{
+    b.classList.toggle("hidden", !podeEditarEscala());
+  });
+
+  // Botões de fluxo (story/foto)
+  document.querySelectorAll(".btn-add-grav").forEach(b=>{
+    b.classList.toggle("hidden", !podeEditar("fluxo"));
+  });
+
+  // Aviso na escala
+  const vn = document.getElementById("viewerNotice");
+  if(vn) vn.classList.toggle("hidden", podeEditarEscala());
+
+  // Botão de sugestão automática (só admin/coord)
+  const boxSug = document.getElementById("boxSugestao");
+  if(boxSug) boxSug.classList.toggle("hidden", !podeEditarEscala());
+}
+
+/* ==========================================================
+   NAVEGAÇÃO
+========================================================== */
 function openTab(id, button){
   document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
-  const page=document.getElementById(id);
+  const page = document.getElementById(id);
   if(page) page.classList.add("active");
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
   if(button) button.classList.add("active");
   renderAll();
 }
-function renderMonths(){
-  let html="";
-  Object.keys(MONTHS).sort().forEach(m=>{
-    html += '<button class="' + (m===currentMonth?"active":"") + '" onclick="changeMonth(\'' + m + '\')">' + MONTHS[m].substring(0,3) + '</button>';
-  });
-  document.getElementById("monthNav").innerHTML=html;
-}
-function changeMonth(m){ currentMonth=m; renderAll(); }
 
+function renderMonths(){
+  let html = "";
+  Object.keys(MONTHS).sort().forEach(m=>{
+    html += '<button class="' + (m === currentMonth ? "active" : "") + '" onclick="changeMonth(\'' + m + '\')">' + MONTHS[m] + '</button>';
+  });
+  document.getElementById("monthNav").innerHTML = html;
+}
+
+function changeMonth(m){ currentMonth = m; renderAll(); }
+
+/* ==========================================================
+   DASHBOARD
+========================================================== */
 function renderDashboard(){
-  document.getElementById("dashMonth").textContent=monthName();
-  document.getElementById("kpiCultos").textContent=scale().length;
-  document.getElementById("kpiGravacoes").textContent=records().length;
-  document.getElementById("kpiVol").textContent=DB.volunteers.length;
-  document.getElementById("kpiTreino").textContent=DB.trainings.length;
-  const an=DB.volunteers.filter(v=>v.birth && v.birth.substring(5,7)===currentMonth);
-  document.getElementById("kpiAniv").textContent=an.length;
-  let html="";
+  document.getElementById("dashMonth").textContent = monthName();
+  document.getElementById("kpiCultos").textContent = scale().length;
+  document.getElementById("kpiGravacoes").textContent = records().length;
+  document.getElementById("kpiVol").textContent = DB.volunteers.length;
+  document.getElementById("kpiTreino").textContent = DB.trainings.length;
+
+  const an = DB.volunteers.filter(v => v.birth && v.birth.substring(5,7) === currentMonth);
+  document.getElementById("kpiAniv").textContent = an.length;
+
+  let html = "";
   scale().slice().sort((a,b)=>{
-    const da=a.date.split("/").reverse().join("-");
-    const db=b.date.split("/").reverse().join("-");
-    return new Date(da)-new Date(db);
+    const da = a.date.split("/").reverse().join("-");
+    const db = b.date.split("/").reverse().join("-");
+    return new Date(da) - new Date(db);
   }).forEach(r=>{
     html += '<tr>' +
       '<td class="cult"><b>' + esc(r.date) + '</b> — ' + esc(r.day) + ' — ' + esc(r.event) + '</td>' +
@@ -1331,364 +1374,528 @@ function renderDashboard(){
       '<td class="som">' + (esc(r.sound)||"—") + '</td>' +
     '</tr>';
   });
-  document.getElementById("dashTable").innerHTML = html || '<tr><td colspan="5" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum culto cadastrado neste mês.</td></tr>';
+  document.getElementById("dashTable").innerHTML = html || '<tr><td colspan="5" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum culto neste mês.</td></tr>';
+
   renderBirthdayNotice();
 }
 
+/* ==========================================================
+   ESCALA
+========================================================== */
 function renderScale(){
-  document.getElementById("scaleMonth").textContent=monthName();
+  document.getElementById("scaleMonth").textContent = monthName();
   scale().sort((a,b)=>{
-    const da=a.date.split("/").reverse().join("-");
-    const db=b.date.split("/").reverse().join("-");
-    return new Date(da)-new Date(db);
+    const da = a.date.split("/").reverse().join("-");
+    const db = b.date.split("/").reverse().join("-");
+    return new Date(da) - new Date(db);
   });
-  const search=(document.getElementById("scaleSearch").value||"").toLowerCase();
-  const type=document.getElementById("scaleType").value;
-  const edit = podeEditar("escala");
-  let html="";
+  const search = (document.getElementById("scaleSearch").value||"").toLowerCase();
+  const type = document.getElementById("scaleType").value;
+  const edit = podeEditarEscala();
+  let html = "";
+
   scale().forEach((r,i)=>{
-    if(type!=="all" && r.type!==type) return;
-    const texto=(r.date+" "+r.event+" "+r.day).toLowerCase();
+    if(type !== "all" && r.type !== type) return;
+    const texto = (r.date + " " + r.event + " " + r.day).toLowerCase();
     if(search && !texto.includes(search)) return;
-    const dis = edit?"":"disabled";
+    const dis = edit ? "" : "disabled";
     html += '<tr>' +
       '<td class="cult">' +
         '<input value="' + esc(r.date) + '" onchange="scale()[' + i + '].date=this.value;saveLocal();renderScale();renderDashboard();" ' + dis + '>' +
         '<input value="' + esc(r.day) + '" onchange="scale()[' + i + '].day=this.value;saveLocal();" ' + dis + '>' +
-        '<input value="' + esc(r.event) + '" onchange="scale()[' + i + '].event=this.value;saveLocal();renderDashboard();" ' + dis + '>' +
+        '<input value="' + esc(r.event) + '" onchange="scale()[' + i + '].event=this.value;saveLocal();renderDashboard();renderProduction();" ' + dis + '>' +
       '</td>' +
       '<td class="story"><input value="' + esc(r.story) + '" onchange="scale()[' + i + '].story=this.value;saveLocal();renderDashboard();" ' + dis + '></td>' +
       '<td class="foto"><input value="' + esc(r.photo) + '" onchange="scale()[' + i + '].photo=this.value;saveLocal();renderDashboard();" ' + dis + '></td>' +
       '<td class="data"><input value="' + esc(r.data) + '" onchange="scale()[' + i + '].data=this.value;saveLocal();renderDashboard();" ' + dis + '></td>' +
       '<td class="som"><input value="' + esc(r.sound) + '" onchange="scale()[' + i + '].sound=this.value;saveLocal();renderDashboard();" ' + dis + '></td>' +
       '<td><select onchange="scale()[' + i + '].status=this.value;saveLocal();renderDashboard();" ' + dis + '>' +
-        ["A Fazer","Em andamento","Concluído","Cancelado"].map(x=>'<option ' + (x===r.status?"selected":"") + '>' + x + '</option>').join("") +
+        ["A Fazer","Em andamento","Concluído","Cancelado"].map(x=>'<option ' + (x === r.status ? "selected" : "") + '>' + x + '</option>').join("") +
       '</select></td>' +
-      '<td class="equipe-only"><button class="danger btn-del-scale" onclick="deleteScale(' + i + ')" title="Excluir">✕</button></td>' +
+      '<td class="col-acao"><button class="danger btn-del" onclick="deleteScale(' + i + ')" ' + (edit ? "" : "disabled") + '>✕</button></td>' +
     '</tr>';
   });
+
   if(!html){
-    html='<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma escala cadastrada neste mês.</td></tr>';
+    html = '<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma escala neste mês.</td></tr>';
   }
-  document.getElementById("scaleTable").innerHTML=html;
+  document.getElementById("scaleTable").innerHTML = html;
 }
 
 function addScaleDay(){
-  if(!podeEditar("escala")) return alert("Você não tem permissão.");
-  const day   = prompt("Dia da semana (ex.: Domingo, Quinta):","");
-  if(day===null) return;
-  const date  = prompt("Data (ex.: 05/09/2026):","");
-  if(date===null) return;
+  if(!podeEditarEscala()) return alert("Você não tem permissão.");
+  const day = prompt("Dia da semana (ex: Domingo, Quinta):","");
+  if(day === null) return;
+  const date = prompt("Data (ex: 05/09/2026):","");
+  if(date === null) return;
   const event = prompt("Nome do culto/evento:","");
-  if(event===null) return;
-  scale().push({date:date.trim(), event:event.trim()||"Culto / evento", day:day.trim(), type:"regular", story:"", photo:"", data:"", sound:"", status:"A Fazer"});
+  if(event === null) return;
+  scale().push({
+    date:date.trim(), event:event.trim()||"Culto / evento", day:day.trim(),
+    type:"regular", story:"", photo:"", data:"", sound:"", status:"A Fazer"
+  });
+  // Gera produção automática
+  gerarProducaoAuto(date.trim(), event.trim());
   saveLocal(); renderAll();
 }
 
 function addSpecialEvent(){
-  if(!podeEditar("escala")) return alert("Você não tem permissão.");
-  const day   = prompt("Dia da semana (ex.: Sábado):","");
-  if(day===null) return;
-  const date  = prompt("Data (ex.: 19/09/2026):","");
-  if(date===null) return;
+  if(!podeEditarEscala()) return alert("Você não tem permissão.");
+  const day = prompt("Dia da semana (ex: Sábado):","");
+  if(day === null) return;
+  const date = prompt("Data (ex: 19/09/2026):","");
+  if(date === null) return;
   const event = prompt("Nome do evento especial:","");
-  if(event===null) return;
-  scale().push({date:date.trim(), event:event.trim()||"Evento especial", day:day.trim(), type:"special", story:"", photo:"", data:"", sound:"", status:"A Fazer"});
+  if(event === null) return;
+  scale().push({
+    date:date.trim(), event:event.trim()||"Evento especial", day:day.trim(),
+    type:"special", story:"", photo:"", data:"", sound:"", status:"A Fazer"
+  });
+  gerarProducaoAuto(date.trim(), event.trim());
   saveLocal(); renderAll();
 }
 
 function deleteScale(i){
-  if(!podeEditar("escala")) return alert("Você não tem permissão.");
-  const item=scale()[i];
+  if(!podeEditarEscala()) return alert("Você não tem permissão.");
+  const item = scale()[i];
   if(!item) return;
-  if(!confirm("⚠️ Excluir esta data?\n\n" + item.date + " — " + item.event)) return;
+  if(!confirm("⚠️ Excluir esta data?\n\n" + item.date + " — " + item.event + "\n\nA produção vinculada também será removida.")) return;
   scale().splice(i,1);
+  // Remove produção vinculada
+  const chave = item.date + "|" + item.event;
+  const prodMes = production();
+  for(let j = prodMes.length - 1; j >= 0; j--){
+    if(prodMes[j].cultoId === chave || (prodMes[j].date === item.date && prodMes[j].event === item.event)){
+      prodMes.splice(j,1);
+    }
+  }
   saveLocal(); renderAll();
 }
 
-function bestVolunteer(fn,day,already){
-  const candidates=DB.volunteers.filter(v=>volunteerCan(v,fn,day));
+function gerarProducaoAuto(date, event){
+  if(!date || !event) return;
+  const chave = date + "|" + event;
+  const prodMes = production();
+  // Verifica se já existe
+  if(prodMes.some(p => p.cultoId === chave)) return;
+  PRODUCOES_PADRAO.forEach(prod=>{
+    prodMes.push({
+      id: uid(),
+      cultoId: chave,
+      date: date,
+      event: event,
+      tarefa: prod,
+      responsavel: "",
+      status: "A Fazer"
+    });
+  });
+}
+
+/* ==========================================================
+   ESCALA AUTOMÁTICA
+========================================================== */
+function bestVolunteer(fn, day, already){
+  const candidates = DB.volunteers.filter(v => {
+    const funcs = (v.functions||"").toLowerCase();
+    const days = (v.availability||"").toLowerCase();
+    return funcs.includes(fn.toLowerCase()) && days.includes(day.toLowerCase());
+  });
   if(!candidates.length) return "";
   candidates.sort((a,b)=>{
-    const pa=countParticipation(a.name,"all").total;
-    const pb=countParticipation(b.name,"all").total;
-    const ma=countParticipation(a.name,currentMonth).total;
-    const mb=countParticipation(b.name,currentMonth).total;
-    const aa=already.includes(a.name)?1:0;
-    const ab=already.includes(b.name)?1:0;
-    return (aa*100+ma*5+pa)-(ab*100+mb*5+pb);
+    const pa = countParticipation(a.name,"all").total;
+    const pb = countParticipation(b.name,"all").total;
+    const ma = countParticipation(a.name,currentMonth).total;
+    const mb = countParticipation(b.name,currentMonth).total;
+    const aa = already.includes(a.name) ? 1 : 0;
+    const ab = already.includes(b.name) ? 1 : 0;
+    return (aa*100 + ma*5 + pa) - (ab*100 + mb*5 + pb);
   });
   return candidates[0].name;
 }
 
 function autoScale(){
-  if(!podeEditar("escala")) return alert("Você não tem permissão.");
-  if(!DB.volunteers.length) return alert("Cadastre voluntários primeiro na aba Voluntários.");
-  let html='<div class="notice info"><b>Critério:</b> função compatível, disponível no dia e menor participação.</div>';
+  if(!podeEditarEscala()) return alert("Você não tem permissão.");
+  if(!DB.volunteers.length) return alert("Cadastre voluntários primeiro.");
+  let html = '<div class="notice info"><b>Critério:</b> função compatível, disponível no dia e menor participação.</div>';
   html += '<div class="table-wrap"><table><thead><tr><th>DATA / EVENTO</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th></tr></thead><tbody>';
-  window._suggested=[];
+  window._suggested = [];
   scale().forEach(r=>{
-    const a=[];
-    const s=bestVolunteer("Story",r.day,a)||"Definir"; if(s!=="Definir") a.push(s);
-    const p=bestVolunteer("Fotografia",r.day,a)||"Definir"; if(p!=="Definir") a.push(p);
-    const d=bestVolunteer("Datashow",r.day,a)||"Definir"; if(d!=="Definir") a.push(d);
-    const so=bestVolunteer("Som",r.day,a)||"Definir";
-    window._suggested.push({story:s==="Definir"?"":s, photo:p==="Definir"?"":p, data:d==="Definir"?"":d, sound:so==="Definir"?"":so});
+    const a = [];
+    const s = bestVolunteer("Story", r.day, a) || "Definir"; if(s !== "Definir") a.push(s);
+    const p = bestVolunteer("Fotografia", r.day, a) || "Definir"; if(p !== "Definir") a.push(p);
+    const d = bestVolunteer("Datashow", r.day, a) || "Definir"; if(d !== "Definir") a.push(d);
+    const so = bestVolunteer("Som", r.day, a) || "Definir";
+    window._suggested.push({
+      story: s === "Definir" ? "" : s,
+      photo: p === "Definir" ? "" : p,
+      data: d === "Definir" ? "" : d,
+      sound: so === "Definir" ? "" : so
+    });
     html += '<tr><td>' + esc(r.date) + ' — ' + esc(r.day) + ' — ' + esc(r.event) + '</td><td>' + esc(s) + '</td><td>' + esc(p) + '</td><td>' + esc(d) + '</td><td>' + esc(so) + '</td></tr>';
   });
   html += '</tbody></table></div><div style="padding:20px"><button class="green" onclick="applyAutoScale()">✅ Aplicar sugestões</button></div>';
-  document.getElementById("suggestions").innerHTML=html;
+  document.getElementById("suggestions").innerHTML = html;
 }
 
 function applyAutoScale(){
-  if(!podeEditar("escala")) return alert("Você não tem permissão.");
-  if(!window._suggested || window._suggested.length!==scale().length) return;
+  if(!podeEditarEscala()) return alert("Você não tem permissão.");
+  if(!window._suggested || window._suggested.length !== scale().length) return;
   scale().forEach((r,i)=>{
-    if(!r.story) r.story=window._suggested[i].story;
-    if(!r.photo) r.photo=window._suggested[i].photo;
-    if(!r.data)  r.data =window._suggested[i].data;
-    if(!r.sound) r.sound=window._suggested[i].sound;
+    if(!r.story) r.story = window._suggested[i].story;
+    if(!r.photo) r.photo = window._suggested[i].photo;
+    if(!r.data)  r.data  = window._suggested[i].data;
+    if(!r.sound) r.sound = window._suggested[i].sound;
   });
   saveLocal(); renderAll();
   alert("✅ Sugestões aplicadas somente onde os campos estavam vazios.");
 }
 
+/* ==========================================================
+   PRODUÇÃO / FLUXO
+========================================================== */
 function renderProduction(){
-  document.getElementById("prodMonth").textContent=monthName();
+  document.getElementById("prodMonth").textContent = monthName();
   production().sort((a,b)=>{
-    const da=(a.date||"").split("/").reverse().join("-");
-    const db=(b.date||"").split("/").reverse().join("-");
-    return new Date(da)-new Date(db);
+    const da = (a.date||"").split("/").reverse().join("-");
+    const db = (b.date||"").split("/").reverse().join("-");
+    return new Date(da) - new Date(db);
   });
-  const filter=document.getElementById("prodFilter").value;
-  let html="";
+  const filter = document.getElementById("prodFilter").value;
+  let html = "";
+
   production().forEach((p,i)=>{
-    if(filter!=="all" && p.status!==filter) return;
+    if(filter !== "all" && p.status !== filter) return;
     html += '<tr>' +
-      '<td><input value="' + esc(p.date) + '" onchange="production()[' + i + '].date=this.value;saveLocal();renderProduction();"></td>' +
-      '<td><input value="' + esc(p.event) + '" onchange="production()[' + i + '].event=this.value;saveLocal();"></td>' +
-      '<td><input value="' + esc(p.task) + '" onchange="production()[' + i + '].task=this.value;saveLocal();"></td>' +
-      '<td><input value="' + esc(p.responsible) + '" onchange="production()[' + i + '].responsible=this.value;saveLocal();"></td>' +
-      '<td><input value="' + esc(p.deadline) + '" onchange="production()[' + i + '].deadline=this.value;saveLocal();"></td>' +
-      '<td><select onchange="production()[' + i + '].status=this.value;saveLocal();renderProduction();">' +
-        ["A Fazer","Em andamento","Aprovação","Concluído","Cancelado"].map(x=>'<option ' + (x===p.status?"selected":"") + '>' + x + '</option>').join("") +
+      '<td>' + esc(p.date) + '</td>' +
+      '<td>' + esc(p.event) + '</td>' +
+      '<td><b>' + esc(p.tarefa) + '</b></td>' +
+      '<td><input value="' + esc(p.responsavel) + '" placeholder="Atribuir..." onchange="production()[' + i + '].responsavel=this.value;saveLocal();" ' + (podeEditar("fluxo") ? "" : "disabled") + '></td>' +
+      '<td><select onchange="production()[' + i + '].status=this.value;saveLocal();renderProduction();" ' + (podeEditar("fluxo") ? "" : "disabled") + '>' +
+        STATUS_FLUXO.map(x=>'<option ' + (x === p.status ? "selected" : "") + '>' + x + '</option>').join("") +
       '</select></td>' +
-      '<td><button class="danger" onclick="deleteProduction(' + i + ')">✕</button></td>' +
+      '<td class="col-acao"><button class="danger btn-del" onclick="deleteProduction(' + i + ')" ' + (podeEditar("fluxo") ? "" : "disabled") + '>✕</button></td>' +
     '</tr>';
   });
-  document.getElementById("productionTable").innerHTML=html||'<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma produção cadastrada.</td></tr>';
-}
-function addProduction(){
-  if(!podeEditar("producao")) return alert("Você não tem permissão.");
-  production().push({date:"",event:"",task:"",responsible:"",deadline:"",status:"A Fazer"});
-  saveLocal(); renderProduction();
-}
-function deleteProduction(i){
-  if(!podeEditar("producao")) return alert("Você não tem permissão.");
-  if(confirm("Excluir produção?")){ production().splice(i,1); saveLocal(); renderAll(); }
+
+  if(!html){
+    html = '<tr><td colspan="6" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma produção vinculada ainda. Cadastre cultos na aba Escala para gerar automaticamente.</td></tr>';
+  }
+  document.getElementById("productionTable").innerHTML = html;
 }
 
+function deleteProduction(i){
+  if(!podeEditar("fluxo")) return alert("Você não tem permissão.");
+  if(confirm("Excluir esta linha de produção?")){ production().splice(i,1); saveLocal(); renderAll(); }
+}
+
+/* ==========================================================
+   DEVOCIONAIS / PROGRAMAÇÃO DE GRAVAÇÃO
+========================================================== */
 function renderRecordings(){
-  document.getElementById("recordMonth").textContent=monthName();
-  const filter=document.getElementById("recordFilter").value;
-  let html="";
+  document.getElementById("recordMonth").textContent = monthName();
+  const filter = document.getElementById("recordFilter").value;
+  const edit = podeEditar("fluxo");
+  let html = "";
+
   records().forEach((r,i)=>{
-    if(filter!=="all" && r.status!==filter) return;
+    if(filter !== "all" && r.status !== filter) return;
     html += '<tr>' +
-      '<td><input value="' + esc(r.date) + '" onchange="records()[' + i + '].date=this.value;saveLocal()"></td>' +
-      '<td><input value="' + esc(r.content) + '" onchange="records()[' + i + '].content=this.value;saveLocal()"></td>' +
-      '<td><input value="' + esc(r.speaker) + '" onchange="records()[' + i + '].speaker=this.value;saveLocal()"></td>' +
-      '<td><input value="' + esc(r.responsible) + '" onchange="records()[' + i + '].responsible=this.value;saveLocal()"></td>' +
-      '<td><input value="' + esc(r.edit) + '" onchange="records()[' + i + '].edit=this.value;saveLocal()"></td>' +
-      '<td><input value="' + esc(r.publish) + '" onchange="records()[' + i + '].publish=this.value;saveLocal()"></td>' +
-      '<td><select onchange="records()[' + i + '].status=this.value;saveLocal();renderRecordings()">' +
-        ["A Fazer","Agendado","Gravado","Em edição","Aprovado","Publicado"].map(x=>'<option ' + (x===r.status?"selected":"") + '>' + x + '</option>').join("") +
+      '<td><input value="' + esc(r.date) + '" onchange="records()[' + i + '].date=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><input value="' + esc(r.content) + '" onchange="records()[' + i + '].content=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><input value="' + esc(r.speaker) + '" onchange="records()[' + i + '].speaker=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><input value="' + esc(r.responsible) + '" placeholder="Atribuir..." onchange="records()[' + i + '].responsible=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><input value="' + esc(r.edit) + '" onchange="records()[' + i + '].edit=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><input value="' + esc(r.publish) + '" onchange="records()[' + i + '].publish=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><select onchange="records()[' + i + '].status=this.value;saveLocal();renderRecordings()" ' + (edit ? "" : "disabled") + '>' +
+        STATUS_FLUXO.map(x=>'<option ' + (x === r.status ? "selected" : "") + '>' + x + '</option>').join("") +
       '</select></td>' +
-      '<td><button class="danger" onclick="deleteRecording(' + i + ')">✕</button></td>' +
+      '<td class="col-acao"><button class="danger btn-del" onclick="deleteRecording(' + i + ')" ' + (edit ? "" : "disabled") + '>✕</button></td>' +
     '</tr>';
   });
-  document.getElementById("recordTable").innerHTML=html||'<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma gravação cadastrada.</td></tr>';
+
+  if(!html){
+    html = '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum devocional cadastrado neste mês.</td></tr>';
+  }
+  document.getElementById("recordTable").innerHTML = html;
 }
+
 function addRecording(){
-  if(!podeEditar("gravacoes")) return alert("Você não tem permissão.");
-  records().push({date:"",content:"Devocional / chamada",speaker:"",responsible:"",edit:"",publish:"",status:"A Fazer"});
+  if(!podeEditar("fluxo")) return alert("Você não tem permissão.");
+  const hoje = new Date();
+  const data = hoje.getFullYear() + "-" + String(hoje.getMonth()+1).padStart(2,"0") + "-" + String(hoje.getDate()).padStart(2,"0");
+  records().push({
+    id: uid(),
+    date: formatDate(data),
+    content: "Devocional",
+    speaker: "",
+    responsible: "",
+    edit: "",
+    publish: "",
+    status: "A Fazer"
+  });
   saveLocal(); renderRecordings();
 }
-function deleteRecording(i){
-  if(!podeEditar("gravacoes")) return alert("Você não tem permissão.");
-  if(confirm("Excluir gravação?")){ records().splice(i,1); saveLocal(); renderAll(); }
+
+function criarDevocionaisMes(){
+  if(!podeEditar("fluxo")) return alert("Você não tem permissão.");
+  if(!confirm("📹 Criar automaticamente 4 devocionais (uma por semana) em " + monthName() + "?\n\nSerão sugeridas as quintas-feiras do mês.")) return;
+
+  const ano = 2026;
+  const mes = parseInt(currentMonth);
+  const quintas = [];
+
+  // Encontra todas as quintas-feiras do mês
+  const d = new Date(ano, mes-1, 1);
+  while(d.getMonth() === mes - 1){
+    if(d.getDay() === 4){ // quinta
+      quintas.push(d.getDate());
+    }
+    d.setDate(d.getDate() + 1);
+  }
+
+  // Pega até 4 quintas
+  const semanas = quintas.slice(0, 4);
+
+  semanas.forEach((dia, idx)=>{
+    const dataStr = String(dia).padStart(2,"0") + "/" + String(mes).padStart(2,"0") + "/" + ano;
+    records().push({
+      id: uid(),
+      date: dataStr,
+      content: "Devocional — Semana " + (idx+1),
+      speaker: "",
+      responsible: "",
+      edit: "",
+      publish: "",
+      status: "A Fazer"
+    });
+  });
+
+  saveLocal(); renderRecordings();
+  alert("✅ Criados " + semanas.length + " devocionais em " + monthName() + ". Edite as datas se precisar.");
 }
 
+function deleteRecording(i){
+  if(!podeEditar("fluxo")) return alert("Você não tem permissão.");
+  if(confirm("Excluir este devocional?")){ records().splice(i,1); saveLocal(); renderAll(); }
+}
+
+/* ==========================================================
+   VOLUNTÁRIOS
+========================================================== */
 function newVolunteer(){
-  if(!podeEditar("voluntarios")) return alert("Você não tem permissão.");
-  editingVolunteer=-1;
-  ["vName","vEmail","vPhone","vBirth","vFunctions","vAvailability","vNotes"].forEach(id=>document.getElementById(id).value="");
+  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
+  editingVolunteer = -1;
+  ["vName","vUser","vEmail","vPhone","vBirth","vFunctions","vAvailability","vNotes"].forEach(id=>document.getElementById(id).value = "");
   document.getElementById("volModal").classList.add("show");
 }
+
 function editVolunteer(i){
-  if(!podeEditar("voluntarios")) return alert("Você não tem permissão.");
-  editingVolunteer=i;
-  const v=DB.volunteers[i];
-  document.getElementById("vName").value=v.name||"";
-  document.getElementById("vEmail").value=v.email||"";
-  document.getElementById("vPhone").value=v.phone||"";
-  document.getElementById("vBirth").value=v.birth||"";
-  document.getElementById("vFunctions").value=v.functions||"";
-  document.getElementById("vAvailability").value=v.availability||"";
-  document.getElementById("vNotes").value=v.notes||"";
+  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
+  editingVolunteer = i;
+  const v = DB.volunteers[i];
+  document.getElementById("vName").value = v.name || "";
+  document.getElementById("vUser").value = v.user || "";
+  document.getElementById("vEmail").value = v.email || "";
+  document.getElementById("vPhone").value = v.phone || "";
+  document.getElementById("vBirth").value = v.birth || "";
+  document.getElementById("vFunctions").value = v.functions || "";
+  document.getElementById("vAvailability").value = v.availability || "";
+  document.getElementById("vNotes").value = v.notes || "";
   document.getElementById("volModal").classList.add("show");
 }
+
 function saveVolunteer(){
-  if(!podeEditar("voluntarios")) return;
-  const name=document.getElementById("vName").value.trim();
+  const name = document.getElementById("vName").value.trim();
+  const user = document.getElementById("vUser").value.trim().toLowerCase();
   if(!name){ alert("Informe o nome."); return; }
-  const v={
-    name:name,
-    email:document.getElementById("vEmail").value.trim(),
-    phone:document.getElementById("vPhone").value.trim(),
-    birth:document.getElementById("vBirth").value,
-    functions:document.getElementById("vFunctions").value.trim(),
-    availability:document.getElementById("vAvailability").value.trim(),
-    notes:document.getElementById("vNotes").value.trim()
+  if(!user){ alert("Informe o usuário de login."); return; }
+
+  // Verifica se usuário já existe
+  const duplicado = DB.volunteers.some((v, idx)=> v.user === user && idx !== editingVolunteer);
+  if(duplicado){ alert("⚠️ Este usuário já está em uso. Escolha outro."); return; }
+
+  const v = {
+    name: name,
+    user: user,
+    email: document.getElementById("vEmail").value.trim(),
+    phone: document.getElementById("vPhone").value.trim(),
+    birth: document.getElementById("vBirth").value,
+    functions: document.getElementById("vFunctions").value.trim(),
+    availability: document.getElementById("vAvailability").value.trim(),
+    notes: document.getElementById("vNotes").value.trim()
   };
-  if(editingVolunteer<0) DB.volunteers.push(v);
-  else DB.volunteers[editingVolunteer]=v;
-  closeModal("volModal"); saveLocal(); renderAll();
+
+  if(editingVolunteer < 0){
+    DB.volunteers.push(v);
+    DB.senhas[user] = user + "123"; // senha padrão
+  } else {
+    const antigoUser = DB.volunteers[editingVolunteer].user;
+    DB.volunteers[editingVolunteer] = v;
+    if(antigoUser !== user){
+      DB.senhas[user] = DB.senhas[antigoUser] || user + "123";
+      delete DB.senhas[antigoUser];
+    }
+  }
+
+  closeModal("volModal");
+  saveLocal(); renderAll();
 }
+
 function deleteVolunteer(i){
-  if(!podeEditar("voluntarios")) return alert("Você não tem permissão.");
-  if(confirm("Excluir cadastro? O histórico nas escalas permanece.")){ DB.volunteers.splice(i,1); saveLocal(); renderAll(); }
+  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
+  const v = DB.volunteers[i];
+  if(!v) return;
+  if(!confirm("Excluir cadastro de " + v.name + "?\n\nO histórico nas escalas permanece, mas o acesso será removido.")) return;
+  if(v.user) delete DB.senhas[v.user];
+  DB.volunteers.splice(i,1);
+  saveLocal(); renderAll();
 }
+
 function renderVolunteers(){
-  const q=(document.getElementById("volSearch").value||"").toLowerCase();
-  const af=(document.getElementById("availabilityFilter").value||"all").toLowerCase();
-  let html="";
+  const q = (document.getElementById("volSearch").value||"").toLowerCase();
+  const af = (document.getElementById("availabilityFilter").value||"all").toLowerCase();
+  const podeEditarVol = (perfilAtual === "admin" || perfilAtual === "coordenador");
+  let html = "";
+
   DB.volunteers.forEach((v,i)=>{
-    const text=(v.name+" "+v.email+" "+v.functions).toLowerCase();
+    const text = (v.name + " " + v.email + " " + v.functions).toLowerCase();
     if(q && !text.includes(q)) return;
-    if(af!=="all" && !(v.availability||"").toLowerCase().includes(af)) return;
-    const total=countParticipation(v.name,"all").total;
+    if(af !== "all" && !(v.availability||"").toLowerCase().includes(af)) return;
+    const total = countParticipation(v.name, "all").total;
     html += '<tr>' +
       '<td><b>' + esc(v.name) + '</b></td>' +
+      '<td>' + (esc(v.user)||"—") + '</td>' +
       '<td>' + (esc(v.email)||"—") + '</td>' +
       '<td>' + (esc(v.phone)||"—") + '</td>' +
-      '<td>' + (formatDate(v.birth)||"—") + '</td>' +
       '<td>' + (esc(v.functions)||"—") + '</td>' +
       '<td>' + (esc(v.availability)||"—") + '</td>' +
       '<td>' + total + '</td>' +
-      '<td><button onclick="editVolunteer(' + i + ')">Editar</button> <button class="danger" onclick="deleteVolunteer(' + i + ')">✕</button></td>' +
+      '<td class="col-acao">' +
+        (podeEditarVol ? '<button class="dark btn-sm" onclick="editVolunteer(' + i + ')">Editar</button> <button class="danger btn-del" onclick="deleteVolunteer(' + i + ')">✕</button>' : "—") +
+      '</td>' +
     '</tr>';
   });
-  document.getElementById("volTable").innerHTML=html||'<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum voluntário cadastrado ainda.</td></tr>';
+
+  document.getElementById("volTable").innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum voluntário cadastrado.</td></tr>';
   renderBirthdaysByMonth();
 }
 
+/* ==========================================================
+   ANIVERSÁRIOS
+========================================================== */
 function mondayOfWeek(d){
-  const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());
-  const day=x.getDay();
-  const diff=day===0?-6:1-day;
-  x.setDate(x.getDate()+diff);
+  const x = new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  const day = x.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  x.setDate(x.getDate() + diff);
   x.setHours(0,0,0,0);
   return x;
 }
-function birthdayDateForYear(birth,year){
-  const p=birth.split("-");
-  return new Date(year,Number(p[1])-1,Number(p[2]));
+function birthdayDateForYear(birth, year){
+  const p = birth.split("-");
+  return new Date(year, Number(p[1])-1, Number(p[2]));
 }
 function birthdayWindow(){
-  const today=new Date();
-  const start=mondayOfWeek(today);
-  const end=new Date(start);
-  end.setDate(start.getDate()+7);
+  const today = new Date();
+  const start = mondayOfWeek(today);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 7);
   end.setHours(23,59,59,999);
-  return {start:start,end:end};
+  return {start:start, end:end};
 }
 function birthdayInWindow(birth){
   if(!birth) return false;
-  const today=new Date();
-  const w=birthdayWindow();
-  const y=today.getFullYear();
-  let b=birthdayDateForYear(birth,y);
-  if(b<w.start) b=birthdayDateForYear(birth,y+1);
-  return b>=w.start && b<=w.end;
+  const today = new Date();
+  const w = birthdayWindow();
+  const y = today.getFullYear();
+  let b = birthdayDateForYear(birth, y);
+  if(b < w.start) b = birthdayDateForYear(birth, y+1);
+  return b >= w.start && b <= w.end;
 }
 function birthdayText(birth){
-  const p=birth.split("-");
-  return p[2]+"/"+p[1];
+  const p = birth.split("-");
+  return p[2] + "/" + p[1];
 }
 function renderBirthdayNotice(){
-  const people=DB.volunteers.filter(v=>birthdayInWindow(v.birth));
-  const box=document.getElementById("birthdayNotice");
-  if(!people.length){ box.innerHTML=""; return; }
-  const w=birthdayWindow();
-  box.innerHTML='<div class="notice birthday">' +
+  const people = DB.volunteers.filter(v => birthdayInWindow(v.birth));
+  const box = document.getElementById("birthdayNotice");
+  if(!people.length){ box.innerHTML = ""; return; }
+  const w = birthdayWindow();
+  box.innerHTML = '<div class="notice birthday">' +
     '<b>🎂 Aniversários desta semana</b><br>' +
     '<small>' + w.start.toLocaleDateString("pt-BR") + ' até ' + w.end.toLocaleDateString("pt-BR") + '</small><br><br>' +
-    people.map(v=>'🎉 <b>' + esc(v.name) + '</b> — ' + birthdayText(v.birth)).join("<br>") +
+    people.map(v => '🎉 <b>' + esc(v.name) + '</b> — ' + birthdayText(v.birth)).join("<br>") +
   '</div>';
 }
 function renderBirthdaysByMonth(){
-  document.getElementById("birthdayMonth").textContent=monthName();
-  const people=DB.volunteers.filter(v=>v.birth && v.birth.substring(5,7)===currentMonth);
+  document.getElementById("birthdayMonth").textContent = monthName();
+  const people = DB.volunteers.filter(v => v.birth && v.birth.substring(5,7) === currentMonth);
   document.getElementById("birthdayMonthList").innerHTML = people.length
-    ? people.sort((a,b)=>a.birth.localeCompare(b.birth)).map(v=>'🎂 <b>' + esc(v.name) + '</b> — ' + birthdayText(v.birth)).join("<br><br>")
+    ? people.sort((a,b)=>a.birth.localeCompare(b.birth)).map(v => '🎂 <b>' + esc(v.name) + '</b> — ' + birthdayText(v.birth)).join("<br><br>")
     : "Nenhum aniversário cadastrado neste mês.";
 }
 
+/* ==========================================================
+   TREINAMENTOS
+========================================================== */
 function newTraining(){
-  if(!podeEditar("treinamentos")) return alert("Você não tem permissão.");
-  ["tName","tArea","tMentor","tAvailability","tLast","tNext"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("tStage").value="Interesse";
+  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
+  ["tName","tArea","tMentor","tAvailability","tLast","tNext"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("tStage").value = "Interesse";
   document.getElementById("trainModal").classList.add("show");
 }
 function saveTraining(){
-  if(!podeEditar("treinamentos")) return;
-  const name=document.getElementById("tName").value.trim();
+  const name = document.getElementById("tName").value.trim();
   if(!name){ alert("Informe o nome."); return; }
   DB.trainings.push({
-    name:name, area:document.getElementById("tArea").value,
-    mentor:document.getElementById("tMentor").value,
-    stage:document.getElementById("tStage").value,
-    availability:document.getElementById("tAvailability").value,
-    last:document.getElementById("tLast").value,
-    next:document.getElementById("tNext").value
+    name: name,
+    area: document.getElementById("tArea").value,
+    mentor: document.getElementById("tMentor").value,
+    stage: document.getElementById("tStage").value,
+    availability: document.getElementById("tAvailability").value,
+    last: document.getElementById("tLast").value,
+    next: document.getElementById("tNext").value
   });
   closeModal("trainModal"); saveLocal(); renderAll();
 }
 function renderTrainings(){
-  let html="";
+  const podeEdit = (perfilAtual === "admin" || perfilAtual === "coordenador");
+  let html = "";
   DB.trainings.forEach((t,i)=>{
     html += '<tr>' +
       '<td>' + esc(t.name) + '</td><td>' + esc(t.area) + '</td><td>' + esc(t.mentor) + '</td>' +
       '<td>' + esc(t.stage) + '</td><td>' + esc(t.availability) + '</td>' +
       '<td>' + (formatDate(t.last)||"—") + '</td><td>' + esc(t.next) + '</td>' +
-      '<td><button class="danger" onclick="deleteTraining(' + i + ')">✕</button></td>' +
+      '<td class="col-acao">' + (podeEdit ? '<button class="danger btn-del" onclick="deleteTraining(' + i + ')">✕</button>' : "—") + '</td>' +
     '</tr>';
   });
-  document.getElementById("trainingTable").innerHTML=html||'<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum treinamento cadastrado.</td></tr>';
+  document.getElementById("trainingTable").innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum treinamento cadastrado.</td></tr>';
 }
 function deleteTraining(i){
-  if(!podeEditar("treinamentos")) return alert("Você não tem permissão.");
+  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
   if(confirm("Excluir este talento?")){ DB.trainings.splice(i,1); saveLocal(); renderAll(); }
 }
 
+/* ==========================================================
+   HISTÓRICO
+========================================================== */
 function renderHistoryFilters(){
-  const sel=document.getElementById("historyMonth");
-  if(sel.options.length<=1){
+  const sel = document.getElementById("historyMonth");
+  if(sel.options.length <= 1){
     Object.keys(MONTHS).sort().forEach(m=>{
-      const o=document.createElement("option"); o.value=m; o.textContent=MONTHS[m]; sel.appendChild(o);
+      const o = document.createElement("option"); o.value = m; o.textContent = MONTHS[m]; sel.appendChild(o);
     });
   }
 }
 function renderHistory(){
   renderHistoryFilters();
-  const mf=document.getElementById("historyMonth").value;
-  const ff=document.getElementById("historyFunction").value;
-  let html="";
+  const mf = document.getElementById("historyMonth").value;
+  const ff = document.getElementById("historyFunction").value;
+  let html = "";
   DB.volunteers.forEach(v=>{
-    const p=countParticipation(v.name,mf);
-    if(ff!=="all" && !p.functions[ff]) return;
-    const level=workloadLevel(p.total);
+    const p = countParticipation(v.name, mf);
+    if(ff !== "all" && !p.functions[ff]) return;
+    const level = workloadLevel(p.total);
     html += '<tr>' +
       '<td>' + esc(v.name) + '</td><td>' + p.total + '</td>' +
       '<td>' + p.functions.Story + '</td><td>' + p.functions.Fotografia + '</td>' +
@@ -1696,14 +1903,12 @@ function renderHistory(){
       '<td>' + levelLabel(level) + '</td>' +
     '</tr>';
   });
-  document.getElementById("historyTable").innerHTML=html||'<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum registro.</td></tr>';
+  document.getElementById("historyTable").innerHTML = html || '<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum registro.</td></tr>';
 }
 
 function renderLoad(){
   const box = document.getElementById("loadTable");
   if(!box) return;
-  const mn = document.getElementById("loadMonthName");
-  if(mn) mn.textContent = monthName();
   const filter = document.getElementById("loadFilter").value;
   let html = "";
   DB.volunteers.forEach(v=>{
@@ -1712,11 +1917,11 @@ function renderLoad(){
     const level = workloadLevel(month.total);
     if(filter !== "all" && level !== filter) return;
     const pct = Math.min(100, month.total * 12.5);
-    let advice = level === "high"
-      ? "⚠️ Evitar nova escala neste mês; priorizar o rodízio."
+    const advice = level === "high"
+      ? "⚠️ Evitar nova escala neste mês."
       : level === "medium"
-      ? "Equilibrar com voluntários de menor carga neste mês."
-      : "Boa opção para a próxima escala deste mês.";
+      ? "Equilibrar com voluntários de menor carga."
+      : "Boa opção para a próxima escala.";
     html += '<tr>' +
       '<td><b>' + esc(v.name) + '</b></td>' +
       '<td>' + (esc(v.functions) || "—") + '</td>' +
@@ -1727,25 +1932,59 @@ function renderLoad(){
       '<td>' + advice + '</td>' +
     '</tr>';
   });
-  box.innerHTML = html || '<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum voluntário cadastrado ainda. Cadastre na aba Voluntários.</td></tr>';
+  box.innerHTML = html || '<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum voluntário cadastrado.</td></tr>';
 }
 
-const STORAGE_KEY="mh_comunica_v1";
-function saveLocal(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(DB)); }catch(e){ console.warn(e); }
-}
-function loadLocal(){
-  try{
-    const saved=localStorage.getItem(STORAGE_KEY);
-    if(saved){
-      const data=JSON.parse(saved);
-      if(data && data.volunteers) Object.assign(DB, data);
-    }
-  }catch(e){ console.warn("Erro ao carregar:", e); }
+/* ==========================================================
+   PERFIL / SENHA
+========================================================== */
+function abrirPerfil(){
+  if(!usuarioAtual) return alert("Você não está logado.");
+  document.getElementById("perfilUser").value = usuarioAtual.user;
+  document.getElementById("perfilAtual").value = "";
+  document.getElementById("perfilNova").value = "";
+  document.getElementById("perfilNova2").value = "";
+  document.getElementById("perfilErro").textContent = "";
+  document.getElementById("perfilModal").classList.add("show");
 }
 
+function salvarNovaSenha(){
+  const atual = document.getElementById("perfilAtual").value;
+  const nova = document.getElementById("perfilNova").value;
+  const nova2 = document.getElementById("perfilNova2").value;
+  const err = document.getElementById("perfilErro");
+
+  if(!usuarioAtual) return;
+  if(atual !== DB.senhas[usuarioAtual.user]){
+    err.textContent = "❌ Senha atual incorreta."; return;
+  }
+  if(nova.length < 4){
+    err.textContent = "⚠️ A nova senha precisa ter ao menos 4 caracteres."; return;
+  }
+  if(nova !== nova2){
+    err.textContent = "❌ As senhas não coincidem."; return;
+  }
+  DB.senhas[usuarioAtual.user] = nova;
+  saveLocal();
+  closeModal("perfilModal");
+  alert("✅ Senha alterada com sucesso!");
+}
+
+/* ==========================================================
+   MODAIS
+========================================================== */
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 
+/* ==========================================================
+   LINKS EXTERNOS
+========================================================== */
+function abrirFinanceiro(){
+  window.open("financeiro/", "_blank");
+}
+
+/* ==========================================================
+   RENDER GERAL
+========================================================== */
 function renderAll(){
   renderMonths();
   renderDashboard();
@@ -1759,10 +1998,26 @@ function renderAll(){
   aplicarPermissoes();
 }
 
+/* ==========================================================
+   INICIALIZAÇÃO
+========================================================== */
 loadLocal();
-const savedUser=sessionStorage.getItem("mh_user");
-if(savedUser && USERS[savedUser]) usuarioAtual=savedUser;
-renderAll();
+seedDados();
+
+// Verifica se já estava logado
+const userLogado = sessionStorage.getItem("mh_logado_user");
+if(userLogado){
+  const vol = DB.volunteers.find(v => v.user === userLogado);
+  if(vol){
+    usuarioAtual = vol;
+    definirPerfil(vol);
+    abrirApp();
+  } else {
+    setTimeout(()=>document.getElementById("loginUser").focus(), 200);
+  }
+} else {
+  setTimeout(()=>document.getElementById("loginUser").focus(), 200);
+}
 </script>
 </body>
 </html>
