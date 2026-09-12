@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --bg-nivel-0:#071426;
@@ -56,6 +57,25 @@ body::after{
   pointer-events:none;z-index:0;opacity:.55;
 }
 main,header,nav,div,section,table{position:relative;z-index:1}
+
+/* STATUS DE CONEXÃO */
+.conn-status{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:20px;
+  font-size:11px;font-weight:700;letter-spacing:.5px;
+  text-transform:uppercase;
+  transition:all .3s;
+}
+.conn-status.online{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.35)}
+.conn-status.syncing{background:rgba(251,191,36,.15);color:#fcd34d;border:1px solid rgba(251,191,36,.35)}
+.conn-status.offline{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
+.conn-dot{
+  width:7px;height:7px;border-radius:50%;background:currentColor;
+  animation:pulse 2s infinite;
+}
+.conn-status.syncing .conn-dot{animation:spin .8s linear infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
 
 /* LOGIN */
 #loginScreen{
@@ -112,7 +132,7 @@ header{
   box-shadow:0 4px 32px rgba(0,0,0,.5);
   position:sticky;top:0;z-index:30;
 }
-.header-left{display:flex;align-items:center;gap:10px;min-width:0}
+.header-left{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
 .header-center{display:flex;flex-direction:column;align-items:center;gap:4px}
 .logo-wrap{display:flex;align-items:center;gap:16px;justify-content:center}
 .logo-svg{width:64px;height:64px;flex-shrink:0;filter:drop-shadow(0 4px 20px rgba(201,169,97,.22))}
@@ -122,7 +142,7 @@ header{
   font-size:28px;letter-spacing:5px;color:#fff;white-space:nowrap;
 }
 .titulo-grupo h1 span{color:var(--dourado);font-weight:900}
-.header-right{display:flex;justify-content:flex-end;gap:8px;align-items:center}
+.header-right{display:flex;justify-content:flex-end;gap:8px;align-items:center;flex-wrap:wrap}
 .user-badge{
   background:var(--dourado-10);color:var(--dourado-claro);
   border:1px solid var(--dourado-30);padding:6px 14px;border-radius:20px;
@@ -202,6 +222,27 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .months button:hover{color:var(--dourado-claro);border-color:var(--dourado-30);transform:none}
 .months button.active{background:var(--dourado);color:#1a1206;border-color:var(--dourado);font-weight:700}
 
+/* LOADING */
+.loading-overlay{
+  position:fixed;inset:0;z-index:150;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(7,20,38,.85);
+  backdrop-filter:blur(4px);
+}
+.loading-overlay.hidden{display:none}
+.loading-box{
+  text-align:center;color:var(--texto);
+}
+.loading-box .spinner{
+  width:50px;height:50px;
+  border:4px solid var(--borda-clara);
+  border-top-color:var(--dourado);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:0 auto 20px;
+}
+.loading-box p{font-size:14px;letter-spacing:1px;color:var(--texto-70)}
+
 /* LAYOUT */
 .container{max-width:1500px;margin:auto;padding:28px 20px 80px}
 .page{display:none;animation:fadeIn .35s ease}
@@ -244,7 +285,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 }
 .aviso-item .btn-excluir-aviso:hover{color:var(--vermelho);background:transparent;transform:none}
 
-/* LOG / ATUALIZAÇÕES */
+/* LOG */
 .log-box{
   background:linear-gradient(135deg,rgba(30,58,95,.4) 0%,rgba(10,30,61,.6) 100%);
   border:1px solid var(--borda-clara);
@@ -262,16 +303,13 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 }
 .log-lista{
   display:flex;flex-direction:column;gap:8px;
-  max-height:280px;overflow-y:auto;
-  padding-right:6px;
+  max-height:280px;overflow-y:auto;padding-right:6px;
 }
 .log-item{
   display:flex;align-items:flex-start;gap:10px;
-  padding:8px 12px;
-  background:rgba(30,58,95,.4);
+  padding:8px 12px;background:rgba(30,58,95,.4);
   border-left:2px solid var(--borda-clara);
-  border-radius:6px;
-  font-size:12px;line-height:1.5;
+  border-radius:6px;font-size:12px;line-height:1.5;
 }
 .log-item .log-hora{
   color:var(--texto-55);font-size:11px;
@@ -280,10 +318,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 }
 .log-item .log-texto{color:var(--texto-70);flex:1}
 .log-item .log-texto b{color:var(--dourado-claro);font-weight:700}
-.log-vazio{
-  text-align:center;padding:20px;
-  color:var(--texto-40);font-size:12px;font-style:italic;
-}
+.log-vazio{text-align:center;padding:20px;color:var(--texto-40);font-size:12px;font-style:italic}
 
 /* CARDS */
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:26px}
@@ -368,7 +403,6 @@ td{
 tr:hover td{background:var(--bg-nivel-3)}
 tr:last-child td{border-bottom:0}
 
-/* Coluna culto */
 td.cult{background:rgba(22,51,92,.55);padding:12px 16px}
 td.cult input{
   display:inline-block;width:auto;background:transparent;border:0;
@@ -386,7 +420,6 @@ td.cult input:nth-child(2){
 td.cult input:nth-child(2)::after{content:"·";color:var(--dourado-30);margin:0 8px;font-style:normal;font-weight:400;font-size:16px;vertical-align:-2px}
 td.cult input:nth-child(3){color:var(--texto);font-weight:700;font-size:13px}
 
-/* Colunas função */
 td.story,td.foto,td.data,td.som{
   padding:10px 12px;font-size:13px;
   vertical-align:middle;font-weight:500;position:relative;
@@ -422,7 +455,6 @@ td input:focus,td select:focus{
 }
 td input[readonly],td select:disabled{opacity:.85;cursor:default}
 
-/* Status */
 .status{
   display:inline-block;padding:5px 12px;border-radius:20px;
   font-size:10px;font-weight:800;text-transform:uppercase;
@@ -437,14 +469,12 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 .st-concluido{background:rgba(34,197,94,.15);color:#86efac;border-color:rgba(34,197,94,.3)}
 .st-andamento{background:rgba(59,130,246,.15);color:#93c5fd;border-color:rgba(59,130,246,.3)}
 
-/* Barra */
 .bar{height:6px;background:var(--bg-nivel-0);border-radius:20px;overflow:hidden}
 .bar>span{display:block;height:100%;border-radius:20px;transition:width .5s}
 .low{background:linear-gradient(90deg,#22c55e,#4ade80)}
 .medium{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
 .high{background:linear-gradient(90deg,#dc2626,#f87171)}
 
-/* FLUXO */
 .flow{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:24px}
 .flow div{
   background:rgba(30,58,95,.4);border:1px solid var(--borda-clara);
@@ -458,7 +488,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 }
 .flow small{display:block;font-weight:400;margin-top:8px;color:var(--texto-70);font-size:11px}
 
-/* Legenda */
 .legend{
   display:flex;gap:10px;flex-wrap:wrap;
   padding:14px 24px;font-size:12px;
@@ -512,34 +541,27 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   margin-top:24px;padding-top:20px;
   border-top:1px solid var(--borda);
 }
-/* Botão Fechar melhorado */
 .btn-fechar{
   background:linear-gradient(180deg,var(--bg-nivel-3) 0%,var(--bg-nivel-2) 100%);
-  color:var(--texto);
-  border:1px solid var(--borda-clara);
+  color:var(--texto);border:1px solid var(--borda-clara);
   padding:11px 22px;font-weight:700;
 }
 .btn-fechar:hover{background:var(--borda-clara);border-color:var(--dourado)}
 .hidden{display:none !important}
 
-/* Lista whatsapp */
-.lista-whats{
-  display:flex;flex-direction:column;gap:10px;margin-top:16px;
-}
+.lista-whats{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 .whats-item{
   display:flex;align-items:center;gap:12px;
-  padding:14px 16px;
-  background:rgba(30,58,95,.4);
-  border:1px solid var(--borda-clara);
-  border-radius:10px;transition:all .2s;
+  padding:14px 16px;background:rgba(30,58,95,.4);
+  border:1px solid var(--borda-clara);border-radius:10px;
+  transition:all .2s;
 }
 .whats-item:hover{background:rgba(30,58,95,.65);border-color:var(--dourado)}
 .whats-item .avatar{
   width:38px;height:38px;border-radius:50%;
   background:linear-gradient(135deg,var(--dourado),var(--dourado-escuro));
   color:#1a1206;font-weight:800;font-size:16px;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
 .whats-item .info{flex:1;min-width:0}
 .whats-item .info .nome{font-weight:700;font-size:14px;color:var(--texto)}
@@ -559,7 +581,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   transform:none;box-shadow:none;
 }
 
-/* RESPONSIVO */
 @media(max-width:1000px){
   .cards{grid-template-columns:repeat(2,1fr)}
   .flow{grid-template-columns:repeat(3,1fr)}
@@ -590,7 +611,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   .whats-item{flex-wrap:wrap}
   .whats-item .btn-whats-item{width:100%}
 }
-
 @media print{
   body{background:#fff;color:#000}
   body::before,body::after{display:none}
@@ -608,8 +628,16 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 </head>
 <body>
 
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <p id="loadingTexto">Conectando ao servidor...</p>
+  </div>
+</div>
+
 <!-- LOGIN -->
-<div id="loginScreen">
+<div id="loginScreen" class="hidden">
   <div class="login-card">
     <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M5 75 L28 30 L45 55 L58 22 L78 55 L95 35 L95 75 Z"
@@ -638,6 +666,10 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 <header id="appHeader" class="hidden">
   <div class="header-left">
     <button class="ghost btn-sm" onclick="abrirFinanceiro()">💰 Financeiro</button>
+    <span class="conn-status online" id="connStatus">
+      <span class="conn-dot"></span>
+      <span id="connTexto">Online</span>
+    </span>
   </div>
   <div class="header-center">
     <div class="logo-wrap">
@@ -680,7 +712,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 <!-- CONTEÚDO -->
 <main class="container hidden" id="appMain">
 
-  <!-- DASHBOARD -->
   <section id="dashboard" class="page active">
     <div class="avisos-topo" id="avisosTopo"></div>
     <div class="log-box hidden" id="logBox">
@@ -719,7 +750,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
     </div>
   </section>
 
-  <!-- ESCALA -->
   <section id="escala" class="page">
     <div class="box">
       <div class="box-title">
@@ -757,7 +787,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
     </div>
   </section>
 
-  <!-- PRODUÇÃO -->
   <section id="producao" class="page">
     <div class="box">
       <div class="box-title"><span class="titulo-esq">🔄 Fluxo de produção</span></div>
@@ -770,7 +799,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
         <div>6. ARQUIVO<small>Organização</small></div>
       </div>
     </div>
-
     <div class="box">
       <div class="box-title"><span class="titulo-esq">🎬 Produção vinculada ao culto — <span id="prodMonth">—</span></span></div>
       <div class="toolbar">
@@ -795,7 +823,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
         </table>
       </div>
     </div>
-
     <div class="box">
       <div class="box-title"><span class="titulo-esq">📹 Programação de gravação (devocionais) — <span id="recordMonth">—</span></span></div>
       <div class="toolbar">
@@ -822,7 +849,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
     </div>
   </section>
 
-  <!-- VOLUNTÁRIOS -->
   <section id="voluntarios" class="page">
     <div class="box">
       <div class="box-title"><span class="titulo-esq">👥 Cadastro de voluntários</span></div>
@@ -848,7 +874,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
     </div>
   </section>
 
-  <!-- TREINAMENTOS -->
   <section id="treinamentos" class="page">
     <div class="notice info">
       🌱 O treinamento deve acontecer com acompanhamento de alguém mais experiente antes da pessoa entrar sozinha na escala.
@@ -867,7 +892,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
     </div>
   </section>
 
-  <!-- HISTÓRICO -->
   <section id="historico" class="page">
     <div class="notice info">
       📈 O histórico é acumulativo e ajuda no rodízio para evitar que sempre as mesmas pessoas sejam escaladas.
@@ -888,7 +912,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
         </table>
       </div>
     </div>
-
     <div class="box">
       <div class="box-title"><span class="titulo-esq">⚠️ Painel de sobrecarga por voluntário</span></div>
       <div class="toolbar">
@@ -910,7 +933,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 
 </main>
 
-<!-- MODAL VOLUNTÁRIO -->
+<!-- MODAIS -->
 <div class="modal" id="volModal">
   <div class="modal-content">
     <h2>👤 Voluntário</h2>
@@ -934,7 +957,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   </div>
 </div>
 
-<!-- MODAL TREINAMENTO -->
 <div class="modal" id="trainModal">
   <div class="modal-content">
     <h2>🌱 Talento em treinamento</h2>
@@ -958,7 +980,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   </div>
 </div>
 
-<!-- MODAL PERFIL -->
 <div class="modal" id="perfilModal">
   <div class="modal-content" style="max-width:480px">
     <h2>👤 Meu perfil</h2>
@@ -979,7 +1000,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   </div>
 </div>
 
-<!-- MODAL AVISAR EQUIPE -->
 <div class="modal" id="avisarModal">
   <div class="modal-content" style="max-width:640px">
     <h2>📱 Avisar equipe do mês</h2>
@@ -997,6 +1017,15 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 "use strict";
 
 /* ==========================================================
+   CONFIGURAÇÃO SUPABASE
+========================================================== */
+const SUPABASE_URL = "https://pbdsvfrslngrjnqbgnmj.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiZHN2ZnJzbG5ncmpucWJnbm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyMjA0MTEsImV4cCI6MjEwNDc5NjQxMX0.n4Gn46vvo_U7Vm9tREy9BM5MgJl9CYI7wKGjY9ytpmQ";
+
+let supabase = null;
+let conectado = false;
+
+/* ==========================================================
    CONSTANTES
 ========================================================== */
 const MONTHS = {
@@ -1005,7 +1034,6 @@ const MONTHS = {
   "09":"Setembro","10":"Outubro","11":"Novembro","12":"Dezembro"
 };
 
-const CHAVE_STORAGE = "mh_comunica_v5";
 const STATUS_FLUXO = ["A Fazer","Agendado","Gravado","Editado","Publicado"];
 const PRODUCOES_PADRAO = ["Arte/Story", "Chamada"];
 
@@ -1015,7 +1043,7 @@ let usuarioAtual = null;
 let perfilAtual = "visitante";
 
 /* ==========================================================
-   BASE DE DADOS
+   BANCO LOCAL (cache em memória)
 ========================================================== */
 const DB = {
   volunteers: [],
@@ -1027,6 +1055,519 @@ const DB = {
   avisos: [],
   log: []
 };
+
+/* ==========================================================
+   CONEXÃO SUPABASE
+========================================================== */
+function setStatus(status, texto){
+  const el = document.getElementById("connStatus");
+  const txt = document.getElementById("connTexto");
+  if(!el || !txt) return;
+  el.className = "conn-status " + status;
+  txt.textContent = texto || (status === "online" ? "Online" : status === "syncing" ? "Sincronizando" : "Offline");
+}
+
+function initSupabase(){
+  try{
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    conectado = true;
+    setStatus("online", "Online");
+    console.log("✅ Supabase conectado");
+    return true;
+  }catch(e){
+    console.error("Erro ao conectar Supabase:", e);
+    conectado = false;
+    setStatus("offline", "Offline");
+    return false;
+  }
+}
+
+/* ==========================================================
+   CARREGAR DADOS DO SUPABASE
+========================================================== */
+async function carregarDoSupabase(){
+  setStatus("syncing", "Carregando...");
+  try{
+    // Voluntários
+    const { data: vols, error: e1 } = await supabase.from("volunteers").select("*").order("name");
+    if(e1) throw e1;
+
+    // Senhas
+    const { data: pass, error: e2 } = await supabase.from("passwords").select("*");
+    if(e2) throw e2;
+
+    // Escalas
+    const { data: sch, error: e3 } = await supabase.from("schedules").select("*").order("date");
+    if(e3) throw e3;
+
+    // Produção
+    const { data: prod, error: e4 } = await supabase.from("productions").select("*");
+    if(e4) throw e4;
+
+    // Gravações
+    const { data: rec, error: e5 } = await supabase.from("recordings").select("*");
+    if(e5) throw e5;
+
+    // Treinamentos
+    const { data: tr, error: e6 } = await supabase.from("trainings").select("*");
+    if(e6) throw e6;
+
+    // Avisos
+    const { data: not, error: e7 } = await supabase.from("notices").select("*").order("created_at", { ascending: false });
+    if(e7) throw e7;
+
+    // Log
+    const { data: log, error: e8 } = await supabase.from("activity_log").select("*").order("created_at", { ascending: false }).limit(30);
+    if(e8) throw e8;
+
+    // Se vazio, popula com seed
+    if(!vols || vols.length === 0){
+      console.log("📦 Banco vazio, populando com seed...");
+      await popularBanco();
+      // Recarrega
+      return carregarDoSupabase();
+    }
+
+    // Monta DB
+    DB.volunteers = (vols || []).map(v=>({
+      id: v.id,
+      name: v.name,
+      user: v.user_login,
+      email: v.email || "",
+      phone: v.phone || "",
+      birth: v.birth || "",
+      functions: v.functions || "",
+      availability: v.availability || "",
+      notes: v.notes || ""
+    }));
+
+    DB.senhas = {};
+    (pass || []).forEach(p=>{ DB.senhas[p.user_login] = p.password; });
+
+    DB.scale = {};
+    (sch || []).forEach(s=>{
+      if(!DB.scale[s.month_key]) DB.scale[s.month_key] = [];
+      DB.scale[s.month_key].push({
+        id: s.id,
+        date: s.date,
+        day: s.day || "",
+        event: s.event,
+        type: s.type || "regular",
+        story: s.story || "",
+        photo: s.photo || "",
+        data: s.datashow || "",
+        sound: s.sound || "",
+        status: s.status || "A Fazer"
+      });
+    });
+
+    DB.production = {};
+    (prod || []).forEach(p=>{
+      if(!DB.production[p.month_key]) DB.production[p.month_key] = [];
+      DB.production[p.month_key].push({
+        id: p.id,
+        cultoId: p.culto_id,
+        date: p.date,
+        event: p.event,
+        tarefa: p.tarefa,
+        responsavel: p.responsavel || "",
+        status: p.status || "A Fazer"
+      });
+    });
+
+    DB.recordings = {};
+    (rec || []).forEach(r=>{
+      if(!DB.recordings[r.month_key]) DB.recordings[r.month_key] = [];
+      DB.recordings[r.month_key].push({
+        id: r.id,
+        date: r.date,
+        content: r.content,
+        speaker: r.speaker || "",
+        responsible: r.responsible || "",
+        edit: r.edit_date || "",
+        publish: r.publish_date || "",
+        status: r.status || "A Fazer"
+      });
+    });
+
+    DB.trainings = (tr || []).map(t=>({
+      id: t.id,
+      name: t.name,
+      area: t.area || "",
+      mentor: t.mentor || "",
+      stage: t.stage || "",
+      availability: t.availability || "",
+      last: t.last_date || "",
+      next: t.next_step || ""
+    }));
+
+    DB.avisos = (not || []).map(n=>({
+      id: n.id,
+      titulo: n.title,
+      texto: n.text_content || "",
+      criadoPor: n.created_by || "",
+      criadoEm: n.created_at
+    }));
+
+    DB.log = (log || []).map(l=>({
+      id: l.id,
+      icone: l.icon,
+      texto: l.message,
+      autor: l.author,
+      data: l.created_at
+    }));
+
+    setStatus("online", "Online");
+    console.log("✅ Dados carregados do Supabase");
+    return true;
+
+  }catch(e){
+    console.error("Erro ao carregar:", e);
+    setStatus("offline", "Erro ao carregar");
+    alert("⚠️ Erro ao carregar dados do servidor.\n\n" + (e.message || e));
+    return false;
+  }
+}
+
+/* ==========================================================
+   POPULAR BANCO (primeira vez)
+========================================================== */
+async function popularBanco(){
+  setStatus("syncing", "Populando...");
+
+  const volsSeed = [
+    {name:"Thiago",     user_login:"thiago",  email:"",                              phone:"",           birth:null,           functions:"Admin",                          availability:"Qui, Dom", notes:""},
+    {name:"Hilary",     user_login:"hilary",  email:"",                              phone:"",           birth:null,           functions:"Coordenadora, Story, Datashow",  availability:"Qui, Dom", notes:""},
+    {name:"Ana L.",     user_login:"ana",     email:"analubt21@gmail.com",           phone:"47992560531", birth:"2008-01-24",  functions:"Story, Fotografia",              availability:"Qui, Dom", notes:"Ana Luisa Frederico"},
+    {name:"Duda",       user_login:"duda",    email:"maria13duda5@gmail.com",        phone:"47984834529", birth:"2009-07-21",  functions:"Story, Fotografia, Datashow",    availability:"Qui, Dom", notes:"Maria Eduarda Martins Chagas"},
+    {name:"Thaiane G.", user_login:"thaiane", email:"goncalvesdelimathaiane@gmail.com", phone:"47996861442", birth:"2008-04-09",  functions:"Story, Fotografia, Datashow",    availability:"Qui, Dom", notes:"Thaiane Gonçalves de Lima"},
+    {name:"Lucas P.",   user_login:"lucas",   email:"pradolucasfabricio@gmail.com",  phone:"47996993869", birth:"2008-10-13",  functions:"Datashow",                       availability:"Qui, Dom", notes:"Lucas Fabrício Prado"},
+    {name:"Sophia",     user_login:"sophia",  email:"",                              phone:"",           birth:null,           functions:"Fotografia",                     availability:"Qui, Dom", notes:""},
+    {name:"Nayane",     user_login:"nayane",  email:"",                              phone:"",           birth:null,           functions:"Story, Fotografia",              availability:"Qui, Dom", notes:""},
+    {name:"Cad",        user_login:"cad",     email:"",                              phone:"",           birth:null,           functions:"Datashow, Som",                  availability:"Qui, Dom", notes:""},
+    {name:"Jair",       user_login:"jair",    email:"",                              phone:"",           birth:null,           functions:"Som",                            availability:"Qui, Dom", notes:""}
+  ];
+
+  const { error: e1 } = await supabase.from("volunteers").insert(volsSeed);
+  if(e1){ console.error(e1); throw e1; }
+
+  const senhasSeed = volsSeed.map(v=>({user_login: v.user_login, password: v.user_login + "123"}));
+  const { error: e2 } = await supabase.from("passwords").insert(senhasSeed);
+  if(e2){ console.error(e2); throw e2; }
+
+  // Escalas
+  const escalasSeed = {
+    "08": [
+      {date:"02/08/2026",event:"Culto de Ceia",day:"Domingo",type:"regular",status:"Concluído"},
+      {date:"06/08/2026",event:"Noite do Propósito",day:"Quinta",type:"regular",status:"Concluído"},
+      {date:"09/08/2026",event:"Culto Dia dos Pais",day:"Domingo",type:"regular",status:"A Fazer"},
+      {date:"13/08/2026",event:"Noite do Propósito",day:"Quinta",type:"regular",status:"A Fazer"},
+      {date:"16/08/2026",event:"Culto da Família",day:"Domingo",type:"regular",status:"A Fazer"},
+      {date:"19/08/2026",event:"Congresso Aviva Nova Canaã",day:"Quarta",type:"special",status:"A Fazer"},
+      {date:"20/08/2026",event:"Congresso Aviva MH",day:"Quinta",type:"special",status:"A Fazer"},
+      {date:"23/08/2026",event:"Culto da Família",day:"Domingo",type:"regular",status:"A Fazer"},
+      {date:"27/08/2026",event:"Noite do Propósito",day:"Quinta",type:"regular",status:"A Fazer"},
+      {date:"29/08/2026",event:"Conferência UNI",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"30/08/2026",event:"Conferência UNI",day:"Domingo",type:"special",status:"A Fazer"}
+    ],
+    "09": [
+      {date:"03/09/2026",event:"Aniversário Pr. Marcus Guimarães",day:"Quinta",type:"special",status:"A Fazer"},
+      {date:"06/09/2026",event:"Culto de Santa Ceia",day:"Domingo",type:"special",status:"A Fazer"},
+      {date:"10/09/2026",event:"Noite do Propósito",day:"Quinta",type:"special",status:"A Fazer"},
+      {date:"13/09/2026",event:"Culto de Missões",day:"Domingo",type:"special",status:"A Fazer"},
+      {date:"17/09/2026",event:"Noite do Propósito",day:"Quinta",type:"special",status:"A Fazer"},
+      {date:"19/09/2026",event:"Congresso Kids",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"20/09/2026",event:"Congresso Kids",day:"Domingo",type:"special",status:"A Fazer"},
+      {date:"24/09/2026",event:"Noite do Propósito",day:"Quinta",type:"regular",status:"A Fazer"},
+      {date:"27/09/2026",event:"Conferência FT no setor",day:"Domingo",type:"special",status:"A Fazer"}
+    ],
+    "10": [
+      {date:"02/10/2026",event:"Vigília Missionária",day:"Sexta",type:"special",status:"A Fazer"},
+      {date:"04/10/2026",event:"Culto Geral de Batismo",day:"Domingo",type:"special",status:"A Fazer"},
+      {date:"12/10/2026",event:"Dia das Crianças Especial",day:"Segunda",type:"special",status:"A Fazer"},
+      {date:"17/10/2026",event:"Retiro Geral FT",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"18/10/2026",event:"Retiro Geral FT",day:"Domingo",type:"special",status:"A Fazer"},
+      {date:"24/10/2026",event:"Aniversário 95 Anos da ADBLU",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"25/10/2026",event:"Aniversário 95 Anos da ADBLU",day:"Domingo",type:"special",status:"A Fazer"},
+      {date:"26/10/2026",event:"Aniversário 95 Anos da ADBLU",day:"Segunda",type:"special",status:"A Fazer"}
+    ],
+    "11": [
+      {date:"06/11/2026",event:"Vigília Missionária",day:"Sexta",type:"special",status:"A Fazer"},
+      {date:"06/11/2026",event:"Seminário Nacional Lar Feliz",day:"Sexta",type:"special",status:"A Fazer"},
+      {date:"07/11/2026",event:"Seminário Nacional Lar Feliz",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"14/11/2026",event:"Olimpíada UNI",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"14/11/2026",event:"Culto Novembro Azul",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"21/11/2026",event:"Juntos (UNI/FT)",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"23/11/2026",event:"Conferência Missionária",day:"Segunda",type:"special",status:"A Fazer"},
+      {date:"24/11/2026",event:"Conferência Missionária",day:"Terça",type:"special",status:"A Fazer"},
+      {date:"30/11/2026",event:"Reunião Geral",day:"Segunda",type:"special",status:"A Fazer"}
+    ],
+    "12": [
+      {date:"04/12/2026",event:"Vigília Missionária",day:"Sexta",type:"special",status:"A Fazer"},
+      {date:"05/12/2026",event:"Culto Geral de Batismo",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"05/12/2026",event:"Encerramento UNI setor 29",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"06/12/2026",event:"Encerramento UNI setor 29",day:"Domingo",type:"special",status:"A Fazer"},
+      {date:"07/12/2026",event:"Encerramento Dirigentes das Congregações",day:"Segunda",type:"special",status:"A Fazer"},
+      {date:"11/12/2026",event:"Encerramento FT setor 29",day:"Sexta",type:"special",status:"A Fazer"},
+      {date:"12/12/2026",event:"Encerramento FT setor 29",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"12/12/2026",event:"Encerramento Igreja setor 29",day:"Sábado",type:"special",status:"A Fazer"},
+      {date:"13/12/2026",event:"Encerramento FT setor 29",day:"Domingo",type:"special",status:"A Fazer"},
+      {date:"31/12/2026",event:"Culto da Virada",day:"Quinta",type:"special",status:"A Fazer"}
+    ]
+  };
+
+  const escRows = [];
+  const prodRows = [];
+
+  Object.keys(escalasSeed).forEach(mes=>{
+    escalasSeed[mes].forEach(e=>{
+      escRows.push({
+        date: e.date, day: e.day, event: e.event, type: e.type,
+        story: "", photo: "", datashow: "", sound: "", status: e.status,
+        month_key: mes
+      });
+      PRODUCOES_PADRAO.forEach(prod=>{
+        prodRows.push({
+          culto_id: e.date + "|" + e.event,
+          date: e.date, event: e.event, tarefa: prod,
+          responsavel: "", status: "A Fazer", month_key: mes
+        });
+      });
+    });
+  });
+
+  const { error: e3 } = await supabase.from("schedules").insert(escRows);
+  if(e3){ console.error(e3); throw e3; }
+
+  const { error: e4 } = await supabase.from("productions").insert(prodRows);
+  if(e4){ console.error(e4); throw e4; }
+
+  console.log("✅ Banco populado com seed");
+}
+
+/* ==========================================================
+   SALVAR NO SUPABASE
+========================================================== */
+async function salvarVoluntarioSupabase(v, editando){
+  setStatus("syncing", "Salvando...");
+  try{
+    if(editando && v.id){
+      const { error } = await supabase.from("volunteers").update({
+        name: v.name, user_login: v.user, email: v.email, phone: v.phone,
+        birth: v.birth || null, functions: v.functions, availability: v.availability, notes: v.notes
+      }).eq("id", v.id);
+      if(error) throw error;
+    } else {
+      const { error } = await supabase.from("volunteers").insert({
+        name: v.name, user_login: v.user, email: v.email, phone: v.phone,
+        birth: v.birth || null, functions: v.functions, availability: v.availability, notes: v.notes
+      });
+      if(error) throw error;
+      await supabase.from("passwords").insert({ user_login: v.user, password: v.user + "123" });
+    }
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error("Erro ao salvar voluntário:", e);
+    setStatus("offline", "Erro ao salvar");
+    alert("⚠️ Erro ao salvar: " + e.message);
+    return false;
+  }
+}
+
+async function excluirVoluntarioSupabase(id, user){
+  setStatus("syncing");
+  try{
+    await supabase.from("volunteers").delete().eq("id", id);
+    if(user) await supabase.from("passwords").delete().eq("user_login", user);
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro ao excluir");
+    return false;
+  }
+}
+
+async function salvarEscalaSupabase(item, editando){
+  setStatus("syncing");
+  try{
+    if(editando && item.id){
+      await supabase.from("schedules").update({
+        date: item.date, day: item.day, event: item.event, type: item.type,
+        story: item.story, photo: item.photo, datashow: item.data, sound: item.sound,
+        status: item.status, month_key: currentMonth
+      }).eq("id", item.id);
+    } else {
+      await supabase.from("schedules").insert({
+        date: item.date, day: item.day, event: item.event, type: item.type,
+        story: item.story, photo: item.photo, datashow: item.data, sound: item.sound,
+        status: item.status, month_key: currentMonth
+      });
+    }
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro ao salvar");
+    return false;
+  }
+}
+
+async function excluirEscalaSupabase(id, cultoId){
+  setStatus("syncing");
+  try{
+    if(id) await supabase.from("schedules").delete().eq("id", id);
+    if(cultoId) await supabase.from("productions").delete().eq("culto_id", cultoId);
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro ao excluir");
+    return false;
+  }
+}
+
+async function salvarProducaoSupabase(item){
+  setStatus("syncing");
+  try{
+    if(item.id){
+      await supabase.from("productions").update({
+        responsavel: item.responsavel, status: item.status
+      }).eq("id", item.id);
+    }
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    return false;
+  }
+}
+
+async function salvarRecordingSupabase(item){
+  setStatus("syncing");
+  try{
+    if(item.id){
+      await supabase.from("recordings").update({
+        date: item.date, content: item.content, speaker: item.speaker,
+        responsible: item.responsible, edit_date: item.edit, publish_date: item.publish,
+        status: item.status
+      }).eq("id", item.id);
+    } else {
+      await supabase.from("recordings").insert({
+        date: item.date, content: item.content, speaker: item.speaker,
+        responsible: item.responsible, edit_date: item.edit, publish_date: item.publish,
+        status: item.status, month_key: currentMonth
+      });
+    }
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    return false;
+  }
+}
+
+async function excluirRecordingSupabase(id){
+  setStatus("syncing");
+  try{
+    await supabase.from("recordings").delete().eq("id", id);
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    return false;
+  }
+}
+
+async function salvarTrainingSupabase(item){
+  setStatus("syncing");
+  try{
+    await supabase.from("trainings").insert({
+      name: item.name, area: item.area, mentor: item.mentor, stage: item.stage,
+      availability: item.availability, last_date: item.last, next_step: item.next
+    });
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    return false;
+  }
+}
+
+async function excluirTrainingSupabase(id){
+  setStatus("syncing");
+  try{
+    await supabase.from("trainings").delete().eq("id", id);
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    return false;
+  }
+}
+
+async function salvarAvisoSupabase(titulo, texto){
+  setStatus("syncing");
+  try{
+    const { data, error } = await supabase.from("notices").insert({
+      title: titulo, text_content: texto,
+      created_by: usuarioAtual ? usuarioAtual.name : "—"
+    }).select().single();
+    if(error) throw error;
+    setStatus("online");
+    return data;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    return null;
+  }
+}
+
+async function excluirAvisoSupabase(id){
+  setStatus("syncing");
+  try{
+    await supabase.from("notices").delete().eq("id", id);
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    return false;
+  }
+}
+
+async function salvarLogSupabase(icone, texto){
+  try{
+    const { data, error } = await supabase.from("activity_log").insert({
+      icon: icone, message: texto,
+      author: usuarioAtual ? usuarioAtual.name : "Visitante"
+    }).select().single();
+    if(error) throw error;
+    return data;
+  }catch(e){
+    console.warn("Log não registrado:", e);
+    return null;
+  }
+}
+
+async function limparLogSupabase(){
+  setStatus("syncing");
+  try{
+    await supabase.from("activity_log").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    setStatus("online");
+    return true;
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    return false;
+  }
+}
 
 /* ==========================================================
    HELPERS
@@ -1047,20 +1588,18 @@ function production(){ if(!DB.production[currentMonth]) DB.production[currentMon
 function records(){ if(!DB.recordings[currentMonth]) DB.recordings[currentMonth] = []; return DB.recordings[currentMonth]; }
 
 /* ==========================================================
-   LOG DE ATUALIZAÇÕES
+   LOG
 ========================================================== */
-function registrarLog(icone, texto){
-  if(!DB.log) DB.log = [];
-  DB.log.unshift({
-    id: uid(),
-    icone: icone,
-    texto: texto,
-    autor: usuarioAtual ? usuarioAtual.name : "Visitante",
-    data: new Date().toISOString()
-  });
-  // Guarda só últimos 30
-  if(DB.log.length > 30) DB.log = DB.log.slice(0, 30);
-  // Não salva aqui — quem chamou cuida do saveLocal
+async function registrarLog(icone, texto){
+  const novo = await salvarLogSupabase(icone, texto);
+  if(novo){
+    DB.log.unshift({
+      id: novo.id, icone: novo.icon, texto: novo.message,
+      autor: novo.author, data: novo.created_at
+    });
+    if(DB.log.length > 30) DB.log = DB.log.slice(0, 30);
+    renderLog();
+  }
 }
 
 function renderLog(){
@@ -1068,72 +1607,55 @@ function renderLog(){
   const lista = document.getElementById("logLista");
   const btnLimpar = document.getElementById("btnLimparLog");
   if(!box || !lista) return;
-
   const logs = DB.log || [];
-  if(!logs.length){
-    box.classList.add("hidden");
-    return;
-  }
-
+  if(!logs.length){ box.classList.add("hidden"); return; }
   box.classList.remove("hidden");
-
-  // Mostra botão limpar só pra admin/coord
   if(btnLimpar){
     btnLimpar.style.display = (perfilAtual === "admin" || perfilAtual === "coordenador") ? "inline-block" : "none";
   }
-
   lista.innerHTML = logs.slice(0, 15).map(l=>{
     const d = new Date(l.data);
     const dataFmt = String(d.getDate()).padStart(2,"0") + "/" + String(d.getMonth()+1).padStart(2,"0") + " " +
                     String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
     return '<div class="log-item">' +
       '<span class="log-hora">' + dataFmt + '</span>' +
-      '<span class="log-texto">' + l.icone + ' <b>' + esc(l.autor) + '</b> ' + esc(l.texto) + '</span>' +
+      '<span class="log-texto">' + (l.icone||"•") + ' <b>' + esc(l.autor) + '</b> ' + esc(l.texto) + '</span>' +
     '</div>';
   }).join("");
 }
 
-function limparLog(){
+async function limparLog(){
   if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return alert("Você não tem permissão.");
   if(!confirm("Limpar todo o histórico de atualizações?")) return;
-  DB.log = [];
-  saveLocal();
-  renderLog();
+  const ok = await limparLogSupabase();
+  if(ok){ DB.log = []; renderLog(); }
 }
 
 /* ==========================================================
-   TELEFONE — WhatsApp
+   TELEFONE / WHATSAPP
 ========================================================== */
 function formatarTelefoneWhats(tel){
   if(!tel) return "";
-  let limpo = String(tel).replace(/\D/g, "");
-  limpo = limpo.replace(/^0+/, "");
-  if(limpo.length === 11) return "55" + limpo;
-  if(limpo.length === 10) return "55" + limpo;
-  if(limpo.length === 13) return limpo;
-  if(limpo.length === 12) return limpo;
+  let limpo = String(tel).replace(/\D/g, "").replace(/^0+/, "");
+  if(limpo.length === 11 || limpo.length === 10) return "55" + limpo;
+  if(limpo.length === 13 || limpo.length === 12) return limpo;
   return "55" + limpo;
 }
-
 function buscarTelefonePorNome(nome){
   if(!nome) return "";
   const n = nome.trim().toLowerCase();
   const v = DB.volunteers.find(vol => (vol.name||"").trim().toLowerCase() === n);
-  if(!v || !v.phone) return "";
-  return v.phone;
+  return v ? (v.phone || "") : "";
 }
-
 function abrirWhatsApp(telefone, mensagem){
   if(!telefone){
-    alert("⚠️ Esta pessoa não tem telefone cadastrado.\n\nCadastre o telefone na aba Voluntários para poder enviar mensagem.");
+    alert("⚠️ Esta pessoa não tem telefone cadastrado.\n\nCadastre na aba Voluntários.");
     return;
   }
   const num = formatarTelefoneWhats(telefone);
   const msg = encodeURIComponent(mensagem);
-  const url = "https://wa.me/" + num + "?text=" + msg;
-  window.open(url, "_blank");
+  window.open("https://wa.me/" + num + "?text=" + msg, "_blank");
 }
-
 function buscarFuncoesNoCulto(nome, culto){
   const funcs = [];
   const n = nome.trim().toLowerCase();
@@ -1143,7 +1665,6 @@ function buscarFuncoesNoCulto(nome, culto){
   if((culto.sound||"").trim().toLowerCase() === n) funcs.push("Mesa de Som");
   return funcs;
 }
-
 function gerarMensagemIndividual(nome, culto){
   const funcs = buscarFuncoesNoCulto(nome, culto);
   const funcoesTexto = funcs.length ? funcs.join(" + ") : "equipe";
@@ -1155,7 +1676,6 @@ function gerarMensagemIndividual(nome, culto){
     "Qualquer dúvida, fale com a coordenação.\n" +
     "Deus abençoe! 🙏";
 }
-
 function gerarMensagemMensal(nome){
   const escalas = [];
   scale().slice().sort((a,b)=>{
@@ -1164,13 +1684,9 @@ function gerarMensagemMensal(nome){
     return new Date(da) - new Date(db);
   }).forEach(culto=>{
     const funcs = buscarFuncoesNoCulto(nome, culto);
-    if(funcs.length){
-      escalas.push({date:culto.date, day:culto.day, event:culto.event, funcs:funcs});
-    }
+    if(funcs.length) escalas.push({date:culto.date, day:culto.day, event:culto.event, funcs:funcs});
   });
-
   if(!escalas.length) return "";
-
   let msg = "🕊️ Paz, " + nome + "!\n\n";
   msg += "Você tem " + escalas.length + " escala" + (escalas.length > 1 ? "s" : "") + " em " + monthName() + ":\n\n";
   escalas.forEach(e=>{
@@ -1182,7 +1698,6 @@ function gerarMensagemMensal(nome){
   msg += "Deus abençoe! 🙏";
   return msg;
 }
-
 function enviarWhatsIndividual(nome, indexCulto){
   const culto = scale()[indexCulto];
   if(!culto) return;
@@ -1190,40 +1705,29 @@ function enviarWhatsIndividual(nome, indexCulto){
   const msg = gerarMensagemIndividual(nome, culto);
   abrirWhatsApp(tel, msg);
 }
-
 function enviarWhatsMensal(nome){
   const tel = buscarTelefonePorNome(nome);
   const msg = gerarMensagemMensal(nome);
-  if(!msg){
-    alert("⚠️ " + nome + " não tem escalas neste mês.");
-    return;
-  }
+  if(!msg){ alert("⚠️ " + nome + " não tem escalas neste mês."); return; }
   abrirWhatsApp(tel, msg);
 }
-
 function abrirAvisarEquipe(){
   if(!podeEditarAvisos()) return alert("Você não tem permissão.");
   const modal = document.getElementById("avisarModal");
   const lista = document.getElementById("listaWhats");
-
   const pessoas = [];
-  const nomesVistos = new Set();
-
+  const vistos = new Set();
   scale().forEach(culto=>{
     [culto.story, culto.photo, culto.data, culto.sound].forEach(nome=>{
       const n = (nome||"").trim();
-      if(!n) return;
-      if(nomesVistos.has(n.toLowerCase())) return;
-      nomesVistos.add(n.toLowerCase());
+      if(!n || vistos.has(n.toLowerCase())) return;
+      vistos.add(n.toLowerCase());
       const vol = DB.volunteers.find(v => (v.name||"").trim().toLowerCase() === n.toLowerCase());
       if(!vol) return;
-      const count = countParticipation(vol.name, currentMonth).total;
-      pessoas.push({nome: vol.name, telefone: vol.phone || "", count: count});
+      pessoas.push({nome: vol.name, telefone: vol.phone || "", count: countParticipation(vol.name, currentMonth).total});
     });
   });
-
   pessoas.sort((a,b)=> a.nome.localeCompare(b.nome));
-
   if(!pessoas.length){
     lista.innerHTML = '<div style="text-align:center;padding:30px;color:var(--texto-40)">Nenhum voluntário escalado neste mês ainda.</div>';
   } else {
@@ -1243,12 +1747,11 @@ function abrirAvisarEquipe(){
       '</div>';
     }).join("");
   }
-
   modal.classList.add("show");
 }
 
 /* ==========================================================
-   COPIAR ESCALA
+   COPIAR / IMPRIMIR
 ========================================================== */
 function copiarEscala(){
   const lista = scale().slice().sort((a,b)=>{
@@ -1256,14 +1759,8 @@ function copiarEscala(){
     const db = b.date.split("/").reverse().join("-");
     return new Date(da) - new Date(db);
   });
-
-  if(!lista.length){
-    alert("⚠️ Nenhuma escala cadastrada neste mês.");
-    return;
-  }
-
+  if(!lista.length){ alert("⚠️ Nenhuma escala cadastrada neste mês."); return; }
   let texto = "🎥 ESCALA DE MÍDIA — " + monthName().toUpperCase() + "\n\n";
-
   lista.forEach(r=>{
     texto += "📅 " + r.date + " (" + r.day + ")\n";
     texto += "🎬 " + r.event + "\n";
@@ -1273,51 +1770,23 @@ function copiarEscala(){
     if(r.sound) texto += "   🔊 Som: " + r.sound + "\n";
     texto += "\n";
   });
-
   texto += "Deus abençoe a todos! 🙏";
-
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(texto).then(()=>{
       alert("✅ Escala copiada! Cole no grupo do WhatsApp.");
     }).catch(()=>{ copiarFallback(texto); });
-  } else {
-    copiarFallback(texto);
-  }
+  } else { copiarFallback(texto); }
 }
-
 function copiarFallback(texto){
-  const textarea = document.createElement("textarea");
-  textarea.value = texto;
-  textarea.style.position = "fixed";
-  textarea.style.opacity = "0";
-  document.body.appendChild(textarea);
-  textarea.select();
-  try {
-    document.execCommand("copy");
-    alert("✅ Escala copiada! Cole no grupo do WhatsApp.");
-  } catch(e){
-    alert("⚠️ Não consegui copiar automaticamente:\n\n" + texto);
-  }
-  document.body.removeChild(textarea);
+  const ta = document.createElement("textarea");
+  ta.value = texto;
+  ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); alert("✅ Escala copiada!"); }
+  catch(e){ alert("⚠️ Copie manualmente:\n\n" + texto); }
+  document.body.removeChild(ta);
 }
-
 function imprimirEscala(){ window.print(); }
-
-/* ==========================================================
-   EXCLUIR AVISO
-========================================================== */
-function excluirAviso(id){
-  if(!podeEditarAvisos()) return alert("Você não tem permissão.");
-  if(!confirm("Excluir este aviso?")) return;
-  const aviso = DB.avisos.find(a=>a.id === id);
-  DB.avisos = DB.avisos.filter(a => a.id !== id);
-  if(aviso){
-    registrarLog("🗑️", 'excluiu o aviso "' + aviso.titulo + '"');
-  }
-  saveLocal();
-  renderAvisosTopo();
-  renderLog();
-}
 
 /* ==========================================================
    PERMISSÕES
@@ -1331,7 +1800,6 @@ function podeVer(aba){
   }
   return false;
 }
-
 function podeEditar(area){
   if(perfilAtual === "admin" || perfilAtual === "coordenador") return true;
   if(area === "fluxo" || area === "gravacoes"){
@@ -1340,139 +1808,8 @@ function podeEditar(area){
   }
   return false;
 }
-
 function podeEditarEscala(){ return perfilAtual === "admin" || perfilAtual === "coordenador"; }
 function podeEditarAvisos(){ return perfilAtual === "admin" || perfilAtual === "coordenador"; }
-
-/* ==========================================================
-   PERSISTÊNCIA
-========================================================== */
-function saveLocal(){
-  try{ localStorage.setItem(CHAVE_STORAGE, JSON.stringify(DB)); }catch(e){ console.warn(e); }
-}
-function loadLocal(){
-  try{
-    const raw = localStorage.getItem(CHAVE_STORAGE);
-    if(raw){
-      const data = JSON.parse(raw);
-      if(data.volunteers)  DB.volunteers  = data.volunteers;
-      if(data.scale)       DB.scale       = data.scale;
-      if(data.production)  DB.production  = data.production;
-      if(data.recordings)  DB.recordings  = data.recordings;
-      if(data.trainings)   DB.trainings   = data.trainings;
-      if(data.senhas)      DB.senhas      = data.senhas;
-      if(data.avisos)      DB.avisos      = data.avisos;
-      if(data.log)         DB.log         = data.log;
-    }
-  }catch(e){ console.warn("Erro ao carregar:", e); }
-}
-
-/* ==========================================================
-   SEED
-========================================================== */
-function seedDados(){
-  if(DB.volunteers.length && DB.scale["09"]) return;
-
-  DB.volunteers = [
-    {name:"Thiago",     user:"thiago",  email:"",                              phone:"",           birth:"",             functions:"Admin",                          availability:"Qui, Dom", notes:""},
-    {name:"Hilary",     user:"hilary",  email:"",                              phone:"",           birth:"",             functions:"Coordenadora, Story, Datashow",  availability:"Qui, Dom", notes:""},
-    {name:"Ana L.",     user:"ana",     email:"analubt21@gmail.com",           phone:"47992560531", birth:"2008-01-24",  functions:"Story, Fotografia",              availability:"Qui, Dom", notes:"Ana Luisa Frederico"},
-    {name:"Duda",       user:"duda",    email:"maria13duda5@gmail.com",        phone:"47984834529", birth:"2009-07-21",  functions:"Story, Fotografia, Datashow",    availability:"Qui, Dom", notes:"Maria Eduarda Martins Chagas"},
-    {name:"Thaiane G.", user:"thaiane", email:"goncalvesdelimathaiane@gmail.com", phone:"47996861442", birth:"2008-04-09",  functions:"Story, Fotografia, Datashow",    availability:"Qui, Dom", notes:"Thaiane Gonçalves de Lima"},
-    {name:"Lucas P.",   user:"lucas",   email:"pradolucasfabricio@gmail.com",  phone:"47996993869", birth:"2008-10-13",  functions:"Datashow",                       availability:"Qui, Dom", notes:"Lucas Fabrício Prado"},
-    {name:"Sophia",     user:"sophia",  email:"",                              phone:"",           birth:"",             functions:"Fotografia",                     availability:"Qui, Dom", notes:""},
-    {name:"Nayane",     user:"nayane",  email:"",                              phone:"",           birth:"",             functions:"Story, Fotografia",              availability:"Qui, Dom", notes:""},
-    {name:"Cad",        user:"cad",     email:"",                              phone:"",           birth:"",             functions:"Datashow, Som",                  availability:"Qui, Dom", notes:""},
-    {name:"Jair",       user:"jair",    email:"",                              phone:"",           birth:"",             functions:"Som",                            availability:"Qui, Dom", notes:""}
-  ];
-
-  DB.senhas = {};
-  DB.volunteers.forEach(v=>{ if(v.user) DB.senhas[v.user] = v.user + "123"; });
-
-  DB.scale = {
-    "08": [
-      {date:"02/08/2026",event:"Culto de Ceia",day:"Domingo",type:"regular",story:"",photo:"",data:"",sound:"",status:"Concluído"},
-      {date:"06/08/2026",event:"Noite do Propósito",day:"Quinta",type:"regular",story:"",photo:"",data:"",sound:"",status:"Concluído"},
-      {date:"09/08/2026",event:"Culto Dia dos Pais",day:"Domingo",type:"regular",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"13/08/2026",event:"Noite do Propósito",day:"Quinta",type:"regular",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"16/08/2026",event:"Culto da Família",day:"Domingo",type:"regular",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"19/08/2026",event:"Congresso Aviva Nova Canaã",day:"Quarta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"20/08/2026",event:"Congresso Aviva MH",day:"Quinta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"23/08/2026",event:"Culto da Família",day:"Domingo",type:"regular",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"27/08/2026",event:"Noite do Propósito",day:"Quinta",type:"regular",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"29/08/2026",event:"Conferência UNI",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"30/08/2026",event:"Conferência UNI",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"}
-    ],
-    "09": [
-      {date:"03/09/2026",event:"Aniversário Pr. Marcus Guimarães",day:"Quinta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"06/09/2026",event:"Culto de Santa Ceia",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"10/09/2026",event:"Noite do Propósito",day:"Quinta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"13/09/2026",event:"Culto de Missões",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"17/09/2026",event:"Noite do Propósito",day:"Quinta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"19/09/2026",event:"Congresso Kids",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"20/09/2026",event:"Congresso Kids",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"24/09/2026",event:"Noite do Propósito",day:"Quinta",type:"regular",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"27/09/2026",event:"Conferência FT no setor",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"}
-    ],
-    "10": [
-      {date:"02/10/2026",event:"Vigília Missionária",day:"Sexta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"04/10/2026",event:"Culto Geral de Batismo",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"12/10/2026",event:"Dia das Crianças Especial",day:"Segunda",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"17/10/2026",event:"Retiro Geral FT",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"18/10/2026",event:"Retiro Geral FT",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"24/10/2026",event:"Aniversário 95 Anos da ADBLU",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"25/10/2026",event:"Aniversário 95 Anos da ADBLU",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"26/10/2026",event:"Aniversário 95 Anos da ADBLU",day:"Segunda",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"}
-    ],
-    "11": [
-      {date:"06/11/2026",event:"Vigília Missionária",day:"Sexta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"06/11/2026",event:"Seminário Nacional Lar Feliz",day:"Sexta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"07/11/2026",event:"Seminário Nacional Lar Feliz",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"14/11/2026",event:"Olimpíada UNI",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"14/11/2026",event:"Culto Novembro Azul",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"21/11/2026",event:"Juntos (UNI/FT)",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"23/11/2026",event:"Conferência Missionária",day:"Segunda",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"24/11/2026",event:"Conferência Missionária",day:"Terça",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"30/11/2026",event:"Reunião Geral",day:"Segunda",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"}
-    ],
-    "12": [
-      {date:"04/12/2026",event:"Vigília Missionária",day:"Sexta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"05/12/2026",event:"Culto Geral de Batismo",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"05/12/2026",event:"Encerramento UNI setor 29",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"06/12/2026",event:"Encerramento UNI setor 29",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"07/12/2026",event:"Encerramento Dirigentes das Congregações",day:"Segunda",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"11/12/2026",event:"Encerramento FT setor 29",day:"Sexta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"12/12/2026",event:"Encerramento FT setor 29",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"12/12/2026",event:"Encerramento Igreja setor 29",day:"Sábado",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"13/12/2026",event:"Encerramento FT setor 29",day:"Domingo",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"},
-      {date:"31/12/2026",event:"Culto da Virada",day:"Quinta",type:"special",story:"",photo:"",data:"",sound:"",status:"A Fazer"}
-    ]
-  };
-
-  DB.production = {};
-  Object.keys(DB.scale).forEach(mes=>{
-    DB.production[mes] = [];
-    DB.scale[mes].forEach(culto=>{
-      PRODUCOES_PADRAO.forEach(prod=>{
-        DB.production[mes].push({
-          id: uid(),
-          cultoId: culto.date + "|" + culto.event,
-          date: culto.date,
-          event: culto.event,
-          tarefa: prod,
-          responsavel: "",
-          status: "A Fazer"
-        });
-      });
-    });
-  });
-
-  DB.recordings = { "08":[], "09":[], "10":[], "11":[], "12":[] };
-  DB.avisos = [];
-  DB.log = [];
-
-  saveLocal();
-}
 
 /* ==========================================================
    LOGIN
@@ -1481,37 +1818,30 @@ function fazerLogin(){
   const user = document.getElementById("loginUser").value.trim().toLowerCase();
   const pass = document.getElementById("loginPass").value;
   const erro = document.getElementById("loginErro");
-
   if(!user || !pass){ erro.textContent = "❌ Preencha usuário e senha."; return; }
-
   const senhaEsperada = DB.senhas[user];
   if(!senhaEsperada){ erro.textContent = "❌ Usuário não encontrado."; return; }
   if(senhaEsperada !== pass){ erro.textContent = "❌ Senha incorreta."; return; }
-
   const vol = DB.volunteers.find(v => v.user === user);
   if(!vol){ erro.textContent = "❌ Cadastro não localizado."; return; }
-
   usuarioAtual = vol;
   definirPerfil(vol);
   sessionStorage.setItem("mh_logado_user", user);
   abrirApp();
   alert("✅ Bem-vindo(a), " + vol.name + "!");
 }
-
 function definirPerfil(vol){
   const funcs = (vol.functions || "").toLowerCase();
   if(funcs.includes("admin")) perfilAtual = "admin";
   else if(funcs.includes("coordenador") || funcs.includes("coordenadora")) perfilAtual = "coordenador";
   else perfilAtual = "voluntario";
 }
-
 function entrarComoVisitante(){
   usuarioAtual = null;
   perfilAtual = "visitante";
   sessionStorage.removeItem("mh_logado_user");
   abrirApp();
 }
-
 function abrirApp(){
   document.getElementById("loginScreen").classList.add("hidden");
   document.getElementById("appHeader").classList.remove("hidden");
@@ -1521,30 +1851,24 @@ function abrirApp(){
   aplicarPermissoes();
   renderAll();
 }
-
 function fazerLogout(){
   if(!confirm("Deseja sair?")) return;
   sessionStorage.removeItem("mh_logado_user");
   location.reload();
 }
-
 function gerarBadgeUsuario(){
   if(!usuarioAtual) return "👤 Visitante";
   const funcs = usuarioAtual.functions || "";
-  // Remove "Admin" e "Coordenadora" pra mostrar a função real, mas mantém se for o caso
-  const funcsLista = funcs.split(",").map(f=>f.trim()).filter(f=>f);
-  if(funcsLista.length === 0) return "👤 " + usuarioAtual.name;
-  return "👤 " + usuarioAtual.name + " (" + funcsLista.join(", ") + ")";
+  const lista = funcs.split(",").map(f=>f.trim()).filter(f=>f);
+  if(lista.length === 0) return "👤 " + usuarioAtual.name;
+  return "👤 " + usuarioAtual.name + " (" + lista.join(", ") + ")";
 }
-
 function aplicarPermissoes(){
   const badge = document.getElementById("userBadge");
   badge.textContent = gerarBadgeUsuario();
   badge.classList.remove("hidden");
-
   document.getElementById("btnSair").classList.remove("hidden");
   document.getElementById("btnPerfil").classList.toggle("hidden", !usuarioAtual);
-
   document.querySelectorAll("#tabsNav button").forEach(b=>{
     b.classList.toggle("hidden", !podeVer(b.dataset.aba));
   });
@@ -1564,7 +1888,6 @@ function aplicarPermissoes(){
   if(vn) vn.classList.toggle("hidden", podeEditarEscala());
   const boxSug = document.getElementById("boxSugestao");
   if(boxSug) boxSug.classList.toggle("hidden", !podeEditarEscala());
-
   renderLog();
 }
 
@@ -1594,26 +1917,21 @@ function changeMonth(m){ currentMonth = m; renderAll(); }
 function renderAvisosTopo(){
   const box = document.getElementById("avisosTopo");
   if(!box) return;
-
   const aniversariantes = DB.volunteers
     .filter(v => v.birth && v.birth.substring(5,7) === currentMonth)
     .sort((a,b) => a.birth.localeCompare(b.birth));
-
   const hoje = new Date();
   const semanaIni = new Date(hoje); semanaIni.setDate(hoje.getDate() - hoje.getDay()); semanaIni.setHours(0,0,0,0);
   const semanaFim = new Date(semanaIni); semanaFim.setDate(semanaIni.getDate() + 7);
-
   const daSemana = aniversariantes.filter(v=>{
     const dia = parseInt(v.birth.substring(8,10));
     const mes = parseInt(v.birth.substring(5,7));
-    const dataAniv = new Date(hoje.getFullYear(), mes-1, dia);
-    return dataAniv >= semanaIni && dataAniv < semanaFim;
+    const dA = new Date(hoje.getFullYear(), mes-1, dia);
+    return dA >= semanaIni && dA < semanaFim;
   });
-
   const avisos = (DB.avisos || []).slice().sort((a,b) => (b.criadoEm||"").localeCompare(a.criadoEm||""));
   const podeExcluir = podeEditarAvisos();
   const blocos = [];
-
   if(aniversariantes.length){
     let conteudo = '';
     if(daSemana.length){
@@ -1625,7 +1943,6 @@ function renderAvisosTopo(){
     conteudo += aniversariantes.map(v => '🎈 <b>' + esc(v.name) + '</b> — dia ' + v.birth.substring(8,10)).join('<br>');
     blocos.push({tipo: "aniversarios", titulo: "🎂 Aniversariantes de " + monthName(), conteudo: conteudo});
   }
-
   if(avisos.length || podeEditarAvisos()){
     let conteudo = '';
     if(avisos.length){
@@ -1645,9 +1962,7 @@ function renderAvisosTopo(){
       acao: podeEditarAvisos() ? '<button class="primary btn-sm" onclick="abrirNovoAviso()">＋ Novo aviso</button>' : ""
     });
   }
-
   if(!blocos.length){ box.innerHTML = ""; return; }
-
   box.innerHTML = blocos.map(b => 
     '<div class="aviso-card ' + b.tipo + '">' +
       '<h3>' + b.titulo + (b.acao ? '<span style="margin-left:auto">' + b.acao + '</span>' : '') + '</h3>' +
@@ -1655,23 +1970,33 @@ function renderAvisosTopo(){
     '</div>'
   ).join("");
 }
-
-function abrirNovoAviso(){
+async function abrirNovoAviso(){
   const titulo = prompt("Título do aviso:");
   if(!titulo) return;
   const texto = prompt("Texto complementar (opcional):", "") || "";
-  DB.avisos.push({
-    id: uid(),
-    titulo: titulo.trim(),
-    texto: texto.trim(),
-    criadoPor: usuarioAtual ? usuarioAtual.name : "—",
-    criadoEm: new Date().toISOString()
-  });
-  registrarLog("📢", 'publicou o aviso "' + titulo.trim() + '"');
-  saveLocal();
-  renderAvisosTopo();
-  renderLog();
-  alert("✅ Aviso publicado!");
+  const novo = await salvarAvisoSupabase(titulo.trim(), texto.trim());
+  if(novo){
+    DB.avisos.unshift({
+      id: novo.id, titulo: novo.title, texto: novo.text_content || "",
+      criadoPor: novo.created_by, criadoEm: novo.created_at
+    });
+    await registrarLog("📢", 'publicou o aviso "' + titulo.trim() + '"');
+    renderAvisosTopo();
+    alert("✅ Aviso publicado!");
+  } else {
+    alert("⚠️ Erro ao publicar aviso.");
+  }
+}
+async function excluirAviso(id){
+  if(!podeEditarAvisos()) return alert("Você não tem permissão.");
+  if(!confirm("Excluir este aviso?")) return;
+  const aviso = DB.avisos.find(a=>a.id === id);
+  const ok = await excluirAvisoSupabase(id);
+  if(ok){
+    DB.avisos = DB.avisos.filter(a => a.id !== id);
+    if(aviso) await registrarLog("🗑️", 'excluiu o aviso "' + aviso.titulo + '"');
+    renderAvisosTopo();
+  }
 }
 
 /* ==========================================================
@@ -1683,10 +2008,8 @@ function renderDashboard(){
   document.getElementById("kpiGravacoes").textContent = records().length;
   document.getElementById("kpiVol").textContent = DB.volunteers.length;
   document.getElementById("kpiTreino").textContent = DB.trainings.length;
-
   const an = DB.volunteers.filter(v => v.birth && v.birth.substring(5,7) === currentMonth);
   document.getElementById("kpiAniv").textContent = an.length;
-
   let html = "";
   scale().slice().sort((a,b)=>{
     const da = a.date.split("/").reverse().join("-");
@@ -1702,7 +2025,6 @@ function renderDashboard(){
     '</tr>';
   });
   document.getElementById("dashTable").innerHTML = html || '<tr><td colspan="5" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum culto neste mês.</td></tr>';
-
   renderAvisosTopo();
   renderBirthdayNotice();
   renderLog();
@@ -1722,49 +2044,52 @@ function renderScale(){
   const type = document.getElementById("scaleType").value;
   const edit = podeEditarEscala();
   let html = "";
-
   scale().forEach((r,i)=>{
     if(type !== "all" && r.type !== type) return;
     const texto = (r.date + " " + r.event + " " + r.day).toLowerCase();
     if(search && !texto.includes(search)) return;
     const dis = edit ? "" : "disabled";
-
     function celula(nome, classe, campo, idx){
       const temTel = nome && buscarTelefonePorNome(nome);
       const btnDisabled = (!nome || !temTel) ? "disabled" : "";
-      const btnTitle = (!nome) ? "Sem pessoa atribuída" : (!temTel ? "Sem telefone cadastrado" : "Enviar WhatsApp");
+      const btnTitle = (!nome) ? "Sem pessoa" : (!temTel ? "Sem telefone" : "Enviar WhatsApp");
       return '<td class="' + classe + '">' +
         '<div class="celula-funcao">' +
-          '<input value="' + esc(nome) + '" onchange="scale()[' + idx + '].' + campo + '=this.value;saveLocal();renderDashboard();renderScale();" ' + dis + '>' +
+          '<input value="' + esc(nome) + '" onchange="atualizarEscala(' + idx + ',\'' + campo + '\',this.value)" ' + dis + '>' +
           '<button class="btn-whats-inline" onclick="enviarWhatsIndividual(\'' + esc(nome).replace(/'/g,"\\'") + '\',' + idx + ')" title="' + btnTitle + '" ' + btnDisabled + '>📱</button>' +
         '</div>' +
       '</td>';
     }
-
     html += '<tr>' +
       '<td class="cult">' +
-        '<input value="' + esc(r.date) + '" onchange="scale()[' + i + '].date=this.value;saveLocal();renderScale();renderDashboard();" ' + dis + '>' +
-        '<input value="' + esc(r.day) + '" onchange="scale()[' + i + '].day=this.value;saveLocal();" ' + dis + '>' +
-        '<input value="' + esc(r.event) + '" onchange="scale()[' + i + '].event=this.value;saveLocal();renderDashboard();renderProduction();" ' + dis + '>' +
+        '<input value="' + esc(r.date) + '" onchange="atualizarEscala(' + i + ',\'date\',this.value)" ' + dis + '>' +
+        '<input value="' + esc(r.day) + '" onchange="atualizarEscala(' + i + ',\'day\',this.value)" ' + dis + '>' +
+        '<input value="' + esc(r.event) + '" onchange="atualizarEscala(' + i + ',\'event\',this.value)" ' + dis + '>' +
       '</td>' +
       celula(r.story, "story", "story", i) +
       celula(r.photo, "foto", "photo", i) +
       celula(r.data, "data", "data", i) +
       celula(r.sound, "som", "sound", i) +
-      '<td><select onchange="scale()[' + i + '].status=this.value;saveLocal();renderDashboard();" ' + dis + '>' +
+      '<td><select onchange="atualizarEscala(' + i + ',\'status\',this.value)" ' + dis + '>' +
         ["A Fazer","Em andamento","Concluído","Cancelado"].map(x=>'<option ' + (x === r.status ? "selected" : "") + '>' + x + '</option>').join("") +
       '</select></td>' +
       '<td class="col-acao"><button class="danger btn-del" onclick="deleteScale(' + i + ')" ' + (edit ? "" : "disabled") + '>✕</button></td>' +
     '</tr>';
   });
-
-  if(!html){
-    html = '<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma escala neste mês.</td></tr>';
-  }
+  if(!html) html = '<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma escala neste mês.</td></tr>';
   document.getElementById("scaleTable").innerHTML = html;
 }
 
-function addScaleDay(){
+async function atualizarEscala(i, campo, valor){
+  const item = scale()[i];
+  if(!item) return;
+  item[campo] = valor;
+  await salvarEscalaSupabase(item, true);
+  renderDashboard();
+  renderScale();
+}
+
+async function addScaleDay(){
   if(!podeEditarEscala()) return alert("Você não tem permissão.");
   const day = prompt("Dia da semana (ex: Domingo, Quinta):","");
   if(day === null) return;
@@ -1772,16 +2097,18 @@ function addScaleDay(){
   if(date === null) return;
   const event = prompt("Nome do culto/evento:","");
   if(event === null) return;
-  scale().push({
+  const novo = {
     date:date.trim(), event:event.trim()||"Culto / evento", day:day.trim(),
     type:"regular", story:"", photo:"", data:"", sound:"", status:"A Fazer"
-  });
-  gerarProducaoAuto(date.trim(), event.trim());
-  registrarLog("🎬", 'criou a escala "' + (event.trim()||"Culto") + '" em ' + date.trim());
-  saveLocal(); renderAll();
+  };
+  const ok = await salvarEscalaSupabase(novo, false);
+  if(!ok) return;
+  await registrarLog("🎬", 'criou a escala "' + (event.trim()||"Culto") + '" em ' + date.trim());
+  await carregarDoSupabase();
+  renderAll();
 }
 
-function addSpecialEvent(){
+async function addSpecialEvent(){
   if(!podeEditarEscala()) return alert("Você não tem permissão.");
   const day = prompt("Dia da semana (ex: Sábado):","");
   if(day === null) return;
@@ -1789,40 +2116,27 @@ function addSpecialEvent(){
   if(date === null) return;
   const event = prompt("Nome do evento especial:","");
   if(event === null) return;
-  scale().push({
+  const novo = {
     date:date.trim(), event:event.trim()||"Evento especial", day:day.trim(),
     type:"special", story:"", photo:"", data:"", sound:"", status:"A Fazer"
-  });
-  gerarProducaoAuto(date.trim(), event.trim());
-  registrarLog("🎬", 'criou o evento "' + (event.trim()||"Evento") + '" em ' + date.trim());
-  saveLocal(); renderAll();
+  };
+  const ok = await salvarEscalaSupabase(novo, false);
+  if(!ok) return;
+  await registrarLog("🎬", 'criou o evento "' + (event.trim()||"Evento") + '" em ' + date.trim());
+  await carregarDoSupabase();
+  renderAll();
 }
 
-function deleteScale(i){
+async function deleteScale(i){
   if(!podeEditarEscala()) return alert("Você não tem permissão.");
   const item = scale()[i];
   if(!item) return;
   if(!confirm("⚠️ Excluir esta data?\n\n" + item.date + " — " + item.event + "\n\nA produção vinculada também será removida.")) return;
-  scale().splice(i,1);
-  const chave = item.date + "|" + item.event;
-  const prodMes = production();
-  for(let j = prodMes.length - 1; j >= 0; j--){
-    if(prodMes[j].cultoId === chave || (prodMes[j].date === item.date && prodMes[j].event === item.event)){
-      prodMes.splice(j,1);
-    }
-  }
-  registrarLog("🗑️", 'removeu a escala "' + item.event + '" de ' + item.date);
-  saveLocal(); renderAll();
-}
-
-function gerarProducaoAuto(date, event){
-  if(!date || !event) return;
-  const chave = date + "|" + event;
-  const prodMes = production();
-  if(prodMes.some(p => p.cultoId === chave)) return;
-  PRODUCOES_PADRAO.forEach(prod=>{
-    prodMes.push({id: uid(), cultoId: chave, date: date, event: event, tarefa: prod, responsavel: "", status: "A Fazer"});
-  });
+  const cultoId = item.date + "|" + item.event;
+  await excluirEscalaSupabase(item.id, cultoId);
+  await registrarLog("🗑️", 'removeu a escala "' + item.event + '" de ' + item.date);
+  await carregarDoSupabase();
+  renderAll();
 }
 
 /* ==========================================================
@@ -1846,7 +2160,6 @@ function bestVolunteer(fn, day, already){
   });
   return candidates[0].name;
 }
-
 function autoScale(){
   if(!podeEditarEscala()) return alert("Você não tem permissão.");
   if(!DB.volunteers.length) return alert("Cadastre voluntários primeiro.");
@@ -1859,29 +2172,28 @@ function autoScale(){
     const p = bestVolunteer("Fotografia", r.day, a) || "Definir"; if(p !== "Definir") a.push(p);
     const d = bestVolunteer("Datashow", r.day, a) || "Definir"; if(d !== "Definir") a.push(d);
     const so = bestVolunteer("Som", r.day, a) || "Definir";
-    window._suggested.push({
-      story: s === "Definir" ? "" : s,
-      photo: p === "Definir" ? "" : p,
-      data: d === "Definir" ? "" : d,
-      sound: so === "Definir" ? "" : so
-    });
+    window._suggested.push({story: s==="Definir"?"":s, photo: p==="Definir"?"":p, data: d==="Definir"?"":d, sound: so==="Definir"?"":so});
     html += '<tr><td>' + esc(r.date) + ' — ' + esc(r.day) + ' — ' + esc(r.event) + '</td><td>' + esc(s) + '</td><td>' + esc(p) + '</td><td>' + esc(d) + '</td><td>' + esc(so) + '</td></tr>';
   });
   html += '</tbody></table></div><div style="padding:20px"><button class="green" onclick="applyAutoScale()">✅ Aplicar sugestões</button></div>';
   document.getElementById("suggestions").innerHTML = html;
 }
-
-function applyAutoScale(){
+async function applyAutoScale(){
   if(!podeEditarEscala()) return alert("Você não tem permissão.");
   if(!window._suggested || window._suggested.length !== scale().length) return;
-  scale().forEach((r,i)=>{
-    if(!r.story) r.story = window._suggested[i].story;
-    if(!r.photo) r.photo = window._suggested[i].photo;
-    if(!r.data)  r.data  = window._suggested[i].data;
-    if(!r.sound) r.sound = window._suggested[i].sound;
-  });
-  registrarLog("🤖", 'aplicou a escala automática em ' + monthName());
-  saveLocal(); renderAll();
+  setStatus("syncing", "Aplicando...");
+  for(let i = 0; i < scale().length; i++){
+    const r = scale()[i];
+    let mudou = false;
+    if(!r.story && window._suggested[i].story){ r.story = window._suggested[i].story; mudou = true; }
+    if(!r.photo && window._suggested[i].photo){ r.photo = window._suggested[i].photo; mudou = true; }
+    if(!r.data  && window._suggested[i].data) { r.data  = window._suggested[i].data;  mudou = true; }
+    if(!r.sound && window._suggested[i].sound){ r.sound = window._suggested[i].sound; mudou = true; }
+    if(mudou) await salvarEscalaSupabase(r, true);
+  }
+  await registrarLog("🤖", 'aplicou a escala automática em ' + monthName());
+  setStatus("online");
+  renderAll();
   alert("✅ Sugestões aplicadas somente onde os campos estavam vazios.");
 }
 
@@ -1897,42 +2209,40 @@ function renderProduction(){
   });
   const filter = document.getElementById("prodFilter").value;
   let html = "";
-
   production().forEach((p,i)=>{
     if(filter !== "all" && p.status !== filter) return;
     html += '<tr>' +
       '<td>' + esc(p.date) + '</td>' +
       '<td>' + esc(p.event) + '</td>' +
       '<td><b>' + esc(p.tarefa) + '</b></td>' +
-      '<td><input value="' + esc(p.responsavel) + '" placeholder="Atribuir..." onchange="production()[' + i + '].responsavel=this.value;saveLocal();" ' + (podeEditar("fluxo") ? "" : "disabled") + '></td>' +
-      '<td><select onchange="atualizarStatusProducao(' + i + ', this.value)" ' + (podeEditar("fluxo") ? "" : "disabled") + '>' +
+      '<td><input value="' + esc(p.responsavel) + '" placeholder="Atribuir..." onchange="atualizarProducao(' + i + ',\'responsavel\',this.value)" ' + (podeEditar("fluxo") ? "" : "disabled") + '></td>' +
+      '<td><select onchange="atualizarProducao(' + i + ',\'status\',this.value)" ' + (podeEditar("fluxo") ? "" : "disabled") + '>' +
         STATUS_FLUXO.map(x=>'<option ' + (x === p.status ? "selected" : "") + '>' + x + '</option>').join("") +
       '</select></td>' +
       '<td class="col-acao"><button class="danger btn-del" onclick="deleteProduction(' + i + ')" ' + (podeEditar("fluxo") ? "" : "disabled") + '>✕</button></td>' +
     '</tr>';
   });
-
-  if(!html){
-    html = '<tr><td colspan="6" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma produção vinculada ainda.</td></tr>';
-  }
+  if(!html) html = '<tr><td colspan="6" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhuma produção vinculada ainda.</td></tr>';
   document.getElementById("productionTable").innerHTML = html;
 }
-
-function atualizarStatusProducao(i, novoStatus){
+async function atualizarProducao(i, campo, valor){
   const p = production()[i];
   if(!p) return;
-  const antigo = p.status;
-  p.status = novoStatus;
-  // Registra no log apenas status importantes
-  if(["Gravado","Editado","Publicado"].includes(novoStatus) && antigo !== novoStatus){
-    registrarLog("🎥", 'marcou "' + p.tarefa + '" (' + p.event + ') como ' + novoStatus);
+  const antigo = p[campo];
+  p[campo] = valor;
+  await salvarProducaoSupabase(p);
+  if(campo === "status" && ["Gravado","Editado","Publicado"].includes(valor) && antigo !== valor){
+    await registrarLog("🎥", 'marcou "' + p.tarefa + '" (' + p.event + ') como ' + valor);
   }
-  saveLocal(); renderProduction(); renderLog();
+  renderProduction();
 }
-
-function deleteProduction(i){
+async function deleteProduction(i){
   if(!podeEditar("fluxo")) return alert("Você não tem permissão.");
-  if(confirm("Excluir esta linha de produção?")){ production().splice(i,1); saveLocal(); renderAll(); }
+  if(!confirm("Excluir esta linha de produção?")) return;
+  const p = production()[i];
+  await supabase.from("productions").delete().eq("id", p.id);
+  await carregarDoSupabase();
+  renderAll();
 }
 
 /* ==========================================================
@@ -1943,42 +2253,45 @@ function renderRecordings(){
   const filter = document.getElementById("recordFilter").value;
   const edit = podeEditar("fluxo");
   let html = "";
-
   records().forEach((r,i)=>{
     if(filter !== "all" && r.status !== filter) return;
     html += '<tr>' +
-      '<td><input value="' + esc(r.date) + '" onchange="records()[' + i + '].date=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
-      '<td><input value="' + esc(r.content) + '" onchange="records()[' + i + '].content=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
-      '<td><input value="' + esc(r.speaker) + '" onchange="records()[' + i + '].speaker=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
-      '<td><input value="' + esc(r.responsible) + '" placeholder="Atribuir..." onchange="records()[' + i + '].responsible=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
-      '<td><input value="' + esc(r.edit) + '" onchange="records()[' + i + '].edit=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
-      '<td><input value="' + esc(r.publish) + '" onchange="records()[' + i + '].publish=this.value;saveLocal()" ' + (edit ? "" : "disabled") + '></td>' +
-      '<td><select onchange="records()[' + i + '].status=this.value;saveLocal();renderRecordings()" ' + (edit ? "" : "disabled") + '>' +
+      '<td><input value="' + esc(r.date) + '" onchange="atualizarRecording(' + i + ',\'date\',this.value)" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><input value="' + esc(r.content) + '" onchange="atualizarRecording(' + i + ',\'content\',this.value)" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><input value="' + esc(r.speaker) + '" onchange="atualizarRecording(' + i + ',\'speaker\',this.value)" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><input value="' + esc(r.responsible) + '" placeholder="Atribuir..." onchange="atualizarRecording(' + i + ',\'responsible\',this.value)" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><input value="' + esc(r.edit) + '" onchange="atualizarRecording(' + i + ',\'edit\',this.value)" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><input value="' + esc(r.publish) + '" onchange="atualizarRecording(' + i + ',\'publish\',this.value)" ' + (edit ? "" : "disabled") + '></td>' +
+      '<td><select onchange="atualizarRecording(' + i + ',\'status\',this.value)" ' + (edit ? "" : "disabled") + '>' +
         STATUS_FLUXO.map(x=>'<option ' + (x === r.status ? "selected" : "") + '>' + x + '</option>').join("") +
       '</select></td>' +
       '<td class="col-acao"><button class="danger btn-del" onclick="deleteRecording(' + i + ')" ' + (edit ? "" : "disabled") + '>✕</button></td>' +
     '</tr>';
   });
-
-  if(!html){
-    html = '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum devocional cadastrado neste mês.</td></tr>';
-  }
+  if(!html) html = '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum devocional cadastrado neste mês.</td></tr>';
   document.getElementById("recordTable").innerHTML = html;
 }
-
-function addRecording(){
+async function atualizarRecording(i, campo, valor){
+  const r = records()[i];
+  if(!r) return;
+  r[campo] = valor;
+  await salvarRecordingSupabase(r);
+  renderRecordings();
+}
+async function addRecording(){
   if(!podeEditar("fluxo")) return alert("Você não tem permissão.");
   const hoje = new Date();
   const data = hoje.getFullYear() + "-" + String(hoje.getMonth()+1).padStart(2,"0") + "-" + String(hoje.getDate()).padStart(2,"0");
-  records().push({id: uid(), date: formatDate(data), content: "Devocional", speaker: "", responsible: "", edit: "", publish: "", status: "A Fazer"});
-  registrarLog("📹", 'adicionou um devocional');
-  saveLocal(); renderRecordings(); renderLog();
+  const novo = {date: formatDate(data), content: "Devocional", speaker: "", responsible: "", edit: "", publish: "", status: "A Fazer"};
+  const ok = await salvarRecordingSupabase(novo);
+  if(!ok) return;
+  await registrarLog("📹", 'adicionou um devocional');
+  await carregarDoSupabase();
+  renderAll();
 }
-
-function criarDevocionaisMes(){
+async function criarDevocionaisMes(){
   if(!podeEditar("fluxo")) return alert("Você não tem permissão.");
-  if(!confirm("📹 Criar automaticamente 4 devocionais (uma por semana) em " + monthName() + "?\n\nSerão sugeridas as quintas-feiras do mês.")) return;
-
+  if(!confirm("📹 Criar automaticamente 4 devocionais em " + monthName() + "?\n\nSerão sugeridas as quintas-feiras do mês.")) return;
   const ano = 2026;
   const mes = parseInt(currentMonth);
   const quintas = [];
@@ -1988,23 +2301,25 @@ function criarDevocionaisMes(){
     d.setDate(d.getDate() + 1);
   }
   const semanas = quintas.slice(0, 4);
-
-  semanas.forEach((dia, idx)=>{
-    const dataStr = String(dia).padStart(2,"0") + "/" + String(mes).padStart(2,"0") + "/" + ano;
-    records().push({
-      id: uid(), date: dataStr, content: "Devocional — Semana " + (idx+1),
+  for(let idx = 0; idx < semanas.length; idx++){
+    const dataStr = String(semanas[idx]).padStart(2,"0") + "/" + String(mes).padStart(2,"0") + "/" + ano;
+    await salvarRecordingSupabase({
+      date: dataStr, content: "Devocional — Semana " + (idx+1),
       speaker: "", responsible: "", edit: "", publish: "", status: "A Fazer"
     });
-  });
-
-  registrarLog("📹", 'criou ' + semanas.length + ' devocionais em ' + monthName());
-  saveLocal(); renderRecordings(); renderLog();
+  }
+  await registrarLog("📹", 'criou ' + semanas.length + ' devocionais em ' + monthName());
+  await carregarDoSupabase();
+  renderAll();
   alert("✅ Criados " + semanas.length + " devocionais em " + monthName() + ".");
 }
-
-function deleteRecording(i){
+async function deleteRecording(i){
   if(!podeEditar("fluxo")) return alert("Você não tem permissão.");
-  if(confirm("Excluir este devocional?")){ records().splice(i,1); saveLocal(); renderAll(); }
+  if(!confirm("Excluir este devocional?")) return;
+  const r = records()[i];
+  await excluirRecordingSupabase(r.id);
+  await carregarDoSupabase();
+  renderAll();
 }
 
 /* ==========================================================
@@ -2016,7 +2331,6 @@ function newVolunteer(){
   ["vName","vUser","vEmail","vPhone","vBirth","vFunctions","vAvailability","vNotes"].forEach(id=>document.getElementById(id).value = "");
   document.getElementById("volModal").classList.add("show");
 }
-
 function editVolunteer(i){
   if(!podeEditarAvisos()) return alert("Você não tem permissão.");
   editingVolunteer = i;
@@ -2031,16 +2345,13 @@ function editVolunteer(i){
   document.getElementById("vNotes").value = v.notes || "";
   document.getElementById("volModal").classList.add("show");
 }
-
-function saveVolunteer(){
+async function saveVolunteer(){
   const name = document.getElementById("vName").value.trim();
   const user = document.getElementById("vUser").value.trim().toLowerCase();
   if(!name){ alert("Informe o nome."); return; }
   if(!user){ alert("Informe o usuário de login."); return; }
-
   const duplicado = DB.volunteers.some((v, idx)=> v.user === user && idx !== editingVolunteer);
   if(duplicado){ alert("⚠️ Este usuário já está em uso."); return; }
-
   const v = {
     name: name, user: user,
     email: document.getElementById("vEmail").value.trim(),
@@ -2050,43 +2361,31 @@ function saveVolunteer(){
     availability: document.getElementById("vAvailability").value.trim(),
     notes: document.getElementById("vNotes").value.trim()
   };
-
-  if(editingVolunteer < 0){
-    DB.volunteers.push(v);
-    DB.senhas[user] = user + "123";
-    registrarLog("👤", 'cadastrou o voluntário "' + name + '"');
-  } else {
-    const antigoUser = DB.volunteers[editingVolunteer].user;
-    DB.volunteers[editingVolunteer] = v;
-    if(antigoUser !== user){
-      DB.senhas[user] = DB.senhas[antigoUser] || user + "123";
-      delete DB.senhas[antigoUser];
-    }
-    registrarLog("✏️", 'editou o cadastro de "' + name + '"');
-  }
-
+  if(editingVolunteer >= 0) v.id = DB.volunteers[editingVolunteer].id;
+  const editando = editingVolunteer >= 0;
+  const ok = await salvarVoluntarioSupabase(v, editando);
+  if(!ok) return;
+  await registrarLog(editando ? "✏️" : "👤", (editando ? 'editou o cadastro de "' : 'cadastrou o voluntário "') + name + '"');
   closeModal("volModal");
-  saveLocal(); renderAll();
+  await carregarDoSupabase();
+  renderAll();
 }
-
-function deleteVolunteer(i){
+async function deleteVolunteer(i){
   if(!podeEditarAvisos()) return alert("Você não tem permissão.");
   const v = DB.volunteers[i];
   if(!v) return;
   if(!confirm("Excluir cadastro de " + v.name + "?\n\nO histórico nas escalas permanece, mas o acesso será removido.")) return;
-  if(v.user) delete DB.senhas[v.user];
-  DB.volunteers.splice(i,1);
-  registrarLog("❌", 'removeu o voluntário "' + v.name + '"');
-  saveLocal(); renderAll();
+  await excluirVoluntarioSupabase(v.id, v.user);
+  await registrarLog("❌", 'removeu o voluntário "' + v.name + '"');
+  await carregarDoSupabase();
+  renderAll();
 }
-
 function renderVolunteers(){
   const q = (document.getElementById("volSearch").value||"").toLowerCase();
   const af = (document.getElementById("availabilityFilter").value||"all").toLowerCase();
   const podeEdit = podeEditarAvisos();
   const podeAvisar = podeEditarAvisos();
   let html = "";
-
   DB.volunteers.forEach((v,i)=>{
     const text = (v.name + " " + v.email + " " + v.functions).toLowerCase();
     if(q && !text.includes(q)) return;
@@ -2094,11 +2393,9 @@ function renderVolunteers(){
     const total = countParticipation(v.name, "all").total;
     const temEscalaNoMes = countParticipation(v.name, currentMonth).total > 0;
     const temTel = v.phone && v.phone.trim();
-
     const btnWhats = (podeAvisar && temEscalaNoMes)
       ? '<button class="whats btn-xs" onclick="enviarWhatsMensal(\'' + esc(v.name).replace(/'/g,"\\'") + '\')" title="Enviar resumo mensal" ' + (temTel ? "" : "disabled") + '>📱</button> '
       : '';
-
     html += '<tr>' +
       '<td><b>' + esc(v.name) + '</b></td>' +
       '<td>' + (esc(v.user)||"—") + '</td>' +
@@ -2107,13 +2404,11 @@ function renderVolunteers(){
       '<td>' + (esc(v.functions)||"—") + '</td>' +
       '<td>' + (esc(v.availability)||"—") + '</td>' +
       '<td>' + total + '</td>' +
-      '<td class="col-acao">' +
-        btnWhats +
+      '<td class="col-acao">' + btnWhats +
         (podeEdit ? '<button class="dark btn-xs" onclick="editVolunteer(' + i + ')">Editar</button> <button class="danger btn-xs" onclick="deleteVolunteer(' + i + ')">✕</button>' : "—") +
       '</td>' +
     '</tr>';
   });
-
   document.getElementById("volTable").innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum voluntário cadastrado.</td></tr>';
   renderBirthdaysByMonth();
 }
@@ -2132,7 +2427,6 @@ function countParticipation(name, monthFilter){
   };
   const matches = [norm];
   Object.keys(aliases).forEach(k=>{ if(aliases[k].includes(norm)) matches.push(...aliases[k]); });
-
   let total=0, f={Story:0,Fotografia:0,Datashow:0,Som:0};
   Object.keys(DB.scale).forEach(m=>{
     if(monthFilter !== "all" && m !== monthFilter) return;
@@ -2145,7 +2439,6 @@ function countParticipation(name, monthFilter){
   });
   return {total, functions:f};
 }
-
 function workloadLevel(t){ if(t >= 8) return "high"; if(t >= 4) return "medium"; return "low"; }
 function levelLabel(x){ return x === "high" ? "Alta" : x === "medium" ? "Média" : "Baixa"; }
 
@@ -2156,25 +2449,21 @@ function renderBirthdayNotice(){
   const hoje = new Date();
   const semanaIni = new Date(hoje); semanaIni.setDate(hoje.getDate() - hoje.getDay()); semanaIni.setHours(0,0,0,0);
   const semanaFim = new Date(semanaIni); semanaFim.setDate(semanaIni.getDate() + 7);
-
   const people = DB.volunteers.filter(v=>{
     if(!v.birth) return false;
     const dia = parseInt(v.birth.substring(8,10));
     const mes = parseInt(v.birth.substring(5,7));
-    const dataAniv = new Date(hoje.getFullYear(), mes-1, dia);
-    return dataAniv >= semanaIni && dataAniv < semanaFim;
+    const dA = new Date(hoje.getFullYear(), mes-1, dia);
+    return dA >= semanaIni && dA < semanaFim;
   });
-
   const box = document.getElementById("birthdayNotice");
   if(!box) return;
   if(!people.length){ box.innerHTML = ""; return; }
-
   box.innerHTML = '<div class="notice birthday">' +
     '<b>🎂 Aniversários desta semana</b><br>' +
     people.map(v => '🎉 <b>' + esc(v.name) + '</b> — ' + v.birth.substring(8,10) + '/' + v.birth.substring(5,7)).join("<br>") +
   '</div>';
 }
-
 function renderBirthdaysByMonth(){
   document.getElementById("birthdayMonth").textContent = monthName();
   const people = DB.volunteers.filter(v => v.birth && v.birth.substring(5,7) === currentMonth);
@@ -2192,19 +2481,23 @@ function newTraining(){
   document.getElementById("tStage").value = "Interesse";
   document.getElementById("trainModal").classList.add("show");
 }
-function saveTraining(){
+async function saveTraining(){
   const name = document.getElementById("tName").value.trim();
   if(!name){ alert("Informe o nome."); return; }
-  DB.trainings.push({
+  const novo = {
     name: name, area: document.getElementById("tArea").value,
     mentor: document.getElementById("tMentor").value,
     stage: document.getElementById("tStage").value,
     availability: document.getElementById("tAvailability").value,
     last: document.getElementById("tLast").value,
     next: document.getElementById("tNext").value
-  });
-  registrarLog("🌱", 'adicionou "' + name + '" ao treinamento');
-  closeModal("trainModal"); saveLocal(); renderAll();
+  };
+  const ok = await salvarTrainingSupabase(novo);
+  if(!ok) return;
+  await registrarLog("🌱", 'adicionou "' + name + '" ao treinamento');
+  closeModal("trainModal");
+  await carregarDoSupabase();
+  renderAll();
 }
 function renderTrainings(){
   const podeEdit = podeEditarAvisos();
@@ -2219,9 +2512,13 @@ function renderTrainings(){
   });
   document.getElementById("trainingTable").innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum treinamento cadastrado.</td></tr>';
 }
-function deleteTraining(i){
+async function deleteTraining(i){
   if(!podeEditarAvisos()) return alert("Você não tem permissão.");
-  if(confirm("Excluir este talento?")){ DB.trainings.splice(i,1); saveLocal(); renderAll(); }
+  if(!confirm("Excluir este talento?")) return;
+  const t = DB.trainings[i];
+  await excluirTrainingSupabase(t.id);
+  await carregarDoSupabase();
+  renderAll();
 }
 
 /* ==========================================================
@@ -2253,7 +2550,6 @@ function renderHistory(){
   });
   document.getElementById("historyTable").innerHTML = html || '<tr><td colspan="7" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum registro.</td></tr>';
 }
-
 function renderLoad(){
   const box = document.getElementById("loadTable");
   if(!box) return;
@@ -2293,20 +2589,25 @@ function abrirPerfil(){
   document.getElementById("perfilErro").textContent = "";
   document.getElementById("perfilModal").classList.add("show");
 }
-
-function salvarNovaSenha(){
+async function salvarNovaSenha(){
   const atual = document.getElementById("perfilAtual").value;
   const nova = document.getElementById("perfilNova").value;
   const nova2 = document.getElementById("perfilNova2").value;
   const err = document.getElementById("perfilErro");
-
   if(!usuarioAtual) return;
   if(atual !== DB.senhas[usuarioAtual.user]){ err.textContent = "❌ Senha atual incorreta."; return; }
   if(nova.length < 4){ err.textContent = "⚠️ A nova senha precisa ter ao menos 4 caracteres."; return; }
   if(nova !== nova2){ err.textContent = "❌ As senhas não coincidem."; return; }
+  setStatus("syncing", "Salvando...");
+  const { error } = await supabase.from("passwords").update({ password: nova }).eq("user_login", usuarioAtual.user);
+  if(error){
+    err.textContent = "❌ Erro ao salvar no servidor.";
+    setStatus("offline", "Erro");
+    return;
+  }
   DB.senhas[usuarioAtual.user] = nova;
-  registrarLog("🔑", 'alterou a própria senha');
-  saveLocal(); renderLog();
+  await registrarLog("🔑", 'alterou a própria senha');
+  setStatus("online");
   closeModal("perfilModal");
   alert("✅ Senha alterada com sucesso!");
 }
@@ -2316,12 +2617,7 @@ function salvarNovaSenha(){
 ========================================================== */
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 
-/* ==========================================================
-   LINKS
-========================================================== */
-function abrirFinanceiro(){
-  window.open("financeiro/", "_blank");
-}
+function abrirFinanceiro(){ window.open("financeiro/", "_blank"); }
 
 /* ==========================================================
    RENDER GERAL
@@ -2342,22 +2638,39 @@ function renderAll(){
 /* ==========================================================
    INICIALIZAÇÃO
 ========================================================== */
-loadLocal();
-seedDados();
-
-const userLogado = sessionStorage.getItem("mh_logado_user");
-if(userLogado){
-  const vol = DB.volunteers.find(v => v.user === userLogado);
-  if(vol){
-    usuarioAtual = vol;
-    definirPerfil(vol);
-    abrirApp();
-  } else {
-    setTimeout(()=>document.getElementById("loginUser").focus(), 200);
+window.addEventListener("DOMContentLoaded", async ()=>{
+  // 1. Inicia Supabase
+  if(!initSupabase()){
+    document.getElementById("loadingTexto").textContent = "❌ Erro ao conectar com o servidor";
+    return;
   }
-} else {
+
+  // 2. Carrega dados
+  const ok = await carregarDoSupabase();
+  if(!ok){
+    document.getElementById("loadingTexto").textContent = "❌ Erro ao carregar dados";
+    return;
+  }
+
+  // 3. Esconde loading
+  document.getElementById("loadingOverlay").classList.add("hidden");
+
+  // 4. Verifica login salvo
+  const userLogado = sessionStorage.getItem("mh_logado_user");
+  if(userLogado){
+    const vol = DB.volunteers.find(v => v.user === userLogado);
+    if(vol){
+      usuarioAtual = vol;
+      definirPerfil(vol);
+      abrirApp();
+      return;
+    }
+  }
+
+  // 5. Senão, mostra tela de login
+  document.getElementById("loginScreen").classList.remove("hidden");
   setTimeout(()=>document.getElementById("loginUser").focus(), 200);
-}
+});
 </script>
 </body>
 </html>
