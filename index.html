@@ -10,20 +10,61 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
-  --bg-nivel-0:#071426;--bg-nivel-1:#0e2444;--bg-nivel-2:#0a1e3d;--bg-nivel-3:#16335c;
-  --borda:#1e3a5f;--borda-clara:#2a4d7a;
-  --texto:#e8eef7;--texto-70:rgba(232,238,247,.7);--texto-55:rgba(232,238,247,.55);--texto-40:rgba(232,238,247,.4);
-  --dourado:#c9a961;--dourado-claro:#e6c980;--dourado-escuro:#a88945;
-  --dourado-10:rgba(201,169,97,.1);--dourado-20:rgba(201,169,97,.2);--dourado-30:rgba(201,169,97,.3);
-  --verde:#4ade80;--verde-forte:#22c55e;--verde-whats:#25d366;--vermelho:#f87171;--amarelo:#fbbf24;
+  --bg-nivel-0:#071426;
+  --bg-nivel-1:#0e2444;
+  --bg-nivel-2:#0a1e3d;
+  --bg-nivel-3:#16335c;
+  --borda:#1e3a5f;
+  --borda-clara:#2a4d7a;
+  --texto:#e8eef7;
+  --texto-70:rgba(232,238,247,.7);
+  --texto-55:rgba(232,238,247,.55);
+  --texto-40:rgba(232,238,247,.4);
+  --dourado:#c9a961;
+  --dourado-claro:#e6c980;
+  --dourado-escuro:#a88945;
+  --dourado-10:rgba(201,169,97,.1);
+  --dourado-20:rgba(201,169,97,.2);
+  --dourado-30:rgba(201,169,97,.3);
+  --verde:#4ade80;
+  --verde-forte:#22c55e;
+  --verde-whats:#25d366;
+  --vermelho:#f87171;
+  --amarelo:#fbbf24;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:var(--bg-nivel-0);color:var(--texto);font-size:14px;position:relative;overflow-x:hidden;min-height:100vh}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background-image:radial-gradient(ellipse at 50% 0%, rgba(30,58,95,.55) 0%, transparent 55%),url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-body::after{content:"";position:fixed;bottom:0;left:0;right:0;height:45vh;background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400' preserveAspectRatio='xMidYMax slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%232a4d7a' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%232a4d7a' stop-opacity='0.22'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M0,400 L0,300 L120,220 L200,270 L320,150 L440,240 L560,120 L680,220 L820,80 L960,200 L1100,140 L1240,240 L1360,180 L1440,260 L1440,400 Z'/%3E%3C/svg%3E");background-size:100% auto;background-position:bottom center;background-repeat:no-repeat;pointer-events:none;z-index:0;opacity:.55}
+body{
+  margin:0;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  background:var(--bg-nivel-0);
+  color:var(--texto);
+  font-size:14px;
+  position:relative;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(30,58,95,.55) 0%, transparent 55%),
+    url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body::after{
+  content:"";position:fixed;bottom:0;left:0;right:0;height:45vh;
+  background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400' preserveAspectRatio='xMidYMax slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%232a4d7a' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%232a4d7a' stop-opacity='0.22'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M0,400 L0,300 L120,220 L200,270 L320,150 L440,240 L560,120 L680,220 L820,80 L960,200 L1100,140 L1240,240 L1360,180 L1440,260 L1440,400 Z'/%3E%3C/svg%3E");
+  background-size:100% auto;background-position:bottom center;background-repeat:no-repeat;
+  pointer-events:none;z-index:0;opacity:.55;
+}
 main,header,nav,div,section,table{position:relative;z-index:1}
-.conn-status{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;transition:all .3s}
+
+.conn-status{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:20px;
+  font-size:11px;font-weight:700;letter-spacing:.5px;
+  text-transform:uppercase;
+  transition:all .3s;
+}
 .conn-status.online{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.35)}
 .conn-status.syncing{background:rgba(251,191,36,.15);color:#fcd34d;border:1px solid rgba(251,191,36,.35)}
 .conn-status.offline{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
@@ -31,36 +72,162 @@ main,header,nav,div,section,table{position:relative;z-index:1}
 .conn-status.syncing .conn-dot{animation:spin .8s linear infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-#loginScreen{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#071426 0%,#0a1e3d 100%)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.loading-overlay{
+  position:fixed;inset:0;z-index:150;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(7,20,38,.85);
+  backdrop-filter:blur(4px);
+}
+.loading-overlay.hidden{display:none}
+.loading-box{text-align:center;color:var(--texto)}
+.loading-box .spinner{
+  width:50px;height:50px;
+  border:4px solid var(--borda-clara);
+  border-top-color:var(--dourado);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:0 auto 20px;
+}
+.loading-box p{font-size:14px;letter-spacing:1px;color:var(--texto-70)}
+
+#loginScreen{
+  position:fixed;inset:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  background:linear-gradient(135deg,#071426 0%,#0a1e3d 100%);
+}
 #loginScreen.hidden{display:none}
-.login-card{background:var(--bg-nivel-1);border:1px solid var(--borda-clara);border-radius:16px;padding:40px 36px;width:min(420px,100%);text-align:center;box-shadow:0 25px 70px rgba(0,0,0,.7);animation:fadeIn .4s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.login-card .logo-svg{width:80px;height:80px;margin:0 auto 18px;display:block;filter:drop-shadow(0 4px 20px rgba(201,169,97,.3))}
-.login-card h1{margin:0 0 6px;font-family:'Cinzel',serif;font-weight:700;font-size:22px;letter-spacing:4px;color:#fff}
+.login-card{
+  background:var(--bg-nivel-1);
+  border:1px solid var(--borda-clara);
+  border-radius:16px;
+  padding:40px 36px;
+  width:min(420px,100%);
+  text-align:center;
+  box-shadow:0 25px 70px rgba(0,0,0,.7);
+  animation:fadeIn .4s ease;
+}
+.login-card .logo-svg{
+  width:80px;height:80px;margin:0 auto 18px;display:block;
+  filter:drop-shadow(0 4px 20px rgba(201,169,97,.3));
+}
+.login-card h1{
+  margin:0 0 6px;
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:22px;
+  letter-spacing:4px;
+  color:#fff;
+}
 .login-card h1 span{color:var(--dourado);font-weight:900}
-.login-card p{margin:0 0 28px;font-size:12px;color:var(--texto-70);letter-spacing:2px;text-transform:uppercase}
-.login-card input{width:100%;padding:14px;border:1px solid var(--borda);border-radius:10px;font-size:15px;font-family:inherit;background:var(--bg-nivel-0);color:var(--texto);transition:all .18s;margin-bottom:10px}
-.login-card input:focus{outline:none;border-color:var(--dourado);box-shadow:0 0 0 3px var(--dourado-20)}
-.login-card button{width:100%;margin-top:8px;padding:14px;font-size:14px;letter-spacing:1px}
-.login-card .erro{color:var(--vermelho);font-size:12px;margin-top:12px;min-height:18px}
-.login-card .link-visitante{display:block;margin-top:20px;color:var(--texto-55);font-size:12px;text-decoration:none;cursor:pointer}
+.login-card p{
+  margin:0 0 28px;
+  font-size:12px;
+  color:var(--texto-70);
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.login-card input{
+  width:100%;padding:14px;
+  border:1px solid var(--borda);
+  border-radius:10px;
+  font-size:15px;
+  font-family:inherit;
+  background:var(--bg-nivel-0);
+  color:var(--texto);
+  transition:all .18s;
+  margin-bottom:10px;
+}
+.login-card input:focus{
+  outline:none;
+  border-color:var(--dourado);
+  box-shadow:0 0 0 3px var(--dourado-20);
+}
+.login-card button{
+  width:100%;margin-top:8px;
+  padding:14px;
+  font-size:14px;
+  letter-spacing:1px;
+}
+.login-card .erro{
+  color:var(--vermelho);
+  font-size:12px;
+  margin-top:12px;
+  min-height:18px;
+}
+.login-card .link-visitante{
+  display:block;
+  margin-top:20px;
+  color:var(--texto-55);
+  font-size:12px;
+  text-decoration:none;
+  cursor:pointer;
+}
 .login-card .link-visitante:hover{color:var(--dourado)}
-header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:24px 40px;min-height:130px;background:linear-gradient(180deg,#0a1a30 0%,#071426 100%);border-bottom:1px solid var(--dourado-30);box-shadow:0 4px 32px rgba(0,0,0,.5);position:sticky;top:0;z-index:30}
+
+header{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  padding:24px 40px;
+  min-height:130px;
+  background:linear-gradient(180deg,#0a1a30 0%,#071426 100%);
+  border-bottom:1px solid var(--dourado-30);
+  box-shadow:0 4px 32px rgba(0,0,0,.5);
+  position:sticky;top:0;z-index:30;
+}
 .header-left{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
 .header-center{display:flex;flex-direction:column;align-items:center;gap:4px}
 .logo-wrap{display:flex;align-items:center;gap:16px;justify-content:center}
-.logo-svg{width:64px;height:64px;flex-shrink:0;filter:drop-shadow(0 4px 20px rgba(201,169,97,.22))}
+.logo-svg{
+  width:64px;height:64px;flex-shrink:0;
+  filter:drop-shadow(0 4px 20px rgba(201,169,97,.22));
+}
 .titulo-grupo{display:flex;flex-direction:column;line-height:1}
-.titulo-grupo h1{margin:0;font-family:'Cinzel',serif;font-weight:700;font-size:28px;letter-spacing:5px;color:#fff;white-space:nowrap}
+.titulo-grupo h1{
+  margin:0;
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:28px;
+  letter-spacing:5px;
+  color:#fff;
+  white-space:nowrap;
+}
 .titulo-grupo h1 span{color:var(--dourado);font-weight:900}
 .header-right{display:flex;justify-content:flex-end;gap:8px;align-items:center;flex-wrap:wrap}
-.user-badge{background:var(--dourado-10);color:var(--dourado-claro);border:1px solid var(--dourado-30);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:.3px;white-space:nowrap}
-button{border:0;border-radius:8px;padding:11px 18px;cursor:pointer;font-weight:600;font-size:13px;transition:all .2s cubic-bezier(.4,0,.2,1);font-family:inherit;letter-spacing:.3px;color:var(--texto)}
+.user-badge{
+  background:var(--dourado-10);
+  color:var(--dourado-claro);
+  border:1px solid var(--dourado-30);
+  padding:6px 14px;border-radius:20px;
+  font-size:12px;font-weight:600;letter-spacing:.3px;
+  white-space:nowrap;
+}
+
+button{
+  border:0;border-radius:8px;
+  padding:11px 18px;cursor:pointer;
+  font-weight:600;font-size:13px;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+  font-family:inherit;
+  letter-spacing:.3px;
+  color:var(--texto);
+}
 button:hover{transform:translateY(-1px)}
 button:active{transform:translateY(0)}
 button:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.primary{background:linear-gradient(180deg,var(--dourado) 0%,var(--dourado-escuro) 100%);color:#1a1206;box-shadow:0 2px 10px rgba(201,169,97,.3);font-weight:700}
-.primary:hover{background:linear-gradient(180deg,var(--dourado-claro) 0%,var(--dourado) 100%);box-shadow:0 6px 18px rgba(201,169,97,.45)}
+.primary{
+  background:linear-gradient(180deg,var(--dourado) 0%,var(--dourado-escuro) 100%);
+  color:#1a1206;
+  box-shadow:0 2px 10px rgba(201,169,97,.3);
+  font-weight:700;
+}
+.primary:hover{
+  background:linear-gradient(180deg,var(--dourado-claro) 0%,var(--dourado) 100%);
+  box-shadow:0 6px 18px rgba(201,169,97,.45);
+}
 .dark{background:var(--bg-nivel-3);color:var(--texto);border:1px solid var(--borda-clara)}
 .dark:hover{background:#1e4074;border-color:var(--dourado)}
 .danger{background:#7f1d1d;color:#fca5a5;padding:7px 13px;font-size:12px;border:1px solid #991b1b}
@@ -75,94 +242,262 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .whats:hover{background:#1eb655}
 .btn-sm{padding:6px 12px;font-size:12px}
 .btn-xs{padding:4px 8px;font-size:11px;border-radius:5px}
-.tabs{display:flex;justify-content:center;align-items:center;gap:4px;background:rgba(10,30,61,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:0 20px;border-bottom:1px solid var(--borda);position:sticky;top:130px;z-index:25;box-shadow:0 2px 12px rgba(0,0,0,.3);overflow-x:auto}
+
+.tabs{
+  display:flex;justify-content:center;align-items:center;gap:4px;
+  background:rgba(10,30,61,.85);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  padding:0 20px;
+  border-bottom:1px solid var(--borda);
+  position:sticky;top:130px;z-index:25;
+  box-shadow:0 2px 12px rgba(0,0,0,.3);
+  overflow-x:auto;
+}
 .tabs::-webkit-scrollbar{height:0}
 .tabs{scrollbar-width:none;-ms-overflow-style:none}
-.tabs button{background:transparent;color:var(--texto-55);white-space:nowrap;padding:17px 20px;font-size:13px;font-weight:600;border-radius:0;border-bottom:2px solid transparent;transition:all .2s}
+.tabs button{
+  background:transparent;color:var(--texto-55);
+  white-space:nowrap;padding:17px 20px;
+  font-size:13px;font-weight:600;
+  border-radius:0;border-bottom:2px solid transparent;
+  transition:all .2s;
+}
 .tabs button:hover{color:var(--dourado-claro);transform:none;background:rgba(201,169,97,.05)}
-.tabs button.active{background:transparent;color:var(--dourado);border-bottom:2px solid var(--dourado);font-weight:700}
-.months{display:flex;justify-content:center;align-items:center;gap:8px;background:rgba(7,20,38,.95);backdrop-filter:blur(8px);padding:14px 20px;border-bottom:1px solid var(--borda);position:sticky;top:178px;z-index:24;overflow-x:auto}
+.tabs button.active{
+  background:transparent;color:var(--dourado);
+  border-bottom:2px solid var(--dourado);font-weight:700;
+}
+
+.months{
+  display:flex;justify-content:center;align-items:center;gap:8px;
+  background:rgba(7,20,38,.95);
+  backdrop-filter:blur(8px);
+  padding:14px 20px;
+  border-bottom:1px solid var(--borda);
+  position:sticky;top:178px;z-index:24;
+  overflow-x:auto;
+}
 .months::-webkit-scrollbar{height:0}
 .months{scrollbar-width:none;-ms-overflow-style:none}
-.months button{background:transparent;color:var(--texto-55);white-space:nowrap;padding:8px 15px;font-size:12px;font-weight:600;border-radius:20px;border:1px solid transparent;transition:all .18s}
+.months button{
+  background:transparent;color:var(--texto-55);
+  white-space:nowrap;padding:8px 15px;
+  font-size:12px;font-weight:600;
+  border-radius:20px;border:1px solid transparent;
+  transition:all .18s;
+}
 .months button:hover{color:var(--dourado-claro);border-color:var(--dourado-30);transform:none}
 .months button.active{background:var(--dourado);color:#1a1206;border-color:var(--dourado);font-weight:700}
-.loading-overlay{position:fixed;inset:0;z-index:150;display:flex;align-items:center;justify-content:center;background:rgba(7,20,38,.85);backdrop-filter:blur(4px)}
-.loading-overlay.hidden{display:none}
-.loading-box{text-align:center;color:var(--texto)}
-.loading-box .spinner{width:50px;height:50px;border:4px solid var(--borda-clara);border-top-color:var(--dourado);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px}
-.loading-box p{font-size:14px;letter-spacing:1px;color:var(--texto-70)}
+
 .container{max-width:1500px;margin:auto;padding:28px 20px 80px}
 .page{display:none;animation:fadeIn .35s ease}
 .page.active{display:block}
-.avisos-topo{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
-.aviso-card{background:linear-gradient(135deg,rgba(30,58,95,.4) 0%,rgba(10,30,61,.6) 100%);border:1px solid var(--borda-clara);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden}
-.aviso-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--dourado),transparent)}
+
+.avisos-topo{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;
+}
+.aviso-card{
+  background:linear-gradient(135deg,rgba(30,58,95,.4) 0%,rgba(10,30,61,.6) 100%);
+  border:1px solid var(--borda-clara);
+  border-radius:12px;padding:20px 22px;
+  position:relative;overflow:hidden;
+}
+.aviso-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,var(--dourado),transparent);
+}
 .aviso-card.aniversarios::before{background:linear-gradient(180deg,#ec4899,transparent)}
-.aviso-card h3{margin:0 0 14px;font-size:13px;font-weight:700;color:var(--dourado);letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.aviso-card h3{
+  margin:0 0 14px;font-size:13px;font-weight:700;
+  color:var(--dourado);letter-spacing:1px;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
 .aviso-card.aniversarios h3{color:#f9a8d4}
 .aviso-card .conteudo{font-size:13px;line-height:1.7;color:var(--texto)}
 .aviso-card .vazio{color:var(--texto-40);font-size:12px;font-style:italic}
-.aviso-item{padding:10px 0;border-bottom:1px solid rgba(30,58,95,.5);font-size:13px;line-height:1.55;position:relative}
+.aviso-item{
+  padding:10px 0;border-bottom:1px solid rgba(30,58,95,.5);
+  font-size:13px;line-height:1.55;position:relative;
+}
 .aviso-item:last-child{border-bottom:0;padding-bottom:0}
 .aviso-item .data{color:var(--texto-55);font-size:11px;letter-spacing:.5px;margin-bottom:4px}
 .aviso-item .titulo{color:var(--dourado-claro);font-weight:700}
 .aviso-item .texto{color:var(--texto-70);margin-top:2px}
-.aviso-item .btn-excluir-aviso{position:absolute;top:8px;right:0;background:transparent;color:var(--texto-40);border:0;padding:4px 8px;cursor:pointer;font-size:14px}
+.aviso-item .btn-excluir-aviso{
+  position:absolute;top:8px;right:0;background:transparent;
+  color:var(--texto-40);border:0;padding:4px 8px;cursor:pointer;font-size:14px;
+}
 .aviso-item .btn-excluir-aviso:hover{color:var(--vermelho);background:transparent;transform:none}
-.log-box{background:linear-gradient(135deg,rgba(30,58,95,.4) 0%,rgba(10,30,61,.6) 100%);border:1px solid var(--borda-clara);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden;margin-bottom:24px}
-.log-box::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,#3b82f6,transparent)}
-.log-box h3{margin:0 0 14px;font-size:13px;font-weight:700;color:#93c5fd;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
-.log-lista{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;padding-right:6px}
-.log-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:rgba(30,58,95,.4);border-left:2px solid var(--borda-clara);border-radius:6px;font-size:12px;line-height:1.5}
-.log-item .log-hora{color:var(--texto-55);font-size:11px;white-space:nowrap;flex-shrink:0;font-family:'Courier New',monospace}
+
+.log-box{
+  background:linear-gradient(135deg,rgba(30,58,95,.4) 0%,rgba(10,30,61,.6) 100%);
+  border:1px solid var(--borda-clara);
+  border-radius:12px;padding:20px 22px;
+  position:relative;overflow:hidden;margin-bottom:24px;
+}
+.log-box::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,#3b82f6,transparent);
+}
+.log-box h3{
+  margin:0 0 14px;font-size:13px;font-weight:700;
+  color:#93c5fd;letter-spacing:1px;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.log-lista{
+  display:flex;flex-direction:column;gap:8px;
+  max-height:280px;overflow-y:auto;padding-right:6px;
+}
+.log-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 12px;background:rgba(30,58,95,.4);
+  border-left:2px solid var(--borda-clara);
+  border-radius:6px;font-size:12px;line-height:1.5;
+}
+.log-item .log-hora{
+  color:var(--texto-55);font-size:11px;
+  white-space:nowrap;flex-shrink:0;
+  font-family:'Courier New',monospace;
+}
 .log-item .log-texto{color:var(--texto-70);flex:1}
 .log-item .log-texto b{color:var(--dourado-claro);font-weight:700}
+.log-vazio{text-align:center;padding:20px;color:var(--texto-40);font-size:12px;font-style:italic}
+
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:26px}
-.card{background:linear-gradient(180deg,var(--bg-nivel-1) 0%,#0a1e3d 100%);border:1px solid var(--borda);border-radius:12px;padding:24px;transition:all .25s;position:relative;overflow:hidden}
-.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--dourado) 0%,transparent 100%)}
+.card{
+  background:linear-gradient(180deg,var(--bg-nivel-1) 0%,#0a1e3d 100%);
+  border:1px solid var(--borda);border-radius:12px;padding:24px;
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--dourado) 0%,transparent 100%);
+}
 .card:hover{border-color:var(--borda-clara);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.4)}
 .card span{font-size:11px;color:var(--texto-55);font-weight:600;letter-spacing:1px;text-transform:uppercase}
-.card strong{display:block;font-size:36px;margin:12px 0 4px;color:var(--dourado);font-weight:800;font-family:'Cinzel',serif;letter-spacing:2px;line-height:1}
-.box{background:var(--bg-nivel-1);border:1px solid var(--borda);border-radius:12px;margin-bottom:24px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.3)}
-.box-title{background:var(--bg-nivel-2);color:var(--texto);padding:18px 24px;font-weight:700;font-size:14px;border-bottom:1px solid var(--borda);letter-spacing:.8px;display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.card strong{
+  display:block;font-size:36px;margin:12px 0 4px;
+  color:var(--dourado);font-weight:800;
+  font-family:'Cinzel',serif;letter-spacing:2px;line-height:1;
+}
+
+.box{
+  background:var(--bg-nivel-1);border:1px solid var(--borda);
+  border-radius:12px;margin-bottom:24px;overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,.3);
+}
+.box-title{
+  background:var(--bg-nivel-2);color:var(--texto);
+  padding:18px 24px;font-weight:700;font-size:14px;
+  border-bottom:1px solid var(--borda);letter-spacing:.8px;
+  display:flex;align-items:center;gap:10px;justify-content:space-between;
+  flex-wrap:wrap;
+}
 .box-title .titulo-esq{display:flex;align-items:center;gap:10px}
-.box-title .titulo-esq::before{content:"";width:3px;height:18px;background:var(--dourado);border-radius:2px}
-.notice{padding:15px 20px;border-left:3px solid var(--dourado);background:var(--dourado-10);border-radius:8px;margin:0 0 20px;font-size:13px;line-height:1.65;color:var(--texto)}
+.box-title .titulo-esq::before{
+  content:"";width:3px;height:18px;
+  background:var(--dourado);border-radius:2px;
+}
+
+.notice{
+  padding:15px 20px;border-left:3px solid var(--dourado);
+  background:var(--dourado-10);border-radius:8px;
+  margin:0 0 20px;font-size:13px;line-height:1.65;color:var(--texto);
+}
 .notice.info{background:rgba(59,130,246,.08);border-left-color:#3b82f6;color:#bfdbfe}
 .notice.warn{background:rgba(251,191,36,.08);border-left-color:#fbbf24;color:#fef3c7}
 .notice.birthday{background:rgba(236,72,153,.1);border-left-color:#ec4899;color:#fbcfe8}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;padding:16px 24px;border-bottom:1px solid var(--borda);background:rgba(7,20,38,.5);align-items:center}
-.toolbar input,.toolbar select{padding:10px 14px;border:1px solid var(--borda);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-nivel-0);color:var(--texto);transition:all .18s}
+
+.toolbar{
+  display:flex;gap:10px;flex-wrap:wrap;
+  padding:16px 24px;border-bottom:1px solid var(--borda);
+  background:rgba(7,20,38,.5);align-items:center;
+}
+.toolbar input,.toolbar select{
+  padding:10px 14px;border:1px solid var(--borda);
+  border-radius:8px;font-size:13px;font-family:inherit;
+  background:var(--bg-nivel-0);color:var(--texto);transition:all .18s;
+}
 .toolbar input::placeholder{color:var(--texto-40)}
-.toolbar input:focus,.toolbar select:focus{outline:none;border-color:var(--dourado);box-shadow:0 0 0 3px var(--dourado-20)}
+.toolbar input:focus,.toolbar select:focus{
+  outline:none;border-color:var(--dourado);
+  box-shadow:0 0 0 3px var(--dourado-20);
+}
+
 .table-wrap{overflow-x:auto;background:var(--bg-nivel-2)}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:var(--bg-nivel-2);color:var(--dourado);padding:14px 16px;text-align:left;border-bottom:2px solid var(--borda-clara);white-space:nowrap;font-size:11px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700}
-td{padding:12px 16px;border-bottom:1px solid rgba(30,58,95,.6);vertical-align:middle;color:var(--texto);font-weight:500;background:var(--bg-nivel-1)}
+th{
+  background:var(--bg-nivel-2);color:var(--dourado);
+  padding:14px 16px;text-align:left;
+  border-bottom:2px solid var(--borda-clara);
+  white-space:nowrap;font-size:11px;
+  text-transform:uppercase;letter-spacing:1.2px;font-weight:700;
+}
+td{
+  padding:12px 16px;border-bottom:1px solid rgba(30,58,95,.6);
+  vertical-align:middle;color:var(--texto);font-weight:500;
+  background:var(--bg-nivel-1);
+}
 tr:hover td{background:var(--bg-nivel-3)}
 tr:last-child td{border-bottom:0}
+
 td.cult{background:rgba(22,51,92,.55);padding:12px 16px}
-td.cult input{display:inline-block;width:auto;background:transparent;border:0;padding:4px 6px;font-family:inherit;font-size:13px;font-weight:600;color:var(--texto);border-radius:4px;line-height:1.3}
+td.cult input{
+  display:inline-block;width:auto;background:transparent;border:0;
+  padding:4px 6px;font-family:inherit;font-size:13px;
+  font-weight:600;color:var(--texto);border-radius:4px;line-height:1.3;
+}
 td.cult input:focus{background:var(--bg-nivel-0);outline:2px solid var(--dourado);outline-offset:0}
 td.cult input:first-child{color:var(--dourado);font-weight:700;font-size:12px;letter-spacing:.5px}
 td.cult input:first-child::after{content:"·";color:var(--dourado-30);margin:0 8px;font-weight:400;font-size:16px;vertical-align:-2px}
-td.cult input:nth-child(2){color:var(--dourado-claro);font-style:normal;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.9}
+td.cult input:nth-child(2){
+  color:var(--dourado-claro);font-style:normal;
+  font-size:11px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;opacity:.9;
+}
 td.cult input:nth-child(2)::after{content:"·";color:var(--dourado-30);margin:0 8px;font-style:normal;font-weight:400;font-size:16px;vertical-align:-2px}
 td.cult input:nth-child(3){color:var(--texto);font-weight:700;font-size:13px}
-td.story,td.foto,td.data,td.som{padding:10px 12px;font-size:13px;vertical-align:middle;font-weight:500;position:relative}
+
+td.story,td.foto,td.data,td.som{
+  padding:10px 12px;font-size:13px;
+  vertical-align:middle;font-weight:500;position:relative;
+}
 td.story{background:rgba(30,58,95,.5);color:#c7d2fe}
 td.foto{background:rgba(30,58,95,.3);color:#dbeafe}
 td.data{background:rgba(30,58,95,.4);color:#bfdbfe}
 td.som{background:rgba(30,58,95,.55);color:#dbeafe}
+
 .celula-funcao{display:flex;align-items:center;gap:6px}
-.celula-funcao input{flex:1;min-width:0;padding:5px 4px;border:0;background:transparent;font-family:inherit;font-size:13px;color:inherit;font-weight:600}
-.celula-funcao .btn-whats-inline{flex-shrink:0;background:var(--verde-whats);color:#fff;border:0;border-radius:6px;padding:4px 7px;font-size:13px;cursor:pointer;line-height:1;transition:all .15s}
-.celula-funcao .btn-whats-inline:hover{background:#1eb655;transform:translateY(-1px);box-shadow:0 3px 8px rgba(37,211,102,.35)}
-.celula-funcao .btn-whats-inline:disabled{background:rgba(107,114,128,.3);color:var(--texto-40);cursor:not-allowed;transform:none;box-shadow:none}
-td input:focus,td select:focus{background:var(--bg-nivel-0);outline:2px solid var(--dourado);outline-offset:-2px;border-radius:4px}
+.celula-funcao input{
+  flex:1;min-width:0;padding:5px 4px;border:0;
+  background:transparent;font-family:inherit;
+  font-size:13px;color:inherit;font-weight:600;
+}
+.celula-funcao .btn-whats-inline{
+  flex-shrink:0;background:var(--verde-whats);color:#fff;
+  border:0;border-radius:6px;padding:4px 7px;font-size:13px;
+  cursor:pointer;line-height:1;transition:all .15s;
+}
+.celula-funcao .btn-whats-inline:hover{
+  background:#1eb655;transform:translateY(-1px);
+  box-shadow:0 3px 8px rgba(37,211,102,.35);
+}
+.celula-funcao .btn-whats-inline:disabled{
+  background:rgba(107,114,128,.3);color:var(--texto-40);
+  cursor:not-allowed;transform:none;box-shadow:none;
+}
+
+td input:focus,td select:focus{
+  background:var(--bg-nivel-0);outline:2px solid var(--dourado);
+  outline-offset:-2px;border-radius:4px;
+}
 td input[readonly],td select:disabled{opacity:.85;cursor:default}
-.status{display:inline-block;padding:5px 12px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;border:1px solid transparent}
+
+.status{
+  display:inline-block;padding:5px 12px;border-radius:20px;
+  font-size:10px;font-weight:800;text-transform:uppercase;
+  letter-spacing:1px;border:1px solid transparent;
+}
 .st-a-fazer{background:rgba(251,191,36,.15);color:#fcd34d;border-color:rgba(251,191,36,.3)}
 .st-agendado{background:rgba(59,130,246,.15);color:#93c5fd;border-color:rgba(59,130,246,.3)}
 .st-gravado{background:rgba(168,85,247,.15);color:#d8b4fe;border-color:rgba(168,85,247,.3)}
@@ -171,44 +506,171 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 .st-cancelado{background:rgba(239,68,68,.15);color:#fca5a5;border-color:rgba(239,68,68,.3)}
 .st-concluido{background:rgba(34,197,94,.15);color:#86efac;border-color:rgba(34,197,94,.3)}
 .st-andamento{background:rgba(59,130,246,.15);color:#93c5fd;border-color:rgba(59,130,246,.3)}
+
 .bar{height:6px;background:var(--bg-nivel-0);border-radius:20px;overflow:hidden}
 .bar>span{display:block;height:100%;border-radius:20px;transition:width .5s}
 .low{background:linear-gradient(90deg,#22c55e,#4ade80)}
 .medium{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
 .high{background:linear-gradient(90deg,#dc2626,#f87171)}
+
 .flow{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:24px}
-.flow div{background:rgba(30,58,95,.4);border:1px solid var(--borda-clara);border-radius:10px;padding:18px 12px;text-align:center;font-weight:700;font-size:12px;color:var(--texto);letter-spacing:.5px;transition:all .25s}
-.flow div:hover{background:rgba(30,58,95,.75);border-color:var(--dourado);transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.flow div{
+  background:rgba(30,58,95,.4);border:1px solid var(--borda-clara);
+  border-radius:10px;padding:18px 12px;text-align:center;
+  font-weight:700;font-size:12px;color:var(--texto);
+  letter-spacing:.5px;transition:all .25s;
+}
+.flow div:hover{
+  background:rgba(30,58,95,.75);border-color:var(--dourado);
+  transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
 .flow small{display:block;font-weight:400;margin-top:8px;color:var(--texto-70);font-size:11px}
-.legend{display:flex;gap:10px;flex-wrap:wrap;padding:14px 24px;font-size:12px;background:rgba(7,20,38,.4);border-bottom:1px solid var(--borda);justify-content:center}
-.legend span{padding:5px 12px;border-radius:14px;font-weight:600;letter-spacing:.3px;border:1px solid var(--borda-clara)}
-.modal{display:none;position:fixed;inset:0;background:rgba(2,8,20,.8);z-index:100;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+
+.legend{
+  display:flex;gap:10px;flex-wrap:wrap;
+  padding:14px 24px;font-size:12px;
+  background:rgba(7,20,38,.4);border-bottom:1px solid var(--borda);
+  justify-content:center;
+}
+.legend span{
+  padding:5px 12px;border-radius:14px;
+  font-weight:600;letter-spacing:.3px;
+  border:1px solid var(--borda-clara);
+}
+
+.modal{
+  display:none;position:fixed;inset:0;
+  background:rgba(2,8,20,.8);z-index:100;
+  align-items:center;justify-content:center;
+  padding:20px;backdrop-filter:blur(8px);
+}
 .modal.show{display:flex}
-.modal-content{background:linear-gradient(180deg,var(--bg-nivel-1) 0%,#0a1e3d 100%);border:1px solid var(--borda-clara);width:min(720px,100%);max-height:92vh;overflow-y:auto;border-radius:14px;padding:32px;box-shadow:0 25px 70px rgba(0,0,0,.7)}
-.modal-content h2{margin:0 0 22px;font-size:18px;color:var(--dourado);font-family:'Cinzel',serif;letter-spacing:1.5px}
+.modal-content{
+  background:linear-gradient(180deg,var(--bg-nivel-1) 0%,#0a1e3d 100%);
+  border:1px solid var(--borda-clara);
+  width:min(720px,100%);max-height:92vh;overflow-y:auto;
+  border-radius:14px;padding:32px;
+  box-shadow:0 25px 70px rgba(0,0,0,.7);
+}
+.modal-content h2{
+  margin:0 0 22px;font-size:18px;color:var(--dourado);
+  font-family:'Cinzel',serif;letter-spacing:1.5px;
+}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form label{font-size:11px;font-weight:700;color:var(--texto-70);display:block;letter-spacing:.8px;text-transform:uppercase}
-.form input,.form select,.form textarea{width:100%;padding:12px;margin-top:7px;border:1px solid var(--borda);border-radius:8px;font-family:inherit;font-size:14px;background:var(--bg-nivel-0);color:var(--texto);transition:all .18s}
+.form label{
+  font-size:11px;font-weight:700;color:var(--texto-70);
+  display:block;letter-spacing:.8px;text-transform:uppercase;
+}
+.form input,.form select,.form textarea{
+  width:100%;padding:12px;margin-top:7px;
+  border:1px solid var(--borda);border-radius:8px;
+  font-family:inherit;font-size:14px;
+  background:var(--bg-nivel-0);color:var(--texto);transition:all .18s;
+}
 .form input::placeholder{color:var(--texto-40)}
-.form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--dourado);box-shadow:0 0 0 3px var(--dourado-20)}
+.form input:focus,.form select:focus,.form textarea:focus{
+  outline:none;border-color:var(--dourado);
+  box-shadow:0 0 0 3px var(--dourado-20);
+}
 .full{grid-column:1/-1}
-.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;padding-top:20px;border-top:1px solid var(--borda)}
-.btn-fechar{background:linear-gradient(180deg,var(--bg-nivel-3) 0%,var(--bg-nivel-2) 100%);color:var(--texto);border:1px solid var(--borda-clara);padding:11px 22px;font-weight:700}
+.modal-actions{
+  display:flex;gap:10px;justify-content:flex-end;
+  margin-top:24px;padding-top:20px;
+  border-top:1px solid var(--borda);
+}
+.btn-fechar{
+  background:linear-gradient(180deg,var(--bg-nivel-3) 0%,var(--bg-nivel-2) 100%);
+  color:var(--texto);border:1px solid var(--borda-clara);
+  padding:11px 22px;font-weight:700;
+}
 .btn-fechar:hover{background:var(--borda-clara);border-color:var(--dourado)}
 .hidden{display:none !important}
+
 .lista-whats{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-.whats-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(30,58,95,.4);border:1px solid var(--borda-clara);border-radius:10px;transition:all .2s}
+.whats-item{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;background:rgba(30,58,95,.4);
+  border:1px solid var(--borda-clara);border-radius:10px;
+  transition:all .2s;
+}
 .whats-item:hover{background:rgba(30,58,95,.65);border-color:var(--dourado)}
-.whats-item .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--dourado),var(--dourado-escuro));color:#1a1206;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.whats-item .avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,var(--dourado),var(--dourado-escuro));
+  color:#1a1206;font-weight:800;font-size:16px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
 .whats-item .info{flex:1;min-width:0}
 .whats-item .info .nome{font-weight:700;font-size:14px;color:var(--texto)}
 .whats-item .info .info-mini{font-size:12px;color:var(--texto-70);margin-top:2px}
-.whats-item .btn-whats-item{background:var(--verde-whats);color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
-.whats-item .btn-whats-item:hover{background:#1eb655;transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,211,102,.4)}
-.whats-item .btn-whats-item:disabled{background:rgba(107,114,128,.4);cursor:not-allowed;transform:none;box-shadow:none}
-@media(max-width:1000px){.cards{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:repeat(3,1fr)}header{padding:22px 24px;min-height:110px}.logo-svg{width:56px;height:56px}.titulo-grupo h1{font-size:24px;letter-spacing:4px}.tabs{top:110px}.months{top:158px}.avisos-topo{grid-template-columns:1fr}}
-@media(max-width:700px){.cards{grid-template-columns:1fr}.form{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}header{padding:18px 16px;min-height:90px;grid-template-columns:1fr;gap:12px}.header-left,.header-right{justify-content:center;flex-wrap:wrap}.logo-svg{width:48px;height:48px}.titulo-grupo h1{font-size:20px;letter-spacing:3px}.tabs{top:auto;position:relative;padding:0 8px}.months{top:auto;position:relative;padding:10px 12px}.tabs button{padding:13px 12px;font-size:12px}.container{padding:16px 12px 60px}.box-title{padding:14px 16px;font-size:13px}.toolbar{padding:12px 16px}th,td{padding:10px 12px;font-size:12px}td.cult input{font-size:11px !important}.modal-content{padding:22px}.whats-item{flex-wrap:wrap}.whats-item .btn-whats-item{width:100%}}
-@media print{body{background:#fff;color:#000}body::before,body::after{display:none}header,.tabs,.months,.toolbar,.no-print,.header-actions,.avisos-topo,.log-box{display:none !important}.box,.card{background:#fff;border:1px solid #ccc;box-shadow:none;color:#000}.box-title{background:#eee;color:#000}th{background:#eee;color:#000;border-color:#999}td{border-color:#ccc;color:#000;background:#fff}.modal{display:none !important}.cards{display:none !important}.container{padding:0}body{font-size:11px}}
+.whats-item .btn-whats-item{
+  background:var(--verde-whats);color:#fff;
+  border:0;border-radius:8px;padding:8px 14px;
+  font-size:12px;font-weight:700;cursor:pointer;
+  transition:all .2s;white-space:nowrap;
+}
+.whats-item .btn-whats-item:hover{
+  background:#1eb655;transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(37,211,102,.4);
+}
+.whats-item .btn-whats-item:disabled{
+  background:rgba(107,114,128,.4);cursor:not-allowed;
+  transform:none;box-shadow:none;
+}
+
+/* Estilo do código da senha */
+td code.senha-code{
+  background:rgba(0,0,0,.3);
+  padding:4px 8px;
+  border-radius:4px;
+  font-size:13px;
+  color:var(--dourado-claro);
+  font-family:'Courier New',monospace;
+}
+
+@media(max-width:1000px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .flow{grid-template-columns:repeat(3,1fr)}
+  header{padding:22px 24px;min-height:110px}
+  .logo-svg{width:56px;height:56px}
+  .titulo-grupo h1{font-size:24px;letter-spacing:4px}
+  .tabs{top:110px}
+  .months{top:158px}
+  .avisos-topo{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .cards{grid-template-columns:1fr}
+  .form{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr 1fr}
+  header{padding:18px 16px;min-height:90px;grid-template-columns:1fr;gap:12px}
+  .header-left,.header-right{justify-content:center;flex-wrap:wrap}
+  .logo-svg{width:48px;height:48px}
+  .titulo-grupo h1{font-size:20px;letter-spacing:3px}
+  .tabs{top:auto;position:relative;padding:0 8px}
+  .months{top:auto;position:relative;padding:10px 12px}
+  .tabs button{padding:13px 12px;font-size:12px}
+  .container{padding:16px 12px 60px}
+  .box-title{padding:14px 16px;font-size:13px}
+  .toolbar{padding:12px 16px}
+  th,td{padding:10px 12px;font-size:12px}
+  td.cult input{font-size:11px !important}
+  .modal-content{padding:22px}
+  .whats-item{flex-wrap:wrap}
+  .whats-item .btn-whats-item{width:100%}
+}
+@media print{
+  body{background:#fff;color:#000}
+  body::before,body::after{display:none}
+  header,.tabs,.months,.toolbar,.no-print,.header-actions,.avisos-topo,.log-box{display:none !important}
+  .box,.card{background:#fff;border:1px solid #ccc;box-shadow:none;color:#000}
+  .box-title{background:#eee;color:#000}
+  th{background:#eee;color:#000;border-color:#999}
+  td{border-color:#ccc;color:#000;background:#fff}
+  .modal{display:none !important}
+  .cards{display:none !important}
+  .container{padding:0}
+  body{font-size:11px}
+}
 </style>
 </head>
 <body>
@@ -276,6 +738,7 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   <button onclick="openTab('voluntarios',this)" data-aba="voluntarios">👥 Voluntários</button>
   <button onclick="openTab('treinamentos',this)" data-aba="treinamentos">🌱 Treinamentos</button>
   <button onclick="openTab('historico',this)" data-aba="historico">📈 Histórico</button>
+  <button onclick="openTab('senhas',this)" data-aba="senhas">🔑 Senhas</button>
 </nav>
 
 <div class="months hidden" id="monthNav"></div>
@@ -288,7 +751,9 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
       <h3>🆕 Últimas atualizações<span style="margin-left:auto"><button class="ghost btn-xs" onclick="limparLog()" id="btnLimparLog" style="display:none">Limpar</button></span></h3>
       <div class="log-lista" id="logLista"></div>
     </div>
-    <div class="notice info"><b>📌 Para compartilhar no grupo:</b> use esta aba para tirar print da escala do mês. Os voluntários veem tudo sem precisar de login.</div>
+    <div class="notice info">
+      <b>📌 Para compartilhar no grupo:</b> use esta aba para tirar print da escala do mês. Os voluntários veem tudo sem precisar de login.
+    </div>
     <div class="cards">
       <div class="card"><span>Cultos/eventos</span><strong id="kpiCultos">0</strong><span>no mês</span></div>
       <div class="card"><span>Gravações</span><strong id="kpiGravacoes">0</strong><span>programadas</span></div>
@@ -305,7 +770,10 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
         <span style="background:rgba(30,58,95,.55);color:#dbeafe">Mesa de som</span>
       </div>
       <div class="table-wrap">
-        <table><thead><tr><th>CULTO / EVENTO</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th></tr></thead><tbody id="dashTable"></tbody></table>
+        <table>
+          <thead><tr><th>CULTO / EVENTO</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th></tr></thead>
+          <tbody id="dashTable"></tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -326,12 +794,19 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
         <button class="blue btn-add-escala" onclick="autoScale()">🤖 Escala automática</button>
         <input id="scaleSearch" placeholder="🔎 Buscar culto/evento..." oninput="renderScale()">
         <select id="scaleType" onchange="renderScale()">
-          <option value="all">Todos</option><option value="regular">Cultos</option><option value="special">Eventos especiais</option>
+          <option value="all">Todos</option>
+          <option value="regular">Cultos</option>
+          <option value="special">Eventos especiais</option>
         </select>
       </div>
-      <div class="notice info" id="viewerNotice" style="margin:16px 20px 0">👀 <b>Modo visualização.</b> Esta é a escala oficial do mês. Em caso de troca, entre em contato com a coordenação.</div>
+      <div class="notice info" id="viewerNotice" style="margin:16px 20px 0">
+        👀 <b>Modo visualização.</b> Esta é a escala oficial do mês. Em caso de troca, entre em contato com a coordenação.
+      </div>
       <div class="table-wrap">
-        <table><thead><tr><th>CULTO / EVENTO</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th><th>STATUS</th><th class="col-acao">AÇÃO</th></tr></thead><tbody id="scaleTable"></tbody></table>
+        <table>
+          <thead><tr><th>CULTO / EVENTO</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th><th>STATUS</th><th class="col-acao">AÇÃO</th></tr></thead>
+          <tbody id="scaleTable"></tbody>
+        </table>
       </div>
     </div>
     <div class="box" id="boxSugestao">
@@ -356,12 +831,24 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
       <div class="box-title"><span class="titulo-esq">🎬 Produção vinculada ao culto — <span id="prodMonth">—</span></span></div>
       <div class="toolbar">
         <select id="prodFilter" onchange="renderProduction()">
-          <option value="all">Todos os status</option><option>A Fazer</option><option>Agendado</option><option>Gravado</option><option>Editado</option><option>Publicado</option>
+          <option value="all">Todos os status</option>
+          <option>A Fazer</option><option>Agendado</option><option>Gravado</option>
+          <option>Editado</option><option>Publicado</option>
         </select>
-        <span style="padding:10px;color:var(--texto-70);font-size:13px">💡 A produção é gerada automaticamente ao cadastrar cultos na escala.</span>
+        <span style="padding:10px;color:var(--texto-70);font-size:13px">
+          💡 A produção é gerada automaticamente ao cadastrar cultos na escala.
+        </span>
       </div>
       <div class="table-wrap">
-        <table><thead><tr><th>DATA</th><th>CULTO / EVENTO</th><th>PRODUÇÃO</th><th>RESPONSÁVEL</th><th>STATUS</th><th style="text-align:right">AÇÃO</th></tr></thead><tbody id="productionTable"></tbody></table>
+        <table>
+          <thead>
+            <tr>
+              <th>DATA</th><th>CULTO / EVENTO</th><th>PRODUÇÃO</th>
+              <th>RESPONSÁVEL</th><th>STATUS</th><th style="text-align:right">AÇÃO</th>
+            </tr>
+          </thead>
+          <tbody id="productionTable"></tbody>
+        </table>
       </div>
     </div>
     <div class="box">
@@ -370,11 +857,22 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
         <button class="primary btn-add-grav" onclick="criarDevocionaisMes()">＋ Criar devocionais do mês</button>
         <button class="dark btn-add-grav" onclick="addRecording()">＋ Adicionar devocional</button>
         <select id="recordFilter" onchange="renderRecordings()">
-          <option value="all">Todos</option><option>A Fazer</option><option>Agendado</option><option>Gravado</option><option>Editado</option><option>Publicado</option>
+          <option value="all">Todos</option>
+          <option>A Fazer</option><option>Agendado</option><option>Gravado</option>
+          <option>Editado</option><option>Publicado</option>
         </select>
       </div>
       <div class="table-wrap">
-        <table><thead><tr><th>DATA</th><th>CONTEÚDO</th><th>OBREIRO / PRELETOR</th><th>RESPONSÁVEL</th><th>EDIÇÃO</th><th>PUBLICAÇÃO</th><th>STATUS</th><th style="text-align:right">AÇÃO</th></tr></thead><tbody id="recordTable"></tbody></table>
+        <table>
+          <thead>
+            <tr>
+              <th>DATA</th><th>CONTEÚDO</th><th>OBREIRO / PRELETOR</th>
+              <th>RESPONSÁVEL</th><th>EDIÇÃO</th><th>PUBLICAÇÃO</th>
+              <th>STATUS</th><th style="text-align:right">AÇÃO</th>
+            </tr>
+          </thead>
+          <tbody id="recordTable"></tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -387,11 +885,15 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
         <input id="volSearch" placeholder="🔎 Nome, função ou e-mail..." oninput="renderVolunteers()">
         <select id="availabilityFilter" onchange="renderVolunteers()">
           <option value="all">Qualquer disponibilidade</option>
-          <option>Seg</option><option>Ter</option><option>Qua</option><option>Qui</option><option>Sex</option><option>Sáb</option><option>Dom</option>
+          <option>Seg</option><option>Ter</option><option>Qua</option><option>Qui</option>
+          <option>Sex</option><option>Sáb</option><option>Dom</option>
         </select>
       </div>
       <div class="table-wrap">
-        <table><thead><tr><th>NOME</th><th>USUÁRIO</th><th>E-MAIL</th><th>TELEFONE</th><th>FUNÇÕES</th><th>DISPONIBILIDADE</th><th>PARTICIPAÇÕES</th><th class="col-acao">AÇÃO</th></tr></thead><tbody id="volTable"></tbody></table>
+        <table>
+          <thead><tr><th>NOME</th><th>USUÁRIO</th><th>E-MAIL</th><th>TELEFONE</th><th>FUNÇÕES</th><th>DISPONIBILIDADE</th><th>PARTICIPAÇÕES</th><th class="col-acao">AÇÃO</th></tr></thead>
+          <tbody id="volTable"></tbody>
+        </table>
       </div>
     </div>
     <div class="box">
@@ -401,37 +903,91 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   </section>
 
   <section id="treinamentos" class="page">
-    <div class="notice info">🌱 O treinamento deve acontecer com acompanhamento de alguém mais experiente antes da pessoa entrar sozinha na escala.</div>
+    <div class="notice info">
+      🌱 O treinamento deve acontecer com acompanhamento de alguém mais experiente antes da pessoa entrar sozinha na escala.
+    </div>
     <div class="box">
       <div class="box-title"><span class="titulo-esq">🌱 Voluntários em treinamento</span></div>
-      <div class="toolbar"><button class="primary btn-admin" onclick="newTraining()">＋ Adicionar talento</button></div>
+      <div class="toolbar">
+        <button class="primary btn-admin" onclick="newTraining()">＋ Adicionar talento</button>
+      </div>
       <div class="table-wrap">
-        <table><thead><tr><th>NOME</th><th>ÁREA</th><th>MENTOR</th><th>ETAPA</th><th>DISPONIBILIDADE</th><th>ÚLTIMO ACOMPANHAMENTO</th><th>PRÓXIMO PASSO</th><th class="col-acao">AÇÃO</th></tr></thead><tbody id="trainingTable"></tbody></table>
+        <table>
+          <thead><tr><th>NOME</th><th>ÁREA</th><th>MENTOR</th><th>ETAPA</th><th>DISPONIBILIDADE</th><th>ÚLTIMO ACOMPANHAMENTO</th><th>PRÓXIMO PASSO</th><th class="col-acao">AÇÃO</th></tr></thead>
+          <tbody id="trainingTable"></tbody>
+        </table>
       </div>
     </div>
   </section>
 
   <section id="historico" class="page">
-    <div class="notice info">📈 O histórico é acumulativo e ajuda no rodízio para evitar que sempre as mesmas pessoas sejam escaladas.</div>
+    <div class="notice info">
+      📈 O histórico é acumulativo e ajuda no rodízio para evitar que sempre as mesmas pessoas sejam escaladas.
+    </div>
     <div class="box">
       <div class="box-title"><span class="titulo-esq">📊 Histórico de participação</span></div>
       <div class="toolbar">
         <select id="historyMonth" onchange="renderHistory()"><option value="all">Todos os meses</option></select>
         <select id="historyFunction" onchange="renderHistory()">
-          <option value="all">Todas as funções</option><option>Story</option><option>Fotografia</option><option>Datashow</option><option>Som</option>
+          <option value="all">Todas as funções</option>
+          <option>Story</option><option>Fotografia</option><option>Datashow</option><option>Som</option>
         </select>
       </div>
       <div class="table-wrap">
-        <table><thead><tr><th>VOLUNTÁRIO</th><th>TOTAL</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th><th>NÍVEL</th></tr></thead><tbody id="historyTable"></tbody></table>
+        <table>
+          <thead><tr><th>VOLUNTÁRIO</th><th>TOTAL</th><th>STORY</th><th>FOTOS</th><th>DATASHOW</th><th>SOM</th><th>NÍVEL</th></tr></thead>
+          <tbody id="historyTable"></tbody>
+        </table>
       </div>
     </div>
     <div class="box">
       <div class="box-title"><span class="titulo-esq">⚠️ Painel de sobrecarga por voluntário</span></div>
       <div class="toolbar">
-        <select id="loadFilter" onchange="renderLoad()"><option value="all">Todos</option><option value="high">Alta carga</option><option value="medium">Carga média</option><option value="low">Baixa carga</option></select>
+        <select id="loadFilter" onchange="renderLoad()">
+          <option value="all">Todos</option>
+          <option value="high">Alta carga</option>
+          <option value="medium">Carga média</option>
+          <option value="low">Baixa carga</option>
+        </select>
       </div>
       <div class="table-wrap">
-        <table><thead><tr><th>VOLUNTÁRIO</th><th>FUNÇÕES</th><th>HISTÓRICO</th><th>MÊS</th><th>NÍVEL</th><th>CARGA</th><th>ORIENTAÇÃO</th></tr></thead><tbody id="loadTable"></tbody></table>
+        <table>
+          <thead><tr><th>VOLUNTÁRIO</th><th>FUNÇÕES</th><th>HISTÓRICO</th><th>MÊS</th><th>NÍVEL</th><th>CARGA</th><th>ORIENTAÇÃO</th></tr></thead>
+          <tbody id="loadTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="senhas" class="page">
+    <div class="notice info">
+      🔒 <b>Área restrita.</b> Aqui você vê as senhas atuais de todos os voluntários. Use apenas quando alguém esquecer a senha.
+    </div>
+    <div class="box">
+      <div class="box-title"><span class="titulo-esq">🔑 Senhas atuais dos voluntários</span></div>
+      <div class="toolbar">
+        <input id="senhaBusca" placeholder="🔎 Buscar por nome ou usuário..." oninput="renderSenhas()">
+        <select id="senhaFiltro" onchange="renderSenhas()">
+          <option value="all">Todas</option>
+          <option value="padrao">⚠️ Ainda com padrão</option>
+          <option value="trocada">✅ Já trocaram</option>
+        </select>
+        <button class="dark btn-sm" onclick="renderSenhas()">🔄 Atualizar</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>NOME</th>
+              <th>USUÁRIO</th>
+              <th>🔑 SENHA ATUAL</th>
+              <th>SITUAÇÃO</th>
+              <th>ÚLTIMA TROCA</th>
+              <th style="text-align:right">AÇÃO</th>
+            </tr>
+          </thead>
+          <tbody id="senhasTable"></tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -451,7 +1007,9 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
       <label class="full">Disponibilidade (dias)<input id="vAvailability" placeholder="Qui, Dom, Sáb"></label>
       <label class="full">Observações<textarea id="vNotes" rows="3"></textarea></label>
     </div>
-    <div class="notice info" style="margin-top:16px">💡 Senha inicial: <b>usuário + 123</b> (ex: se o usuário for <code>ana</code>, a senha será <code>ana123</code>). A pessoa pode trocar depois.</div>
+    <div class="notice info" style="margin-top:16px">
+      💡 Senha inicial: <b>usuário + 123</b> (ex: se o usuário for <code>ana</code>, a senha será <code>ana123</code>). A pessoa pode trocar depois.
+    </div>
     <div class="modal-actions">
       <button class="btn-fechar" onclick="closeModal('volModal')">Cancelar</button>
       <button class="primary" onclick="saveVolunteer()">Salvar</button>
@@ -466,7 +1024,11 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
       <label>Nome *<input id="tName"></label>
       <label>Área<input id="tArea" placeholder="Story, Foto, Som, Datashow"></label>
       <label>Mentor<input id="tMentor"></label>
-      <label>Etapa<select id="tStage"><option>Interesse</option><option>Observação</option><option>Prática supervisionada</option><option>Avaliação</option><option>Escala assistida</option><option>Equipe</option></select></label>
+      <label>Etapa<select id="tStage">
+        <option>Interesse</option><option>Observação</option>
+        <option>Prática supervisionada</option><option>Avaliação</option>
+        <option>Escala assistida</option><option>Equipe</option>
+      </select></label>
       <label>Disponibilidade<input id="tAvailability"></label>
       <label>Último acompanhamento<input id="tLast" type="date"></label>
       <label class="full">Próximo passo<textarea id="tNext" rows="3"></textarea></label>
@@ -481,7 +1043,9 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 <div class="modal" id="perfilModal">
   <div class="modal-content" style="max-width:480px">
     <h2>👤 Meu perfil</h2>
-    <div class="notice info" style="margin-bottom:16px">Você pode alterar sua própria senha aqui.</div>
+    <div class="notice info" style="margin-bottom:16px">
+      Você pode alterar sua própria senha aqui.
+    </div>
     <div class="form">
       <label class="full">Usuário<input id="perfilUser" readonly></label>
       <label class="full">Senha atual<input id="perfilAtual" type="password"></label>
@@ -499,9 +1063,13 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 <div class="modal" id="avisarModal">
   <div class="modal-content" style="max-width:640px">
     <h2>📱 Avisar equipe do mês</h2>
-    <div class="notice info" style="margin-bottom:18px">Escolha quem quer avisar. Abrirá o WhatsApp com a mensagem pronta — depois é só clicar em <b>Enviar</b>.</div>
+    <div class="notice info" style="margin-bottom:18px">
+      Escolha quem quer avisar. Abrirá o WhatsApp com a mensagem pronta — depois é só clicar em <b>Enviar</b>.
+    </div>
     <div id="listaWhats" class="lista-whats"></div>
-    <div class="modal-actions"><button class="btn-fechar" onclick="closeModal('avisarModal')">Fechar</button></div>
+    <div class="modal-actions">
+      <button class="btn-fechar" onclick="closeModal('avisarModal')">Fechar</button>
+    </div>
   </div>
 </div>
 
@@ -511,15 +1079,12 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
 /* ==========================================================
    CONFIGURAÇÃO SUPABASE
 ========================================================== */
-const SUPABASE_URL = "https://pbdsvfrslngrjnqbgnmj.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiZHN2ZnJzbG5ncmpucWJnbm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyMjA0MTEsImV4cCI6MjEwNDc5NjQxMX0.n4Gn46vvo_U7Vm9tREy9BM5MgJl9CYI7wKGjY9ytpmQ";
+const MH_SUPABASE_URL = "https://pbdsvfrslngrjnqbgnmj.supabase.co";
+const MH_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiZHN2ZnJzbG5ncmpucWJnbm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyMjA0MTEsImV4cCI6MjEwNDc5NjQxMX0.n4Gn46vvo_U7Vm9tREy9BM5MgJl9CYI7wKGjY9ytpmQ";
 
-let sb = null;   // ← RENOMEADO (antes era "supabase")
+let sb = null;
 let conectado = false;
 
-/* ==========================================================
-   CONSTANTES
-========================================================== */
 const MONTHS = {
   "01":"Janeiro","02":"Fevereiro","03":"Março","04":"Abril",
   "05":"Maio","06":"Junho","07":"Julho","08":"Agosto",
@@ -534,13 +1099,12 @@ let editingVolunteer = -1;
 let usuarioAtual = null;
 let perfilAtual = "visitante";
 
-/* ==========================================================
-   BANCO
-========================================================== */
 const DB = {
   volunteers: [], scale: {}, production: {}, recordings: {},
   trainings: [], senhas: {}, avisos: [], log: []
 };
+
+let senhasCache = [];
 
 /* ==========================================================
    CONEXÃO
@@ -555,9 +1119,7 @@ function setStatus(status, texto){
 
 function initSupabase(){
   try{
-    // window.supabase é a biblioteca (criada pelo CDN)
-    // sb é o CLIENTE (nossa variável)
-    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    sb = window.supabase.createClient(MH_SUPABASE_URL, MH_SUPABASE_KEY);
     conectado = true;
     setStatus("online", "Online");
     console.log("✅ Supabase conectado");
@@ -570,9 +1132,6 @@ function initSupabase(){
   }
 }
 
-/* ==========================================================
-   CARREGAR
-========================================================== */
 async function carregarDoSupabase(){
   setStatus("syncing", "Carregando...");
   try{
@@ -743,151 +1302,23 @@ async function popularBanco(){
 }
 
 /* ==========================================================
-   SALVAR
-========================================================== */
-async function salvarVoluntarioSupabase(v, editando){
-  setStatus("syncing", "Salvando...");
-  try{
-    if(editando && v.id){
-      await sb.from("volunteers").update({
-        name:v.name, user_login:v.user, email:v.email, phone:v.phone,
-        birth:v.birth||null, functions:v.functions, availability:v.availability, notes:v.notes
-      }).eq("id", v.id);
-    } else {
-      await sb.from("volunteers").insert({
-        name:v.name, user_login:v.user, email:v.email, phone:v.phone,
-        birth:v.birth||null, functions:v.functions, availability:v.availability, notes:v.notes
-      });
-      await sb.from("passwords").insert({user_login:v.user, password:v.user+"123"});
-    }
-    setStatus("online");
-    return true;
-  }catch(e){ console.error(e); setStatus("offline","Erro"); alert("⚠️ Erro: "+e.message); return false; }
-}
-async function excluirVoluntarioSupabase(id, user){
-  setStatus("syncing");
-  try{
-    await sb.from("volunteers").delete().eq("id", id);
-    if(user) await sb.from("passwords").delete().eq("user_login", user);
-    setStatus("online"); return true;
-  }catch(e){ console.error(e); setStatus("offline","Erro"); return false; }
-}
-async function salvarEscalaSupabase(item, editando){
-  setStatus("syncing");
-  try{
-    if(editando && item.id){
-      await sb.from("schedules").update({
-        date:item.date, day:item.day, event:item.event, type:item.type,
-        story:item.story, photo:item.photo, datashow:item.data, sound:item.sound,
-        status:item.status, month_key:currentMonth
-      }).eq("id", item.id);
-    } else {
-      await sb.from("schedules").insert({
-        date:item.date, day:item.day, event:item.event, type:item.type,
-        story:item.story, photo:item.photo, datashow:item.data, sound:item.sound,
-        status:item.status, month_key:currentMonth
-      });
-    }
-    setStatus("online"); return true;
-  }catch(e){ console.error(e); setStatus("offline","Erro"); return false; }
-}
-async function excluirEscalaSupabase(id, cultoId){
-  setStatus("syncing");
-  try{
-    if(id) await sb.from("schedules").delete().eq("id", id);
-    if(cultoId) await sb.from("productions").delete().eq("culto_id", cultoId);
-    setStatus("online"); return true;
-  }catch(e){ console.error(e); setStatus("offline","Erro"); return false; }
-}
-async function salvarProducaoSupabase(item){
-  setStatus("syncing");
-  try{
-    if(item.id) await sb.from("productions").update({responsavel:item.responsavel, status:item.status}).eq("id", item.id);
-    setStatus("online"); return true;
-  }catch(e){ console.error(e); setStatus("offline","Erro"); return false; }
-}
-async function salvarRecordingSupabase(item){
-  setStatus("syncing");
-  try{
-    if(item.id){
-      await sb.from("recordings").update({
-        date:item.date, content:item.content, speaker:item.speaker,
-        responsible:item.responsible, edit_date:item.edit, publish_date:item.publish, status:item.status
-      }).eq("id", item.id);
-    } else {
-      await sb.from("recordings").insert({
-        date:item.date, content:item.content, speaker:item.speaker,
-        responsible:item.responsible, edit_date:item.edit, publish_date:item.publish,
-        status:item.status, month_key:currentMonth
-      });
-    }
-    setStatus("online"); return true;
-  }catch(e){ console.error(e); setStatus("offline","Erro"); return false; }
-}
-async function excluirRecordingSupabase(id){
-  setStatus("syncing");
-  try{ await sb.from("recordings").delete().eq("id", id); setStatus("online"); return true; }
-  catch(e){ console.error(e); setStatus("offline","Erro"); return false; }
-}
-async function salvarTrainingSupabase(item){
-  setStatus("syncing");
-  try{
-    await sb.from("trainings").insert({name:item.name, area:item.area, mentor:item.mentor, stage:item.stage, availability:item.availability, last_date:item.last, next_step:item.next});
-    setStatus("online"); return true;
-  }catch(e){ console.error(e); setStatus("offline","Erro"); return false; }
-}
-async function excluirTrainingSupabase(id){
-  setStatus("syncing");
-  try{ await sb.from("trainings").delete().eq("id", id); setStatus("online"); return true; }
-  catch(e){ console.error(e); setStatus("offline","Erro"); return false; }
-}
-async function salvarAvisoSupabase(titulo, texto){
-  setStatus("syncing");
-  try{
-    const { data, error } = await sb.from("notices").insert({title:titulo, text_content:texto, created_by:usuarioAtual?usuarioAtual.name:"—"}).select().single();
-    if(error) throw error;
-    setStatus("online"); return data;
-  }catch(e){ console.error(e); setStatus("offline","Erro"); return null; }
-}
-async function excluirAvisoSupabase(id){
-  setStatus("syncing");
-  try{ await sb.from("notices").delete().eq("id", id); setStatus("online"); return true; }
-  catch(e){ console.error(e); setStatus("offline","Erro"); return false; }
-}
-async function salvarLogSupabase(icone, texto){
-  try{
-    const { data, error } = await sb.from("activity_log").insert({icon:icone, message:texto, author:usuarioAtual?usuarioAtual.name:"Visitante"}).select().single();
-    if(error) throw error;
-    return data;
-  }catch(e){ console.warn("Log não registrado:", e); return null; }
-}
-async function limparLogSupabase(){
-  setStatus("syncing");
-  try{ await sb.from("activity_log").delete().neq("id", "00000000-0000-0000-0000-000000000000"); setStatus("online"); return true; }
-  catch(e){ console.error(e); setStatus("offline","Erro"); return false; }
-}
-
-/* ==========================================================
-   HELPERS
-========================================================== */
-function esc(v){ return String(v==null?"":v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
-function formatDate(v){ if(!v) return ""; if(v.indexOf("/")>-1) return v; const p=v.split("-"); return p.length===3 ? p[2]+"/"+p[1]+"/"+p[0] : v; }
-function monthName(){ return MONTHS[currentMonth]; }
-function scale(){ if(!DB.scale[currentMonth]) DB.scale[currentMonth]=[]; return DB.scale[currentMonth]; }
-function production(){ if(!DB.production[currentMonth]) DB.production[currentMonth]=[]; return DB.production[currentMonth]; }
-function records(){ if(!DB.recordings[currentMonth]) DB.recordings[currentMonth]=[]; return DB.recordings[currentMonth]; }
-
-/* ==========================================================
    LOG
 ========================================================== */
 async function registrarLog(icone, texto){
-  const novo = await salvarLogSupabase(icone, texto);
-  if(novo){
-    DB.log.unshift({id:novo.id, icone:novo.icon, texto:novo.message, autor:novo.author, data:novo.created_at});
+  try{
+    const { data, error } = await sb.from("activity_log").insert({
+      icon: icone, message: texto,
+      author: usuarioAtual ? usuarioAtual.name : "Visitante"
+    }).select().single();
+    if(error) throw error;
+    DB.log.unshift({id:data.id, icone:data.icon, texto:data.message, autor:data.author, data:data.created_at});
     if(DB.log.length>30) DB.log = DB.log.slice(0,30);
     renderLog();
+  }catch(e){
+    console.warn("Log não registrado:", e);
   }
 }
+
 function renderLog(){
   const box = document.getElementById("logBox"), lista = document.getElementById("logLista"), btn = document.getElementById("btnLimparLog");
   if(!box || !lista) return;
@@ -901,10 +1332,14 @@ function renderLog(){
     return '<div class="log-item"><span class="log-hora">'+f+'</span><span class="log-texto">'+(l.icone||"•")+' <b>'+esc(l.autor)+'</b> '+esc(l.texto)+'</span></div>';
   }).join("");
 }
+
 async function limparLog(){
   if(perfilAtual!=="admin" && perfilAtual!=="coordenador") return alert("Sem permissão.");
   if(!confirm("Limpar todo o histórico?")) return;
-  if(await limparLogSupabase()){ DB.log=[]; renderLog(); }
+  try{
+    await sb.from("activity_log").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    DB.log = []; renderLog();
+  }catch(e){ console.error(e); }
 }
 
 /* ==========================================================
@@ -924,7 +1359,7 @@ function buscarTelefonePorNome(nome){
   return v ? (v.phone || "") : "";
 }
 function abrirWhatsApp(telefone, mensagem){
-  if(!telefone){ alert("⚠️ Esta pessoa não tem telefone cadastrado.\n\nCadastre na aba Voluntários."); return; }
+  if(!telefone){ alert("⚠️ Esta pessoa não tem telefone cadastrado."); return; }
   const num = formatarTelefoneWhats(telefone);
   const msg = encodeURIComponent(mensagem);
   window.open("https://wa.me/"+num+"?text="+msg, "_blank");
@@ -1025,6 +1460,93 @@ function copiarFallback(texto){
   document.body.removeChild(ta);
 }
 function imprimirEscala(){ window.print(); }
+
+/* ==========================================================
+   ABA SENHAS (SÓ ADMIN/COORD)
+========================================================== */
+async function renderSenhas(){
+  if(perfilAtual !== "admin" && perfilAtual !== "coordenador"){
+    return;
+  }
+  const tbody = document.getElementById("senhasTable");
+  if(!tbody) return;
+
+  setStatus("syncing", "Buscando...");
+  try{
+    const { data, error } = await sb.from("passwords").select("*").order("user_login");
+    if(error) throw error;
+
+    senhasCache = (data || []).map(p => {
+      const vol = DB.volunteers.find(v => v.user === p.user_login);
+      const padrao = p.password === p.user_login + "123";
+      return {
+        user_login: p.user_login,
+        password: p.password,
+        updated_at: p.updated_at,
+        changed_by: p.changed_by || "",
+        nome: vol ? vol.name : "—",
+        padrao: padrao
+      };
+    });
+    setStatus("online");
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Erro ao carregar senhas.</td></tr>';
+    return;
+  }
+
+  const busca = (document.getElementById("senhaBusca").value || "").toLowerCase();
+  const filtro = document.getElementById("senhaFiltro").value;
+
+  let lista = senhasCache.filter(s => {
+    if(filtro === "padrao" && !s.padrao) return false;
+    if(filtro === "trocada" && s.padrao) return false;
+    if(busca){
+      const txt = (s.nome + " " + s.user_login).toLowerCase();
+      if(!txt.includes(busca)) return false;
+    }
+    return true;
+  });
+
+  lista.sort((a,b) => a.nome.localeCompare(b.nome));
+
+  if(!lista.length){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum registro.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = lista.map(s => {
+    const situacao = s.padrao
+      ? '<span class="status st-a-fazer">⚠️ Padrão</span>'
+      : '<span class="status st-concluido">✅ Trocada</span>';
+
+    const dataTroca = s.updated_at
+      ? new Date(s.updated_at).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})
+      : "—";
+
+    const quemTroco = s.changed_by ? '<br><small style="color:var(--texto-55)">por ' + esc(s.changed_by) + '</small>' : '';
+
+    return '<tr>' +
+      '<td><b>' + esc(s.nome) + '</b></td>' +
+      '<td>' + esc(s.user_login) + '</td>' +
+      '<td><code class="senha-code">' + esc(s.password) + '</code></td>' +
+      '<td>' + situacao + '</td>' +
+      '<td>' + dataTroca + quemTroco + '</td>' +
+      '<td class="col-acao"><button class="dark btn-xs" onclick="copiarSenha(\'' + esc(s.password).replace(/'/g,"\\'") + '\')">📋 Copiar</button></td>' +
+    '</tr>';
+  }).join("");
+}
+
+function copiarSenha(senha){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(senha).then(()=>{
+      alert("✅ Senha copiada!\n\nCole no WhatsApp para enviar à pessoa.");
+    }).catch(()=>{ alert("Senha: " + senha); });
+  } else {
+    alert("Senha: " + senha);
+  }
+}
 
 /* ==========================================================
    PERMISSÕES
@@ -1173,23 +1695,30 @@ function renderAvisosTopo(){
 async function abrirNovoAviso(){
   const titulo = prompt("Título do aviso:"); if(!titulo) return;
   const texto = prompt("Texto complementar (opcional):","")||"";
-  const novo = await salvarAvisoSupabase(titulo.trim(), texto.trim());
-  if(novo){
-    DB.avisos.unshift({id:novo.id, titulo:novo.title, texto:novo.text_content||"", criadoPor:novo.created_by, criadoEm:novo.created_at});
+  try{
+    const { data, error } = await sb.from("notices").insert({
+      title: titulo.trim(), text_content: texto.trim(),
+      created_by: usuarioAtual ? usuarioAtual.name : "—"
+    }).select().single();
+    if(error) throw error;
+    DB.avisos.unshift({id:data.id, titulo:data.title, texto:data.text_content||"", criadoPor:data.created_by, criadoEm:data.created_at});
     await registrarLog("📢", 'publicou o aviso "'+titulo.trim()+'"');
-    renderAvisosTopo(); alert("✅ Aviso publicado!");
-  } else alert("⚠️ Erro ao publicar aviso.");
+    renderAvisosTopo();
+    alert("✅ Aviso publicado!");
+  }catch(e){ console.error(e); alert("⚠️ Erro: "+e.message); }
 }
 async function excluirAviso(id){
   if(!podeEditarAvisos()) return alert("Sem permissão.");
   if(!confirm("Excluir este aviso?")) return;
   const aviso = DB.avisos.find(a=>a.id===id);
-  if(await excluirAvisoSupabase(id)){
+  try{
+    await sb.from("notices").delete().eq("id", id);
     DB.avisos = DB.avisos.filter(a=>a.id!==id);
     if(aviso) await registrarLog("🗑️", 'excluiu o aviso "'+aviso.titulo+'"');
     renderAvisosTopo();
-  }
+  }catch(e){ console.error(e); }
 }
+
 function renderDashboard(){
   document.getElementById("dashMonth").textContent = monthName();
   document.getElementById("kpiCultos").textContent = scale().length;
@@ -1249,7 +1778,14 @@ function renderScale(){
 async function atualizarEscala(i, campo, valor){
   const item = scale()[i]; if(!item) return;
   item[campo] = valor;
-  await salvarEscalaSupabase(item, true);
+  try{
+    setStatus("syncing");
+    await sb.from("schedules").update({
+      date:item.date, day:item.day, event:item.event, type:item.type,
+      story:item.story, photo:item.photo, datashow:item.data, sound:item.sound, status:item.status
+    }).eq("id", item.id);
+    setStatus("online");
+  }catch(e){ console.error(e); setStatus("offline","Erro"); }
   renderDashboard(); renderScale();
 }
 async function addScaleDay(){
@@ -1257,29 +1793,58 @@ async function addScaleDay(){
   const day = prompt("Dia da semana (ex: Domingo, Quinta):",""); if(day===null) return;
   const date = prompt("Data (ex: 05/09/2026):",""); if(date===null) return;
   const event = prompt("Nome do culto/evento:",""); if(event===null) return;
-  const novo = {date:date.trim(), event:event.trim()||"Culto / evento", day:day.trim(), type:"regular", story:"", photo:"", data:"", sound:"", status:"A Fazer"};
-  if(!await salvarEscalaSupabase(novo, false)) return;
-  await registrarLog("🎬", 'criou a escala "'+(event.trim()||"Culto")+'" em '+date.trim());
-  await carregarDoSupabase(); renderAll();
+  setStatus("syncing");
+  try{
+    await sb.from("schedules").insert({
+      date:date.trim(), day:day.trim(), event:event.trim()||"Culto / evento", type:"regular",
+      story:"", photo:"", datashow:"", sound:"", status:"A Fazer", month_key: currentMonth
+    });
+    await sb.from("productions").insert(PRODUCOES_PADRAO.map(prod=>({
+      culto_id:date.trim()+"|"+(event.trim()||"Culto / evento"),
+      date:date.trim(), event:event.trim()||"Culto / evento",
+      tarefa:prod, responsavel:"", status:"A Fazer", month_key: currentMonth
+    })));
+    await registrarLog("🎬", 'criou a escala "'+(event.trim()||"Culto")+'" em '+date.trim());
+    setStatus("online");
+    await carregarDoSupabase();
+    renderAll();
+  }catch(e){ console.error(e); setStatus("offline","Erro"); alert("⚠️ Erro: "+e.message); }
 }
 async function addSpecialEvent(){
   if(!podeEditarEscala()) return alert("Sem permissão.");
   const day = prompt("Dia da semana (ex: Sábado):",""); if(day===null) return;
   const date = prompt("Data (ex: 19/09/2026):",""); if(date===null) return;
   const event = prompt("Nome do evento especial:",""); if(event===null) return;
-  const novo = {date:date.trim(), event:event.trim()||"Evento especial", day:day.trim(), type:"special", story:"", photo:"", data:"", sound:"", status:"A Fazer"};
-  if(!await salvarEscalaSupabase(novo, false)) return;
-  await registrarLog("🎬", 'criou o evento "'+(event.trim()||"Evento")+'" em '+date.trim());
-  await carregarDoSupabase(); renderAll();
+  setStatus("syncing");
+  try{
+    await sb.from("schedules").insert({
+      date:date.trim(), day:day.trim(), event:event.trim()||"Evento especial", type:"special",
+      story:"", photo:"", datashow:"", sound:"", status:"A Fazer", month_key: currentMonth
+    });
+    await sb.from("productions").insert(PRODUCOES_PADRAO.map(prod=>({
+      culto_id:date.trim()+"|"+(event.trim()||"Evento especial"),
+      date:date.trim(), event:event.trim()||"Evento especial",
+      tarefa:prod, responsavel:"", status:"A Fazer", month_key: currentMonth
+    })));
+    await registrarLog("🎬", 'criou o evento "'+(event.trim()||"Evento")+'" em '+date.trim());
+    setStatus("online");
+    await carregarDoSupabase();
+    renderAll();
+  }catch(e){ console.error(e); setStatus("offline","Erro"); alert("⚠️ Erro: "+e.message); }
 }
 async function deleteScale(i){
   if(!podeEditarEscala()) return alert("Sem permissão.");
   const item = scale()[i]; if(!item) return;
-  if(!confirm("⚠️ Excluir esta data?\n\n"+item.date+" — "+item.event+"\n\nA produção vinculada também será removida.")) return;
-  const cultoId = item.date+"|"+item.event;
-  await excluirEscalaSupabase(item.id, cultoId);
-  await registrarLog("🗑️", 'removeu a escala "'+item.event+'" de '+item.date);
-  await carregarDoSupabase(); renderAll();
+  if(!confirm("⚠️ Excluir esta data?\n\n"+item.date+" — "+item.event)) return;
+  setStatus("syncing");
+  try{
+    await sb.from("schedules").delete().eq("id", item.id);
+    await sb.from("productions").delete().eq("culto_id", item.date+"|"+item.event);
+    await registrarLog("🗑️", 'removeu a escala "'+item.event+'" de '+item.date);
+    setStatus("online");
+    await carregarDoSupabase();
+    renderAll();
+  }catch(e){ console.error(e); setStatus("offline","Erro"); }
 }
 
 /* ==========================================================
@@ -1327,7 +1892,11 @@ async function applyAutoScale(){
     if(!r.photo && window._suggested[i].photo){ r.photo=window._suggested[i].photo; mudou=true; }
     if(!r.data  && window._suggested[i].data) { r.data =window._suggested[i].data;  mudou=true; }
     if(!r.sound && window._suggested[i].sound){ r.sound=window._suggested[i].sound; mudou=true; }
-    if(mudou) await salvarEscalaSupabase(r, true);
+    if(mudou){
+      await sb.from("schedules").update({
+        story:r.story, photo:r.photo, datashow:r.data, sound:r.sound
+      }).eq("id", r.id);
+    }
   }
   await registrarLog("🤖", 'aplicou a escala automática em '+monthName());
   setStatus("online");
@@ -1356,7 +1925,11 @@ function renderProduction(){
 async function atualizarProducao(i, campo, valor){
   const p = production()[i]; if(!p) return;
   const antigo = p[campo]; p[campo] = valor;
-  await salvarProducaoSupabase(p);
+  try{
+    setStatus("syncing");
+    await sb.from("productions").update({responsavel:p.responsavel, status:p.status}).eq("id", p.id);
+    setStatus("online");
+  }catch(e){ console.error(e); setStatus("offline","Erro"); }
   if(campo==="status" && ["Gravado","Editado","Publicado"].includes(valor) && antigo!==valor){
     await registrarLog("🎥", 'marcou "'+p.tarefa+'" ('+p.event+') como '+valor);
   }
@@ -1366,8 +1939,11 @@ async function deleteProduction(i){
   if(!podeEditar("fluxo")) return alert("Sem permissão.");
   if(!confirm("Excluir esta linha de produção?")) return;
   const p = production()[i];
-  await sb.from("productions").delete().eq("id", p.id);
-  await carregarDoSupabase(); renderAll();
+  try{
+    await sb.from("productions").delete().eq("id", p.id);
+    await carregarDoSupabase();
+    renderAll();
+  }catch(e){ console.error(e); }
 }
 
 /* ==========================================================
@@ -1388,17 +1964,29 @@ function renderRecordings(){
 async function atualizarRecording(i, campo, valor){
   const r = records()[i]; if(!r) return;
   r[campo] = valor;
-  await salvarRecordingSupabase(r);
+  try{
+    setStatus("syncing");
+    await sb.from("recordings").update({
+      date:r.date, content:r.content, speaker:r.speaker,
+      responsible:r.responsible, edit_date:r.edit, publish_date:r.publish, status:r.status
+    }).eq("id", r.id);
+    setStatus("online");
+  }catch(e){ console.error(e); setStatus("offline","Erro"); }
   renderRecordings();
 }
 async function addRecording(){
   if(!podeEditar("fluxo")) return alert("Sem permissão.");
   const hoje = new Date();
   const data = hoje.getFullYear()+"-"+String(hoje.getMonth()+1).padStart(2,"0")+"-"+String(hoje.getDate()).padStart(2,"0");
-  const novo = {date:formatDate(data), content:"Devocional", speaker:"", responsible:"", edit:"", publish:"", status:"A Fazer"};
-  if(!await salvarRecordingSupabase(novo)) return;
-  await registrarLog("📹", 'adicionou um devocional');
-  await carregarDoSupabase(); renderAll();
+  try{
+    await sb.from("recordings").insert({
+      date:formatDate(data), content:"Devocional", speaker:"", responsible:"",
+      edit_date:"", publish_date:"", status:"A Fazer", month_key: currentMonth
+    });
+    await registrarLog("📹", 'adicionou um devocional');
+    await carregarDoSupabase();
+    renderAll();
+  }catch(e){ console.error(e); alert("⚠️ Erro: "+e.message); }
 }
 async function criarDevocionaisMes(){
   if(!podeEditar("fluxo")) return alert("Sem permissão.");
@@ -1410,18 +1998,25 @@ async function criarDevocionaisMes(){
   const semanas = quintas.slice(0,4);
   for(let idx=0; idx<semanas.length; idx++){
     const ds = String(semanas[idx]).padStart(2,"0")+"/"+String(mes).padStart(2,"0")+"/"+ano;
-    await salvarRecordingSupabase({date:ds, content:"Devocional — Semana "+(idx+1), speaker:"", responsible:"", edit:"", publish:"", status:"A Fazer"});
+    await sb.from("recordings").insert({
+      date:ds, content:"Devocional — Semana "+(idx+1), speaker:"",
+      responsible:"", edit_date:"", publish_date:"", status:"A Fazer", month_key: currentMonth
+    });
   }
   await registrarLog("📹", 'criou '+semanas.length+' devocionais em '+monthName());
-  await carregarDoSupabase(); renderAll();
+  await carregarDoSupabase();
+  renderAll();
   alert("✅ Criados "+semanas.length+" devocionais!");
 }
 async function deleteRecording(i){
   if(!podeEditar("fluxo")) return alert("Sem permissão.");
   if(!confirm("Excluir este devocional?")) return;
   const r = records()[i];
-  await excluirRecordingSupabase(r.id);
-  await carregarDoSupabase(); renderAll();
+  try{
+    await sb.from("recordings").delete().eq("id", r.id);
+    await carregarDoSupabase();
+    renderAll();
+  }catch(e){ console.error(e); }
 }
 
 /* ==========================================================
@@ -1463,20 +2058,42 @@ async function saveVolunteer(){
     availability:document.getElementById("vAvailability").value.trim(),
     notes:document.getElementById("vNotes").value.trim()
   };
-  if(editingVolunteer>=0) v.id = DB.volunteers[editingVolunteer].id;
-  const editando = editingVolunteer>=0;
-  if(!await salvarVoluntarioSupabase(v, editando)) return;
-  await registrarLog(editando?"✏️":"👤", (editando?'editou "' : 'cadastrou "')+name+'"');
-  closeModal("volModal");
-  await carregarDoSupabase(); renderAll();
+  setStatus("syncing","Salvando...");
+  try{
+    if(editingVolunteer>=0){
+      const id = DB.volunteers[editingVolunteer].id;
+      await sb.from("volunteers").update({
+        name:v.name, user_login:v.user, email:v.email, phone:v.phone,
+        birth:v.birth||null, functions:v.functions, availability:v.availability, notes:v.notes
+      }).eq("id", id);
+      await registrarLog("✏️", 'editou "'+name+'"');
+    } else {
+      await sb.from("volunteers").insert({
+        name:v.name, user_login:v.user, email:v.email, phone:v.phone,
+        birth:v.birth||null, functions:v.functions, availability:v.availability, notes:v.notes
+      });
+      await sb.from("passwords").insert({user_login:v.user, password:v.user+"123"});
+      await registrarLog("👤", 'cadastrou "'+name+'"');
+    }
+    setStatus("online");
+    closeModal("volModal");
+    await carregarDoSupabase();
+    renderAll();
+  }catch(e){ console.error(e); setStatus("offline","Erro"); alert("⚠️ Erro: "+e.message); }
 }
 async function deleteVolunteer(i){
   if(!podeEditarAvisos()) return alert("Sem permissão.");
   const v = DB.volunteers[i]; if(!v) return;
-  if(!confirm("Excluir cadastro de "+v.name+"?\n\nO histórico nas escalas permanece.")) return;
-  await excluirVoluntarioSupabase(v.id, v.user);
-  await registrarLog("❌", 'removeu o voluntário "'+v.name+'"');
-  await carregarDoSupabase(); renderAll();
+  if(!confirm("Excluir cadastro de "+v.name+"?")) return;
+  setStatus("syncing");
+  try{
+    await sb.from("volunteers").delete().eq("id", v.id);
+    if(v.user) await sb.from("passwords").delete().eq("user_login", v.user);
+    await registrarLog("❌", 'removeu "'+v.name+'"');
+    setStatus("online");
+    await carregarDoSupabase();
+    renderAll();
+  }catch(e){ console.error(e); setStatus("offline","Erro"); }
 }
 function renderVolunteers(){
   const q = (document.getElementById("volSearch").value||"").toLowerCase();
@@ -1560,18 +2177,20 @@ function newTraining(){
 async function saveTraining(){
   const name = document.getElementById("tName").value.trim();
   if(!name){ alert("Informe o nome."); return; }
-  const novo = {
-    name:name, area:document.getElementById("tArea").value,
-    mentor:document.getElementById("tMentor").value,
-    stage:document.getElementById("tStage").value,
-    availability:document.getElementById("tAvailability").value,
-    last:document.getElementById("tLast").value,
-    next:document.getElementById("tNext").value
-  };
-  if(!await salvarTrainingSupabase(novo)) return;
-  await registrarLog("🌱", 'adicionou "'+name+'" ao treinamento');
-  closeModal("trainModal");
-  await carregarDoSupabase(); renderAll();
+  try{
+    await sb.from("trainings").insert({
+      name:name, area:document.getElementById("tArea").value,
+      mentor:document.getElementById("tMentor").value,
+      stage:document.getElementById("tStage").value,
+      availability:document.getElementById("tAvailability").value,
+      last_date:document.getElementById("tLast").value,
+      next_step:document.getElementById("tNext").value
+    });
+    await registrarLog("🌱", 'adicionou "'+name+'" ao treinamento');
+    closeModal("trainModal");
+    await carregarDoSupabase();
+    renderAll();
+  }catch(e){ console.error(e); alert("⚠️ Erro: "+e.message); }
 }
 function renderTrainings(){
   const podeEdit = podeEditarAvisos();
@@ -1585,8 +2204,11 @@ async function deleteTraining(i){
   if(!podeEditarAvisos()) return alert("Sem permissão.");
   if(!confirm("Excluir este talento?")) return;
   const t = DB.trainings[i];
-  await excluirTrainingSupabase(t.id);
-  await carregarDoSupabase(); renderAll();
+  try{
+    await sb.from("trainings").delete().eq("id", t.id);
+    await carregarDoSupabase();
+    renderAll();
+  }catch(e){ console.error(e); }
 }
 
 /* ==========================================================
@@ -1651,13 +2273,35 @@ async function salvarNovaSenha(){
   if(nova.length<4){ err.textContent="⚠️ Mínimo 4 caracteres."; return; }
   if(nova!==nova2){ err.textContent="❌ As senhas não coincidem."; return; }
   setStatus("syncing","Salvando...");
-  const { error } = await sb.from("passwords").update({password:nova}).eq("user_login", usuarioAtual.user);
-  if(error){ err.textContent="❌ Erro ao salvar."; setStatus("offline","Erro"); return; }
-  DB.senhas[usuarioAtual.user] = nova;
-  await registrarLog("🔑", 'alterou a própria senha');
-  setStatus("online");
-  closeModal("perfilModal");
-  alert("✅ Senha alterada!");
+
+  const agora = new Date().toISOString();
+
+  try{
+    // Atualiza senha + data + quem trocou
+    const { error } = await sb.from("passwords").update({
+      password: nova,
+      updated_at: agora,
+      changed_by: usuarioAtual.name
+    }).eq("user_login", usuarioAtual.user);
+
+    if(error) throw error;
+
+    // Registra no histórico
+    await sb.from("passwords_history").insert({
+      user_login: usuarioAtual.user,
+      changed_by: usuarioAtual.name
+    });
+
+    DB.senhas[usuarioAtual.user] = nova;
+    await registrarLog("🔑", 'alterou a própria senha');
+    setStatus("online");
+    closeModal("perfilModal");
+    alert("✅ Senha alterada!");
+  }catch(e){
+    console.error(e);
+    err.textContent = "❌ Erro ao salvar.";
+    setStatus("offline","Erro");
+  }
 }
 
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
@@ -1670,6 +2314,10 @@ function renderAll(){
   renderMonths(); renderDashboard(); renderScale(); renderProduction();
   renderRecordings(); renderVolunteers(); renderTrainings();
   renderHistory(); renderLoad(); aplicarPermissoes();
+  // Só renderiza senhas se admin/coord
+  if(perfilAtual === "admin" || perfilAtual === "coordenador"){
+    renderSenhas();
+  }
 }
 
 /* ==========================================================
