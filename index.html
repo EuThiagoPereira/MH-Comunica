@@ -618,7 +618,6 @@ td input[readonly],td select:disabled{opacity:.85;cursor:default}
   transform:none;box-shadow:none;
 }
 
-/* Estilo do código da senha */
 td code.senha-code{
   background:rgba(0,0,0,.3);
   padding:4px 8px;
@@ -1107,6 +1106,28 @@ const DB = {
 let senhasCache = [];
 
 /* ==========================================================
+   HELPERS ESSENCIAIS (esc, formatDate, monthName, uid)
+========================================================== */
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+function esc(v){
+  return String(v==null?"":v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+
+function formatDate(v){
+  if(!v) return "";
+  if(v.indexOf("/") > -1) return v;
+  const p = v.split("-");
+  return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : v;
+}
+
+function monthName(){ return MONTHS[currentMonth] || ""; }
+
+function scale(){ if(!DB.scale[currentMonth]) DB.scale[currentMonth] = []; return DB.scale[currentMonth]; }
+function production(){ if(!DB.production[currentMonth]) DB.production[currentMonth] = []; return DB.production[currentMonth]; }
+function records(){ if(!DB.recordings[currentMonth]) DB.recordings[currentMonth] = []; return DB.recordings[currentMonth]; }
+
+/* ==========================================================
    CONEXÃO
 ========================================================== */
 function setStatus(status, texto){
@@ -1462,12 +1483,10 @@ function copiarFallback(texto){
 function imprimirEscala(){ window.print(); }
 
 /* ==========================================================
-   ABA SENHAS (SÓ ADMIN/COORD)
+   ABA SENHAS
 ========================================================== */
 async function renderSenhas(){
-  if(perfilAtual !== "admin" && perfilAtual !== "coordenador"){
-    return;
-  }
+  if(perfilAtual !== "admin" && perfilAtual !== "coordenador") return;
   const tbody = document.getElementById("senhasTable");
   if(!tbody) return;
 
@@ -2277,16 +2296,13 @@ async function salvarNovaSenha(){
   const agora = new Date().toISOString();
 
   try{
-    // Atualiza senha + data + quem trocou
     const { error } = await sb.from("passwords").update({
       password: nova,
       updated_at: agora,
       changed_by: usuarioAtual.name
     }).eq("user_login", usuarioAtual.user);
-
     if(error) throw error;
 
-    // Registra no histórico
     await sb.from("passwords_history").insert({
       user_login: usuarioAtual.user,
       changed_by: usuarioAtual.name
@@ -2314,7 +2330,6 @@ function renderAll(){
   renderMonths(); renderDashboard(); renderScale(); renderProduction();
   renderRecordings(); renderVolunteers(); renderTrainings();
   renderHistory(); renderLoad(); aplicarPermissoes();
-  // Só renderiza senhas se admin/coord
   if(perfilAtual === "admin" || perfilAtual === "coordenador"){
     renderSenhas();
   }
