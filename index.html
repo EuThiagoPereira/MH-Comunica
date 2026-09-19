@@ -493,6 +493,41 @@ td input:focus,td select:focus{
 }
 td input[readonly],td select:disabled{opacity:.85;cursor:default}
 
+/* ==========================================================
+   CORES POR DATA (Dashboard + Escala)
+========================================================== */
+tr.data-passada td{
+  opacity:.42;
+  filter:grayscale(.4);
+}
+tr.data-passada:hover td{
+  opacity:.65;
+  filter:grayscale(0);
+}
+tr.data-hoje td{
+  background:linear-gradient(90deg,rgba(201,169,97,.18) 0%,rgba(201,169,97,.05) 100%) !important;
+  box-shadow:inset 3px 0 0 var(--dourado);
+}
+tr.data-hoje td.cult{
+  background:linear-gradient(90deg,rgba(201,169,97,.28) 0%,rgba(201,169,97,.1) 100%) !important;
+}
+tr.data-hoje td.cult input:first-child{
+  color:var(--dourado-claro);
+}
+tr.data-hoje td:first-child::before{
+  content:"HOJE";
+  display:inline-block;
+  margin-right:8px;
+  padding:2px 8px;
+  background:var(--dourado);
+  color:#1a1206;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1px;
+  border-radius:10px;
+  vertical-align:middle;
+}
+
 .status{
   display:inline-block;padding:5px 12px;border-radius:20px;
   font-size:10px;font-weight:800;text-transform:uppercase;
@@ -1106,7 +1141,7 @@ const DB = {
 let senhasCache = [];
 
 /* ==========================================================
-   HELPERS ESSENCIAIS (esc, formatDate, monthName, uid)
+   HELPERS
 ========================================================== */
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
 
@@ -1126,6 +1161,24 @@ function monthName(){ return MONTHS[currentMonth] || ""; }
 function scale(){ if(!DB.scale[currentMonth]) DB.scale[currentMonth] = []; return DB.scale[currentMonth]; }
 function production(){ if(!DB.production[currentMonth]) DB.production[currentMonth] = []; return DB.production[currentMonth]; }
 function records(){ if(!DB.recordings[currentMonth]) DB.recordings[currentMonth] = []; return DB.recordings[currentMonth]; }
+
+/* ==========================================================
+   CLASSE DE DATA (passada / hoje / futura)
+========================================================== */
+function classeDaData(dateStr){
+  if(!dateStr) return "";
+  // dateStr está no formato dd/mm/aaaa
+  const p = dateStr.split("/");
+  if(p.length !== 3) return "";
+  const d = new Date(Number(p[2]), Number(p[1])-1, Number(p[0]));
+  const hoje = new Date();
+  hoje.setHours(0,0,0,0);
+  d.setHours(0,0,0,0);
+  const diff = d - hoje;
+  if(diff < 0) return "data-passada";
+  if(diff === 0) return "data-hoje";
+  return "";
+}
 
 /* ==========================================================
    CONEXÃO
@@ -1343,10 +1396,17 @@ async function registrarLog(icone, texto){
 function renderLog(){
   const box = document.getElementById("logBox"), lista = document.getElementById("logLista"), btn = document.getElementById("btnLimparLog");
   if(!box || !lista) return;
+
+  // ⚠️ NOVO: só admin e coordenador veem o log
+  if(perfilAtual !== "admin" && perfilAtual !== "coordenador"){
+    box.classList.add("hidden");
+    return;
+  }
+
   const logs = DB.log || [];
   if(!logs.length){ box.classList.add("hidden"); return; }
   box.classList.remove("hidden");
-  if(btn) btn.style.display = (perfilAtual==="admin"||perfilAtual==="coordenador") ? "inline-block" : "none";
+  if(btn) btn.style.display = "inline-block";
   lista.innerHTML = logs.slice(0,15).map(l=>{
     const d = new Date(l.data);
     const f = String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
@@ -1751,7 +1811,8 @@ function renderDashboard(){
     const da=a.date.split("/").reverse().join("-"), db=b.date.split("/").reverse().join("-");
     return new Date(da)-new Date(db);
   }).forEach(r=>{
-    html += '<tr><td class="cult"><b>'+esc(r.date)+'</b> — '+esc(r.day)+' — '+esc(r.event)+'</td><td class="story">'+(esc(r.story)||"—")+'</td><td class="foto">'+(esc(r.photo)||"—")+'</td><td class="data">'+(esc(r.data)||"—")+'</td><td class="som">'+(esc(r.sound)||"—")+'</td></tr>';
+    const cls = classeDaData(r.date);
+    html += '<tr class="'+cls+'"><td class="cult"><b>'+esc(r.date)+'</b> — '+esc(r.day)+' — '+esc(r.event)+'</td><td class="story">'+(esc(r.story)||"—")+'</td><td class="foto">'+(esc(r.photo)||"—")+'</td><td class="data">'+(esc(r.data)||"—")+'</td><td class="som">'+(esc(r.sound)||"—")+'</td></tr>';
   });
   document.getElementById("dashTable").innerHTML = html || '<tr><td colspan="5" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum culto neste mês.</td></tr>';
   renderAvisosTopo(); renderBirthdayNotice(); renderLog();
@@ -1775,13 +1836,14 @@ function renderScale(){
     const texto = (r.date+" "+r.event+" "+r.day).toLowerCase();
     if(search && !texto.includes(search)) return;
     const dis = edit?"":"disabled";
+    const clsData = classeDaData(r.date);
     function celula(nome, classe, campo, idx){
       const temTel = nome && buscarTelefonePorNome(nome);
       const bd = (!nome || !temTel)?"disabled":"";
       const bt = (!nome)?"Sem pessoa":(!temTel?"Sem telefone":"Enviar WhatsApp");
       return '<td class="'+classe+'"><div class="celula-funcao"><input value="'+esc(nome)+'" onchange="atualizarEscala('+idx+',\''+campo+'\',this.value)" '+dis+'><button class="btn-whats-inline" onclick="enviarWhatsIndividual(\''+esc(nome).replace(/'/g,"\\'")+'\','+idx+')" title="'+bt+'" '+bd+'>📱</button></div></td>';
     }
-    html += '<tr>' +
+    html += '<tr class="'+clsData+'">' +
       '<td class="cult"><input value="'+esc(r.date)+'" onchange="atualizarEscala('+i+',\'date\',this.value)" '+dis+'><input value="'+esc(r.day)+'" onchange="atualizarEscala('+i+',\'day\',this.value)" '+dis+'><input value="'+esc(r.event)+'" onchange="atualizarEscala('+i+',\'event\',this.value)" '+dis+'></td>' +
       celula(r.story, "story", "story", i) +
       celula(r.photo, "foto", "photo", i) +
