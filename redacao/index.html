@@ -265,21 +265,16 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .page{display:none;animation:fadeIn .35s ease}
 .page.active{display:block}
 
-/* ==========================================================
-   GRID PRINCIPAL DA REDAÇÃO
-========================================================== */
 .redacao-grid{
   display:grid;
   grid-template-columns:1.1fr 1fr;
   gap:20px;
   margin-bottom:24px;
 }
-
 @media(max-width:1100px){
   .redacao-grid{grid-template-columns:1fr}
 }
 
-/* BOX PADRÃO */
 .box{
   background:var(--bg-nivel-1);
   border:1px solid var(--borda);
@@ -311,7 +306,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 }
 .box-body{padding:20px}
 
-/* PLAYER */
 .player-wrap{
   background:#000;
   border-radius:10px;
@@ -338,7 +332,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   margin-bottom:14px;
 }
 
-/* CAMPOS DE TEMPO */
 .campo-tempo{
   display:flex;
   gap:8px;
@@ -370,7 +363,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   box-shadow:0 0 0 3px rgba(92,225,230,.2);
 }
 
-/* LISTA DE CORTES */
 .lista-cortes{
   display:flex;
   flex-direction:column;
@@ -417,7 +409,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   flex-shrink:0;
 }
 
-/* FORMULÁRIOS */
 .form-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -462,7 +453,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   border-top:1px solid var(--borda);
 }
 
-/* BOTÃO GERAR IA */
 .btn-ia{
   width:100%;
   padding:16px;
@@ -483,7 +473,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   border-style:solid;
 }
 
-/* RESULTADOS */
 .resultado-item{
   margin-bottom:18px;
 }
@@ -523,7 +512,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   box-shadow:0 0 0 3px rgba(92,225,230,.2);
 }
 
-/* HISTÓRICO */
 .historico-item{
   display:flex;
   align-items:flex-start;
@@ -663,15 +651,12 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 <!-- CONTEÚDO -->
 <main class="container hidden" id="appMain">
 
-  <!-- ABA: REDAÇÃO -->
   <section id="redacao" class="page active">
 
     <div class="redacao-grid">
 
-      <!-- COLUNA ESQUERDA: FONTE + CORTES -->
       <div>
 
-        <!-- FONTE -->
         <div class="box">
           <div class="box-title"><span class="titulo-esq">📹 Fonte do Culto</span></div>
           <div class="box-body">
@@ -706,7 +691,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
           </div>
         </div>
 
-        <!-- CORTES -->
         <div class="box">
           <div class="box-title">
             <span class="titulo-esq">🎬 Melhores Momentos</span>
@@ -737,10 +721,8 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
       </div>
 
-      <!-- COLUNA DIREITA: CONTEXTO + IA -->
       <div>
 
-        <!-- CONTEXTO -->
         <div class="box">
           <div class="box-title"><span class="titulo-esq">📝 Contexto do Culto</span></div>
           <div class="box-body">
@@ -773,7 +755,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
           </div>
         </div>
 
-        <!-- RESULTADO -->
         <div class="box">
           <div class="box-title"><span class="titulo-esq">📤 Resultado</span></div>
           <div class="box-body">
@@ -832,7 +813,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
   </section>
 
-  <!-- ABA: HISTÓRICO -->
   <section id="historico" class="page">
     <div class="box">
       <div class="box-title">
@@ -848,10 +828,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 </main>
 
 <script>
-</script>
-</body>
-</html>
-<script> "use strict";
+"use strict";
 
 /* ==========================================================
    CONFIGURAÇÃO SUPABASE
@@ -1003,11 +980,6 @@ function openTab(id, button){
 ========================================================== */
 function extrairIdYoutube(url){
   if(!url) return null;
-  // Formatos aceitos:
-  // https://www.youtube.com/watch?v=ABC123
-  // https://youtu.be/ABC123
-  // https://www.youtube.com/live/ABC123
-  // https://www.youtube.com/embed/ABC123
   const patterns = [
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{11})/
   ];
@@ -1024,7 +996,6 @@ function carregarYoutube(){
 
   const id = extrairIdYoutube(url);
   if(!id){
-    // Não é link válido ainda — o usuário pode estar digitando
     return;
   }
 
@@ -1047,7 +1018,6 @@ function carregarAudio(evt){
     return;
   }
 
-  // Valida tamanho (limite do Supabase Storage: 50MB)
   if(file.size > 50 * 1024 * 1024){
     alert("⚠️ O arquivo é maior que 50MB.\n\nPor favor, envie um arquivo menor ou divida em partes.");
     evt.target.value = "";
@@ -1078,13 +1048,9 @@ function limparPlayer(){
    MARCAR INÍCIO / FIM
 ========================================================== */
 function getTempoAtual(){
-  // Se for áudio
   const video = document.querySelector("#playerWrap video");
   if(video) return video.currentTime;
-
-  // Se for YouTube (via postMessage)
   if(playerYoutubeId){
-    // Não é 100% preciso por segurança do YouTube, então avisamos
     return null;
   }
   return null;
@@ -1096,7 +1062,6 @@ function marcarInicio(){
     document.getElementById("corteInicio").value = formatarSegundos(t);
     setStatus("online", "Início marcado: " + formatarSegundos(t));
   } else {
-    // Se não conseguiu pegar automaticamente, pede manual
     const manual = prompt("Não foi possível capturar o tempo automaticamente.\n\nDigite o tempo de INÍCIO (formato HH:MM:SS):", "00:00:00");
     if(manual) document.getElementById("corteInicio").value = manual.trim();
   }
@@ -1175,7 +1140,6 @@ function renderCortes(){
 function usarCorte(i){
   const c = DB.cortes[i];
   if(!c) return;
-  // Copia o corte para os campos de contexto (o redator usa como referência)
   const obs = c.descricao || ("Trecho de " + c.duracao);
   document.getElementById("ctxTema").value = obs;
   setStatus("online", "Corte aplicado");
@@ -1183,7 +1147,7 @@ function usarCorte(i){
 }
 
 /* ==========================================================
-   GERAR CONTEÚDO (Template Inteligente)
+   GERAR CONTEÚDO
 ========================================================== */
 function gerarConteudo(){
   const culto = document.getElementById("ctxCulto").value.trim();
@@ -1197,10 +1161,8 @@ function gerarConteudo(){
     return;
   }
 
-  // Se tiver corte marcado, usa o primeiro como base
   const corteBase = DB.cortes[0] || null;
 
-  // Dados fallback
   const cultoFinal = culto || "Culto";
   const dataFinal = data ? dataBR(data) : nomeMesAtual();
   const pregadorFinal = pregador || "o preletor";
@@ -1208,9 +1170,6 @@ function gerarConteudo(){
   const versiculoFinal = versiculo || "";
   const referenciaVersiculo = versiculoFinal ? " (" + versiculoFinal + ")" : "";
 
-  /* ==========================================================
-     LEGENDA INSTAGRAM
-  ========================================================== */
   const legenda = 
     "🙌 " + temaFinal.toUpperCase() + "\n\n" +
     "Neste " + cultoFinal + " de " + dataFinal + ", " + pregadorFinal + 
@@ -1222,9 +1181,6 @@ function gerarConteudo(){
     "🔗 Siga @midiamontehermon\n" +
     "💬 Compartilhe com alguém que precisa ler isso hoje!";
 
-  /* ==========================================================
-     TÍTULO REELS / SHORTS
-  ========================================================== */
   const titulos = [
     "🔥 " + temaFinal,
     "🙌 " + temaFinal + " — você precisa ouvir isso!",
@@ -1234,9 +1190,6 @@ function gerarConteudo(){
   ];
   const titulo = titulos[Math.floor(Math.random() * titulos.length)];
 
-  /* ==========================================================
-     FRASE DE IMPACTO
-  ========================================================== */
   const frases = [
     "\"" + temaFinal + " — o que Deus tem para você hoje vai além do que imagina.\"",
     "\"" + temaFinal + ": a resposta que o seu coração espera.\"",
@@ -1247,9 +1200,6 @@ function gerarConteudo(){
   ];
   const frase = frases[Math.floor(Math.random() * frases.length)];
 
-  /* ==========================================================
-     DESCRIÇÃO YOUTUBE
-  ========================================================== */
   const timestamp = (corteBase ? "\n\n⏱️ CORTES\n" + DB.cortes.map(c=>c.inicio + " - " + (c.descricao || "Trecho especial")).join("\n") : "");
 
   const descricao = 
@@ -1263,9 +1213,6 @@ function gerarConteudo(){
     "🔔 Inscreva-se no canal para não perder nenhuma ministração!\n" +
     "👉 Compartilhe com quem precisa ouvir essa palavra.";
 
-  /* ==========================================================
-     HASHTAGS
-  ========================================================== */
   const tags = [
     "#fe", "#jesus", "#palavra", "#adoração", "#igreja",
     "#deus", "#fé", "#montehermon", "#midiamontehermon",
@@ -1275,9 +1222,6 @@ function gerarConteudo(){
   ];
   const hashtags = tags.join(" ");
 
-  /* ==========================================================
-     PREENCHER CAMPOS
-  ========================================================== */
   document.getElementById("outLegenda").value = legenda;
   document.getElementById("outTitulo").value = titulo;
   document.getElementById("outFrase").value = frase;
@@ -1299,7 +1243,6 @@ function copiar(id){
   }
   if(navigator.clipboard){
     navigator.clipboard.writeText(el.value).then(()=>{
-      // Feedback visual
       const btn = event.target;
       const original = btn.textContent;
       btn.textContent = "✅ Copiado!";
@@ -1386,10 +1329,8 @@ async function enviarParaCoordenacao(){
   );
   if(!confirmar) return;
 
-  // 1. Salva no histórico primeiro
   await salvarNoHistorico();
 
-  // 2. Cria aviso no sistema da Mídia
   setStatus("syncing", "Enviando...");
   try{
     const { error } = await sb.from("notices").insert({
@@ -1404,7 +1345,6 @@ async function enviarParaCoordenacao(){
     setStatus("offline", "Erro");
   }
 
-  // 3. Abre WhatsApp (opcional)
   const msg = "✍️ *Novo texto da Redação*\n\n" +
     "*Culto:* " + culto + "\n" +
     "*Tema:* " + tema + "\n\n" +
@@ -1510,7 +1450,6 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     return;
   }
 
-  // Testa conexão com Supabase
   try{
     const { error } = await sb.from("redacao_senhas").select("user_login").limit(1);
     if(error) throw error;
@@ -1523,7 +1462,6 @@ window.addEventListener("DOMContentLoaded", async ()=>{
 
   document.getElementById("loadingOverlay").classList.add("hidden");
 
-  // Se já está logado
   if(sessionStorage.getItem("mh_redacao_logado") === "1"){
     abrirApp();
   } else {
@@ -1531,7 +1469,6 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     setTimeout(()=>document.getElementById("senhaInput").focus(), 200);
   }
 
-  // Pré-preenche a data de hoje
   const hoje = new Date();
   const y = hoje.getFullYear();
   const m = String(hoje.getMonth()+1).padStart(2,"0");
