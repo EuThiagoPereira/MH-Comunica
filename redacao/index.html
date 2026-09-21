@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MH Redação — Central de Conteúdo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg-nivel-0:#071426;
+  --bg-nivel-1:#0e2444;
+  --bg-nivel-2:#0a1e3d;
+  --bg-nivel-3:#16335c;
+  --borda:#1e3a5f;
+  --borda-clara:#2a4d7a;
+  --texto:#e8eef7;
+  --texto-70:rgba(232,238,247,.7);
+  --texto-55:rgba(232,238,247,.55);
+  --texto-40:rgba(232,238,247,.4);
+  --dourado:#c9a961;
+  --dourado-claro:#e6c980;
+  --dourado-escuro:#a88945;
+  --dourado-10:rgba(201,169,97,.1);
+  --dourado-20:rgba(201,169,97,.2);
+  --dourado-30:rgba(201,169,97,.3);
+  --verde:#4ade80;
+  --verde-forte:#22c55e;
+  --verde-whats:#25d366;
+  --vermelho:#f87171;
+  --amarelo:#fbbf24;
+  --ciano:#5ce1e6;
+  --ciano-forte:#22d3ee;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  background:var(--bg-nivel-0);
+  color:var(--texto);
+  font-size:14px;
+  position:relative;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(30,58,95,.55) 0%, transparent 55%),
+    url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body::after{
+  content:"";position:fixed;bottom:0;left:0;right:0;height:45vh;
+  background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400' preserveAspectRatio='xMidYMax slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%232a4d7a' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%232a4d7a' stop-opacity='0.22'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M0,400 L0,300 L120,220 L200,270 L320,150 L440,240 L560,120 L680,220 L820,80 L960,200 L1100,140 L1240,240 L1360,180 L1440,260 L1440,400 Z'/%3E%3C/svg%3E");
+  background-size:100% auto;background-position:bottom center;background-repeat:no-repeat;
+  pointer-events:none;z-index:0;opacity:.55;
+}
+main,header,nav,div,section,table{position:relative;z-index:1}
+
+.conn-status{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:20px;
+  font-size:11px;font-weight:700;letter-spacing:.5px;
+  text-transform:uppercase;
+  transition:all .3s;
+}
+.conn-status.online{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.35)}
+.conn-status.syncing{background:rgba(251,191,36,.15);color:#fcd34d;border:1px solid rgba(251,191,36,.35)}
+.conn-status.offline{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
+.conn-dot{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}
+.conn-status.syncing .conn-dot{animation:spin .8s linear infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.loading-overlay{
+  position:fixed;inset:0;z-index:150;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(7,20,38,.85);
+  backdrop-filter:blur(4px);
+}
+.loading-overlay.hidden{display:none}
+.loading-box{text-align:center;color:var(--texto)}
+.loading-box .spinner{
+  width:50px;height:50px;
+  border:4px solid var(--borda-clara);
+  border-top-color:var(--dourado);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:0 auto 20px;
+}
+.loading-box p{font-size:14px;letter-spacing:1px;color:var(--texto-70)}
+
+#loginScreen{
+  position:fixed;inset:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  background:linear-gradient(135deg,#071426 0%,#0a1e3d 100%);
+}
+#loginScreen.hidden{display:none}
+.login-card{
+  background:var(--bg-nivel-1);
+  border:1px solid var(--borda-clara);
+  border-radius:16px;
+  padding:40px 36px;
+  width:min(420px,100%);
+  text-align:center;
+  box-shadow:0 25px 70px rgba(0,0,0,.7);
+  animation:fadeIn .4s ease;
+}
+.login-card .logo-svg{
+  width:80px;height:80px;margin:0 auto 18px;display:block;
+  filter:drop-shadow(0 4px 20px rgba(201,169,97,.3));
+}
+.login-card h1{
+  margin:0 0 6px;
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:22px;
+  letter-spacing:4px;
+  color:#fff;
+}
+.login-card h1 span{color:var(--ciano)}
+.login-card p{
+  margin:0 0 28px;
+  font-size:12px;
+  color:var(--texto-70);
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.login-card input{
+  width:100%;padding:14px;
+  border:1px solid var(--borda);
+  border-radius:10px;
+  font-size:15px;
+  text-align:center;
+  font-family:inherit;
+  background:var(--bg-nivel-0);
+  color:var(--texto);
+  letter-spacing:2px;
+  transition:all .18s;
+}
+.login-card input:focus{
+  outline:none;
+  border-color:var(--ciano);
+  box-shadow:0 0 0 3px rgba(92,225,230,.2);
+  text-align:left;
+}
+.login-card button{
+  width:100%;margin-top:14px;
+  padding:14px;
+  font-size:14px;
+  letter-spacing:1px;
+}
+.login-card .erro{
+  color:var(--vermelho);
+  font-size:12px;
+  margin-top:12px;
+  min-height:18px;
+}
+
+header{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  padding:24px 40px;
+  min-height:110px;
+  background:linear-gradient(180deg,#0a1a30 0%,#071426 100%);
+  border-bottom:1px solid rgba(92,225,230,.3);
+  box-shadow:0 4px 32px rgba(0,0,0,.5);
+  position:sticky;top:0;z-index:30;
+}
+.header-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.header-center{display:flex;flex-direction:column;align-items:center;gap:4px}
+.logo-wrap{display:flex;align-items:center;gap:16px;justify-content:center}
+.logo-svg{
+  width:64px;height:64px;flex-shrink:0;
+  filter:drop-shadow(0 4px 20px rgba(92,225,230,.22));
+}
+.titulo-grupo{display:flex;flex-direction:column;line-height:1}
+.titulo-grupo h1{
+  margin:0;
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:28px;
+  letter-spacing:5px;
+  color:#fff;
+  white-space:nowrap;
+}
+.titulo-grupo h1 span{color:var(--ciano);font-weight:900}
+.header-right{display:flex;justify-content:flex-end;gap:8px;align-items:center;flex-wrap:wrap}
+.user-badge{
+  background:rgba(92,225,230,.1);
+  color:var(--ciano);
+  border:1px solid rgba(92,225,230,.3);
+  padding:6px 14px;border-radius:20px;
+  font-size:12px;font-weight:600;letter-spacing:.3px;
+  white-space:nowrap;
+}
+
+button{
+  border:0;border-radius:8px;
+  padding:11px 18px;cursor:pointer;
+  font-weight:600;font-size:13px;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+  font-family:inherit;
+  letter-spacing:.3px;
+  color:var(--texto);
+}
+button:hover{transform:translateY(-1px)}
+button:active{transform:translateY(0)}
+button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.primary{
+  background:linear-gradient(180deg,var(--ciano) 0%,#0891b2 100%);
+  color:#0a1e3d;
+  box-shadow:0 2px 10px rgba(92,225,230,.3);
+  font-weight:700;
+}
+.primary:hover{
+  background:linear-gradient(180deg,#7fe6ea 0%,var(--ciano) 100%);
+  box-shadow:0 6px 18px rgba(92,225,230,.45);
+}
+.dark{background:var(--bg-nivel-3);color:var(--texto);border:1px solid var(--borda-clara)}
+.dark:hover{background:#1e4074;border-color:var(--ciano)}
+.danger{background:#7f1d1d;color:#fca5a5;padding:7px 13px;font-size:12px;border:1px solid #991b1b}
+.danger:hover{background:#991b1b;color:#fff}
+.green{background:#166534;color:#bbf7d0;border:1px solid #14532d}
+.green:hover{background:#15803d;color:#fff}
+.blue{background:#1e40af;color:#dbeafe;border:1px solid #1e3a8a}
+.blue:hover{background:#1d4ed8}
+.ghost{background:transparent;color:var(--texto-70);border:1px solid var(--borda)}
+.ghost:hover{background:rgba(92,225,230,.1);color:var(--ciano);border-color:var(--ciano)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-xs{padding:4px 8px;font-size:11px;border-radius:5px}
+
+.tabs{
+  display:flex;justify-content:center;align-items:center;gap:4px;
+  background:rgba(10,30,61,.85);
+  backdrop-filter:blur(12px);
+  padding:0 20px;
+  border-bottom:1px solid var(--borda);
+  position:sticky;top:110px;z-index:25;
+  box-shadow:0 2px 12px rgba(0,0,0,.3);
+  overflow-x:auto;
+}
+.tabs::-webkit-scrollbar{height:0}
+.tabs{scrollbar-width:none;-ms-overflow-style:none}
+.tabs button{
+  background:transparent;color:var(--texto-55);
+  white-space:nowrap;padding:17px 20px;
+  font-size:13px;font-weight:600;
+  border-radius:0;border-bottom:2px solid transparent;
+  transition:all .2s;
+}
+.tabs button:hover{color:var(--ciano);transform:none;background:rgba(92,225,230,.05)}
+.tabs button.active{
+  background:transparent;color:var(--ciano);
+  border-bottom:2px solid var(--ciano);font-weight:700;
+}
+
+.container{max-width:1500px;margin:auto;padding:28px 20px 80px}
+.page{display:none;animation:fadeIn .35s ease}
+.page.active{display:block}
+
+/* ==========================================================
+   GRID PRINCIPAL DA REDAÇÃO
+========================================================== */
+.redacao-grid{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:20px;
+  margin-bottom:24px;
+}
+
+@media(max-width:1100px){
+  .redacao-grid{grid-template-columns:1fr}
+}
+
+/* BOX PADRÃO */
+.box{
+  background:var(--bg-nivel-1);
+  border:1px solid var(--borda);
+  border-radius:12px;
+  margin-bottom:20px;
+  overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,.3);
+}
+.box-title{
+  background:var(--bg-nivel-2);
+  color:var(--texto);
+  padding:16px 22px;
+  font-weight:700;
+  font-size:14px;
+  border-bottom:1px solid var(--borda);
+  letter-spacing:.6px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+.box-title .titulo-esq{
+  display:flex;align-items:center;gap:10px;
+}
+.box-title .titulo-esq::before{
+  content:"";width:3px;height:18px;
+  background:var(--ciano);border-radius:2px;
+}
+.box-body{padding:20px}
+
+/* PLAYER */
+.player-wrap{
+  background:#000;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:14px;
+  min-height:280px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--texto-40);
+  font-size:13px;
+}
+.player-wrap iframe,
+.player-wrap video{
+  width:100%;
+  height:100%;
+  min-height:280px;
+  border:0;
+}
+.player-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+
+/* CAMPOS DE TEMPO */
+.campo-tempo{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-bottom:10px;
+}
+.campo-tempo label{
+  font-size:11px;
+  font-weight:700;
+  color:var(--texto-70);
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  min-width:50px;
+}
+.campo-tempo input{
+  flex:1;
+  padding:10px 12px;
+  border:1px solid var(--borda);
+  border-radius:8px;
+  font-family:'Courier New',monospace;
+  font-size:14px;
+  background:var(--bg-nivel-0);
+  color:var(--texto);
+  letter-spacing:1px;
+}
+.campo-tempo input:focus{
+  outline:none;
+  border-color:var(--ciano);
+  box-shadow:0 0 0 3px rgba(92,225,230,.2);
+}
+
+/* LISTA DE CORTES */
+.lista-cortes{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:14px;
+}
+.corte-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  background:rgba(92,225,230,.06);
+  border:1px solid rgba(92,225,230,.2);
+  border-left:3px solid var(--ciano);
+  border-radius:8px;
+  font-size:13px;
+  transition:all .2s;
+}
+.corte-item:hover{
+  background:rgba(92,225,230,.1);
+  border-color:var(--ciano);
+}
+.corte-item .corte-tempo{
+  font-family:'Courier New',monospace;
+  color:var(--ciano);
+  font-weight:700;
+  white-space:nowrap;
+}
+.corte-item .corte-tempo span{
+  color:var(--texto-40);
+  margin:0 4px;
+}
+.corte-item .corte-desc{
+  flex:1;
+  color:var(--texto-70);
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.corte-item .corte-actions{
+  display:flex;
+  gap:6px;
+  flex-shrink:0;
+}
+
+/* FORMULÁRIOS */
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:14px;
+  align-items:end;
+}
+.form-grid label{
+  display:block;
+  font-size:11px;
+  font-weight:700;
+  color:var(--texto-70);
+  letter-spacing:.8px;
+  text-transform:uppercase;
+}
+.form-grid input,
+.form-grid select,
+.form-grid textarea{
+  width:100%;
+  padding:11px 12px;
+  margin-top:6px;
+  border:1px solid var(--borda);
+  border-radius:8px;
+  font-family:inherit;
+  font-size:14px;
+  background:var(--bg-nivel-0);
+  color:var(--texto);
+  transition:all .18s;
+}
+.form-grid input:focus,
+.form-grid select:focus,
+.form-grid textarea:focus{
+  outline:none;
+  border-color:var(--ciano);
+  box-shadow:0 0 0 3px rgba(92,225,230,.2);
+}
+.form-actions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  margin-top:16px;
+  padding-top:16px;
+  border-top:1px solid var(--borda);
+}
+
+/* BOTÃO GERAR IA */
+.btn-ia{
+  width:100%;
+  padding:16px;
+  font-size:15px;
+  font-weight:800;
+  letter-spacing:1px;
+  margin-top:14px;
+  background:linear-gradient(135deg,rgba(92,225,230,.2) 0%,rgba(8,145,178,.2) 100%);
+  color:var(--ciano);
+  border:2px dashed var(--ciano);
+  border-radius:10px;
+  transition:all .25s;
+}
+.btn-ia:hover{
+  background:linear-gradient(135deg,rgba(92,225,230,.3) 0%,rgba(8,145,178,.3) 100%);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(92,225,230,.3);
+  border-style:solid;
+}
+
+/* RESULTADOS */
+.resultado-item{
+  margin-bottom:18px;
+}
+.resultado-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:8px;
+}
+.resultado-header label{
+  font-size:12px;
+  font-weight:700;
+  color:var(--ciano);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.resultado-textarea{
+  width:100%;
+  min-height:100px;
+  padding:14px;
+  border:1px solid var(--borda);
+  border-radius:8px;
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  line-height:1.6;
+  background:var(--bg-nivel-0);
+  color:var(--texto);
+  resize:vertical;
+  transition:all .18s;
+}
+.resultado-textarea:focus{
+  outline:none;
+  border-color:var(--ciano);
+  box-shadow:0 0 0 3px rgba(92,225,230,.2);
+}
+
+/* HISTÓRICO */
+.historico-item{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  padding:14px 16px;
+  background:rgba(92,225,230,.06);
+  border:1px solid rgba(92,225,230,.2);
+  border-radius:10px;
+  margin-bottom:10px;
+  transition:all .2s;
+}
+.historico-item:hover{
+  background:rgba(92,225,230,.1);
+  border-color:var(--ciano);
+}
+.historico-item .hist-data{
+  color:var(--texto-55);
+  font-size:12px;
+  white-space:nowrap;
+  font-weight:600;
+}
+.historico-item .hist-info{
+  flex:1;
+  min-width:0;
+}
+.historico-item .hist-info .hist-titulo{
+  color:var(--texto);
+  font-weight:700;
+  margin-bottom:4px;
+}
+.historico-item .hist-info .hist-preview{
+  color:var(--texto-70);
+  font-size:12px;
+  line-height:1.4;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.historico-item .hist-actions{
+  display:flex;
+  gap:6px;
+  flex-shrink:0;
+}
+
+.vazio{
+  text-align:center;
+  padding:40px 20px;
+  color:var(--texto-40);
+  font-size:13px;
+  font-style:italic;
+}
+
+.hidden{display:none !important}
+
+@media(max-width:700px){
+  header{padding:16px;min-height:80px;grid-template-columns:1fr;gap:12px}
+  .header-left,.header-right{justify-content:center;flex-wrap:wrap}
+  .logo-svg{width:44px;height:44px}
+  .titulo-grupo h1{font-size:18px;letter-spacing:2px}
+  .container{padding:16px 12px 60px}
+  .redacao-grid{grid-template-columns:1fr;gap:14px}
+  .form-grid{grid-template-columns:1fr}
+  .login-card{padding:28px 22px}
+  .login-card h1{font-size:18px}
+  .corte-item{flex-wrap:wrap}
+  .historico-item{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <p id="loadingTexto">Conectando ao servidor...</p>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="hidden">
+  <div class="login-card">
+    <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 75 L28 30 L45 55 L58 22 L78 55 L95 35 L95 75 Z" fill="none" stroke="#e8eef7" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M28 30 L38 48" stroke="#c9a961" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M58 22 L68 42" stroke="#c9a961" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="30" cy="68" r="13" fill="#071426" stroke="#e8eef7" stroke-width="2"/>
+      <circle cx="30" cy="68" r="8" fill="none" stroke="#5ce1e6" stroke-width="1.5"/>
+      <circle cx="30" cy="68" r="4" fill="#5ce1e6"/>
+      <path d="M48 65 Q52 55 56 65 T64 65 Q68 55 72 65 T80 65 Q84 58 88 65" fill="none" stroke="#5ce1e6" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M52 42 L62 48 L52 54 Z" fill="#5ce1e6" opacity="0.9"/>
+    </svg>
+    <h1>MH <span>REDAÇÃO</span></h1>
+    <p>Central de Conteúdo</p>
+    <input type="password" id="senhaInput" placeholder="Digite a senha" autocomplete="off" onkeydown="if(event.key==='Enter')tentarLogin()">
+    <button class="primary" onclick="tentarLogin()">Entrar</button>
+    <div class="erro" id="loginErro"></div>
+    <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--borda)">
+      <a href="../" style="color:var(--texto-55);font-size:12px;text-decoration:none">🎥 Voltar para MH Comunica (Mídia)</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header id="appHeader" class="hidden">
+  <div class="header-left">
+    <button class="ghost btn-sm" onclick="window.location.href='../'">🎥 Mídia</button>
+    <span class="conn-status online" id="connStatus"><span class="conn-dot"></span><span id="connTexto">Online</span></span>
+  </div>
+  <div class="header-center">
+    <div class="logo-wrap">
+      <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 75 L28 30 L45 55 L58 22 L78 55 L95 35 L95 75 Z" fill="none" stroke="#e8eef7" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <path d="M28 30 L38 48" stroke="#c9a961" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M58 22 L68 42" stroke="#c9a961" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="30" cy="68" r="13" fill="#071426" stroke="#e8eef7" stroke-width="2"/>
+        <circle cx="30" cy="68" r="8" fill="none" stroke="#5ce1e6" stroke-width="1.5"/>
+        <circle cx="30" cy="68" r="4" fill="#5ce1e6"/>
+        <path d="M48 65 Q52 55 56 65 T64 65 Q68 55 72 65 T80 65 Q84 58 88 65" fill="none" stroke="#5ce1e6" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M52 42 L62 48 L52 54 Z" fill="#5ce1e6" opacity="0.9"/>
+      </svg>
+      <div class="titulo-grupo"><h1>MH <span>REDAÇÃO</span></h1></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="user-badge">🎬 Central de Redação</span>
+    <button class="ghost" onclick="fazerLogout()">Sair</button>
+  </div>
+</header>
+
+<!-- ABAS -->
+<nav class="tabs hidden" id="tabsNav">
+  <button onclick="openTab('redacao',this)" class="active">✍️ Redação</button>
+  <button onclick="openTab('historico',this)">📚 Histórico</button>
+</nav>
+
+<!-- CONTEÚDO -->
+<main class="container hidden" id="appMain">
+
+  <!-- ABA: REDAÇÃO -->
+  <section id="redacao" class="page active">
+
+    <div class="redacao-grid">
+
+      <!-- COLUNA ESQUERDA: FONTE + CORTES -->
+      <div>
+
+        <!-- FONTE -->
+        <div class="box">
+          <div class="box-title"><span class="titulo-esq">📹 Fonte do Culto</span></div>
+          <div class="box-body">
+
+            <div class="form-grid" style="margin-bottom:14px">
+              <label style="grid-column:1/-1">
+                Link do YouTube
+                <input type="text" id="fonteYoutube" placeholder="Cole o link do vídeo ou da live" oninput="carregarYoutube()">
+              </label>
+            </div>
+
+            <div class="form-grid" style="margin-bottom:14px">
+              <label style="grid-column:1/-1">
+                Ou envie o áudio do culto
+                <input type="file" id="fonteAudio" accept="audio/*" onchange="carregarAudio(event)">
+              </label>
+            </div>
+
+            <div class="player-wrap" id="playerWrap">
+              <div style="text-align:center">
+                <div style="font-size:42px;margin-bottom:8px">🎬</div>
+                <div>Cole um link do YouTube ou envie um áudio</div>
+              </div>
+            </div>
+
+            <div class="player-actions">
+              <button class="dark" onclick="marcarInicio()">⏱️ Marcar Início</button>
+              <button class="dark" onclick="marcarFim()">⏹️ Marcar Fim</button>
+              <button class="ghost" onclick="limparPlayer()">🗑️ Limpar Player</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CORTES -->
+        <div class="box">
+          <div class="box-title">
+            <span class="titulo-esq">🎬 Melhores Momentos</span>
+            <button class="primary btn-sm" onclick="adicionarCorteManual()">＋ Adicionar</button>
+          </div>
+          <div class="box-body">
+
+            <div class="campo-tempo">
+              <label>Início</label>
+              <input type="text" id="corteInicio" placeholder="00:00:00" maxlength="8">
+              <label>Fim</label>
+              <input type="text" id="corteFim" placeholder="00:00:00" maxlength="8">
+            </div>
+
+            <div class="form-grid">
+              <label style="grid-column:1/-1">
+                Descrição (opcional)
+                <input type="text" id="corteDesc" placeholder="Ex: Frase marcante sobre fé">
+              </label>
+            </div>
+
+            <div class="lista-cortes" id="listaCortes">
+              <div class="vazio">Nenhum corte marcado ainda</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- COLUNA DIREITA: CONTEXTO + IA -->
+      <div>
+
+        <!-- CONTEXTO -->
+        <div class="box">
+          <div class="box-title"><span class="titulo-esq">📝 Contexto do Culto</span></div>
+          <div class="box-body">
+
+            <div class="form-grid">
+              <label style="grid-column:1/-1">
+                Culto / Evento
+                <input type="text" id="ctxCulto" placeholder="Ex: Culto de Missões">
+              </label>
+              <label>
+                Data
+                <input type="date" id="ctxData">
+              </label>
+              <label>
+                Pregador
+                <input type="text" id="ctxPregador" placeholder="Ex: Pr. Marcus">
+              </label>
+              <label style="grid-column:1/-1">
+                Tema do sermão
+                <input type="text" id="ctxTema" placeholder="Ex: Fé que move montanhas">
+              </label>
+              <label style="grid-column:1/-1">
+                Versículo base
+                <input type="text" id="ctxVersiculo" placeholder="Ex: Marcos 11:23">
+              </label>
+            </div>
+
+            <button class="btn-ia" onclick="gerarConteudo()">🤖 Gerar Conteúdo com IA</button>
+
+          </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="box">
+          <div class="box-title"><span class="titulo-esq">📤 Resultado</span></div>
+          <div class="box-body">
+
+            <div class="resultado-item">
+              <div class="resultado-header">
+                <label>📸 Legenda Instagram</label>
+                <button class="dark btn-xs" onclick="copiar('outLegenda')">📋 Copiar</button>
+              </div>
+              <textarea class="resultado-textarea" id="outLegenda" placeholder="O texto gerado aparecerá aqui..."></textarea>
+            </div>
+
+            <div class="resultado-item">
+              <div class="resultado-header">
+                <label>🎬 Título Reels / Shorts</label>
+                <button class="dark btn-xs" onclick="copiar('outTitulo')">📋 Copiar</button>
+              </div>
+              <textarea class="resultado-textarea" id="outTitulo" style="min-height:60px" placeholder="O título gerado aparecerá aqui..."></textarea>
+            </div>
+
+            <div class="resultado-item">
+              <div class="resultado-header">
+                <label>💥 Frase de Impacto</label>
+                <button class="dark btn-xs" onclick="copiar('outFrase')">📋 Copiar</button>
+              </div>
+              <textarea class="resultado-textarea" id="outFrase" style="min-height:60px" placeholder="A frase de impacto aparecerá aqui..."></textarea>
+            </div>
+
+            <div class="resultado-item">
+              <div class="resultado-header">
+                <label>📺 Descrição YouTube</label>
+                <button class="dark btn-xs" onclick="copiar('outDescricao')">📋 Copiar</button>
+              </div>
+              <textarea class="resultado-textarea" id="outDescricao" placeholder="A descrição aparecerá aqui..."></textarea>
+            </div>
+
+            <div class="resultado-item">
+              <div class="resultado-header">
+                <label>#️⃣ Hashtags</label>
+                <button class="dark btn-xs" onclick="copiar('outHashtags')">📋 Copiar</button>
+              </div>
+              <textarea class="resultado-textarea" id="outHashtags" style="min-height:60px" placeholder="As hashtags aparecerão aqui..."></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button class="green" onclick="enviarParaCoordenacao()">📤 Enviar para coordenação</button>
+              <button class="primary" onclick="salvarNoHistorico()">💾 Salvar no histórico</button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ABA: HISTÓRICO -->
+  <section id="historico" class="page">
+    <div class="box">
+      <div class="box-title">
+        <span class="titulo-esq">📚 Histórico de Conteúdos</span>
+        <button class="ghost btn-sm" onclick="carregarHistorico()">🔄 Atualizar</button>
+      </div>
+      <div class="box-body" id="historicoLista">
+        <div class="vazio">Carregando...</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+</script>
+</body>
+</html>
+"use strict";
+
+/* ==========================================================
+   CONFIGURAÇÃO SUPABASE
+========================================================== */
+const MH_SUPABASE_URL = "https://pbdsvfrslngrjnqbgnmj.supabase.co";
+const MH_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiZHN2ZnJzbG5ncmpucWJnbm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyMjA0MTEsImV4cCI6MjEwNDc5NjQxMX0.n4Gn46vvo_U7Vm9tREy9BM5MgJl9CYI7wKGjY9ytpmQ";
+
+let sb = null;
+let conectado = false;
+
+const DB = {
+  cortes: [],
+  historico: []
+};
+
+let audioCarregado = null;
+let playerYoutubeId = null;
+
+/* ==========================================================
+   CONEXÃO
+========================================================== */
+function setStatus(status, texto){
+  const el = document.getElementById("connStatus");
+  const txt = document.getElementById("connTexto");
+  if(!el || !txt) return;
+  el.className = "conn-status " + status;
+  txt.textContent = texto || (status === "online" ? "Online" : status === "syncing" ? "Sincronizando" : "Offline");
+}
+
+function initSupabase(){
+  try{
+    sb = window.supabase.createClient(MH_SUPABASE_URL, MH_SUPABASE_KEY);
+    conectado = true;
+    setStatus("online", "Online");
+    console.log("✅ Supabase conectado");
+    return true;
+  }catch(e){
+    console.error("Erro ao conectar:", e);
+    conectado = false;
+    setStatus("offline", "Offline");
+    return false;
+  }
+}
+
+/* ==========================================================
+   HELPERS
+========================================================== */
+function esc(v){
+  return String(v==null?"":v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+
+function dataBR(iso){
+  if(!iso) return "";
+  const p = iso.split("-");
+  if(p.length !== 3) return iso;
+  return p[2] + "/" + p[1] + "/" + p[0];
+}
+
+function nomeMesAtual(){
+  const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  const d = new Date();
+  return meses[d.getMonth()] + " de " + d.getFullYear();
+}
+
+function formatarSegundos(seg){
+  seg = Math.floor(seg);
+  const h = Math.floor(seg / 3600);
+  const m = Math.floor((seg % 3600) / 60);
+  const s = seg % 60;
+  return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+
+function parseTempo(t){
+  if(!t) return 0;
+  const p = t.split(":").map(x=>parseInt(x,10) || 0);
+  if(p.length === 3) return p[0]*3600 + p[1]*60 + p[2];
+  if(p.length === 2) return p[0]*60 + p[1];
+  return p[0] || 0;
+}
+
+/* ==========================================================
+   LOGIN
+========================================================== */
+async function buscarSenha(){
+  try{
+    const { data, error } = await sb.from("redacao_senhas").select("password").eq("user_login", "redacao").single();
+    if(error) throw error;
+    return data.password;
+  }catch(e){
+    console.error("Erro ao buscar senha:", e);
+    return null;
+  }
+}
+
+async function tentarLogin(){
+  const input = document.getElementById("senhaInput");
+  const erro = document.getElementById("loginErro");
+  const senha = input.value.trim();
+
+  setStatus("syncing", "Verificando...");
+  const senhaCorreta = await buscarSenha();
+  setStatus("online");
+
+  if(!senhaCorreta){
+    erro.textContent = "❌ Erro ao conectar. Tente novamente.";
+    return;
+  }
+
+  if(senha === senhaCorreta){
+    sessionStorage.setItem("mh_redacao_logado", "1");
+    abrirApp();
+  } else {
+    erro.textContent = "❌ Senha incorreta. Tente novamente.";
+    input.value = "";
+    input.focus();
+    input.style.borderColor = "#dc2626";
+    setTimeout(()=>{ input.style.borderColor = ""; }, 800);
+  }
+}
+
+function abrirApp(){
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("appHeader").classList.remove("hidden");
+  document.getElementById("tabsNav").classList.remove("hidden");
+  document.getElementById("appMain").classList.remove("hidden");
+  carregarHistorico();
+}
+
+function fazerLogout(){
+  if(!confirm("Deseja sair?")) return;
+  sessionStorage.removeItem("mh_redacao_logado");
+  location.reload();
+}
+
+/* ==========================================================
+   NAVEGAÇÃO
+========================================================== */
+function openTab(id, button){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  const page = document.getElementById(id);
+  if(page) page.classList.add("active");
+  document.querySelectorAll("#tabsNav button").forEach(x=>x.classList.remove("active"));
+  if(button) button.classList.add("active");
+  if(id === "historico") carregarHistorico();
+}
+
+/* ==========================================================
+   YOUTUBE
+========================================================== */
+function extrairIdYoutube(url){
+  if(!url) return null;
+  // Formatos aceitos:
+  // https://www.youtube.com/watch?v=ABC123
+  // https://youtu.be/ABC123
+  // https://www.youtube.com/live/ABC123
+  // https://www.youtube.com/embed/ABC123
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{11})/
+  ];
+  for(let p of patterns){
+    const m = url.match(p);
+    if(m) return m[1];
+  }
+  return null;
+}
+
+function carregarYoutube(){
+  const url = document.getElementById("fonteYoutube").value.trim();
+  if(!url) return;
+
+  const id = extrairIdYoutube(url);
+  if(!id){
+    // Não é link válido ainda — o usuário pode estar digitando
+    return;
+  }
+
+  playerYoutubeId = id;
+  audioCarregado = null;
+  document.getElementById("fonteAudio").value = "";
+
+  const wrap = document.getElementById("playerWrap");
+  wrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+
+  setStatus("online", "Vídeo carregado");
+}
+
+/* ==========================================================
+   ÁUDIO
+========================================================== */
+function carregarAudio(evt){
+  const file = evt.target.files[0];
+  if(!file){
+    return;
+  }
+
+  // Valida tamanho (limite do Supabase Storage: 50MB)
+  if(file.size > 50 * 1024 * 1024){
+    alert("⚠️ O arquivo é maior que 50MB.\n\nPor favor, envie um arquivo menor ou divida em partes.");
+    evt.target.value = "";
+    return;
+  }
+
+  audioCarregado = file;
+  playerYoutubeId = null;
+  document.getElementById("fonteYoutube").value = "";
+
+  const url = URL.createObjectURL(file);
+  const wrap = document.getElementById("playerWrap");
+  wrap.innerHTML = '<video controls src="' + url + '" style="width:100%;max-height:400px;background:#000"></video>';
+
+  setStatus("online", "Áudio carregado");
+}
+
+function limparPlayer(){
+  if(!confirm("Limpar o player? Os cortes permanecem salvos.")) return;
+  playerYoutubeId = null;
+  audioCarregado = null;
+  document.getElementById("fonteYoutube").value = "";
+  document.getElementById("fonteAudio").value = "";
+  document.getElementById("playerWrap").innerHTML = '<div style="text-align:center"><div style="font-size:42px;margin-bottom:8px">🎬</div><div>Cole um link do YouTube ou envie um áudio</div></div>';
+}
+
+/* ==========================================================
+   MARCAR INÍCIO / FIM
+========================================================== */
+function getTempoAtual(){
+  // Se for áudio
+  const video = document.querySelector("#playerWrap video");
+  if(video) return video.currentTime;
+
+  // Se for YouTube (via postMessage)
+  if(playerYoutubeId){
+    // Não é 100% preciso por segurança do YouTube, então avisamos
+    return null;
+  }
+  return null;
+}
+
+function marcarInicio(){
+  const t = getTempoAtual();
+  if(t !== null){
+    document.getElementById("corteInicio").value = formatarSegundos(t);
+    setStatus("online", "Início marcado: " + formatarSegundos(t));
+  } else {
+    // Se não conseguiu pegar automaticamente, pede manual
+    const manual = prompt("Não foi possível capturar o tempo automaticamente.\n\nDigite o tempo de INÍCIO (formato HH:MM:SS):", "00:00:00");
+    if(manual) document.getElementById("corteInicio").value = manual.trim();
+  }
+}
+
+function marcarFim(){
+  const t = getTempoAtual();
+  if(t !== null){
+    document.getElementById("corteFim").value = formatarSegundos(t);
+    setStatus("online", "Fim marcado: " + formatarSegundos(t));
+  } else {
+    const manual = prompt("Não foi possível capturar o tempo automaticamente.\n\nDigite o tempo de FIM (formato HH:MM:SS):", "00:00:00");
+    if(manual) document.getElementById("corteFim").value = manual.trim();
+  }
+}
+
+/* ==========================================================
+   CORTES
+========================================================== */
+function adicionarCorteManual(){
+  const inicio = document.getElementById("corteInicio").value.trim();
+  const fim = document.getElementById("corteFim").value.trim();
+  const desc = document.getElementById("corteDesc").value.trim();
+
+  if(!inicio || !fim){
+    alert("⚠️ Preencha os campos de início e fim.");
+    return;
+  }
+
+  const segIni = parseTempo(inicio);
+  const segFim = parseTempo(fim);
+
+  if(segFim <= segIni){
+    alert("⚠️ O tempo de fim precisa ser maior que o de início.");
+    return;
+  }
+
+  DB.cortes.push({
+    inicio: formatarSegundos(segIni),
+    fim: formatarSegundos(segFim),
+    duracao: formatarSegundos(segFim - segIni),
+    descricao: desc
+  });
+
+  document.getElementById("corteInicio").value = "";
+  document.getElementById("corteFim").value = "";
+  document.getElementById("corteDesc").value = "";
+
+  renderCortes();
+}
+
+function removerCorte(i){
+  if(!confirm("Remover este corte?")) return;
+  DB.cortes.splice(i,1);
+  renderCortes();
+}
+
+function renderCortes(){
+  const lista = document.getElementById("listaCortes");
+  if(!DB.cortes.length){
+    lista.innerHTML = '<div class="vazio">Nenhum corte marcado ainda</div>';
+    return;
+  }
+  lista.innerHTML = DB.cortes.map((c,i)=>
+    '<div class="corte-item">' +
+      '<div class="corte-tempo">' + c.inicio + '<span>→</span>' + c.fim + '</div>' +
+      '<div class="corte-desc">' + (c.descricao ? esc(c.descricao) : '<em style="color:var(--texto-40)">sem descrição</em>') + '</div>' +
+      '<div class="corte-actions">' +
+        '<button class="ghost btn-xs" onclick="usarCorte(' + i + ')" title="Usar este trecho">✨ Usar</button>' +
+        '<button class="danger btn-xs" onclick="removerCorte(' + i + ')" title="Remover">✕</button>' +
+      '</div>' +
+    '</div>'
+  ).join("");
+}
+
+function usarCorte(i){
+  const c = DB.cortes[i];
+  if(!c) return;
+  // Copia o corte para os campos de contexto (o redator usa como referência)
+  const obs = c.descricao || ("Trecho de " + c.duracao);
+  document.getElementById("ctxTema").value = obs;
+  setStatus("online", "Corte aplicado");
+  alert("✅ Corte aplicado!\n\nOs tempos:\n• Início: " + c.inicio + "\n• Fim: " + c.fim + "\n• Duração: " + c.duracao);
+}
+
+/* ==========================================================
+   GERAR CONTEÚDO (Template Inteligente)
+========================================================== */
+function gerarConteudo(){
+  const culto = document.getElementById("ctxCulto").value.trim();
+  const data = document.getElementById("ctxData").value;
+  const pregador = document.getElementById("ctxPregador").value.trim();
+  const tema = document.getElementById("ctxTema").value.trim();
+  const versiculo = document.getElementById("ctxVersiculo").value.trim();
+
+  if(!tema && !pregador){
+    alert("⚠️ Preencha pelo menos o TEMA e o PREGADOR para gerar o conteúdo.");
+    return;
+  }
+
+  // Se tiver corte marcado, usa o primeiro como base
+  const corteBase = DB.cortes[0] || null;
+
+  // Dados fallback
+  const cultoFinal = culto || "Culto";
+  const dataFinal = data ? dataBR(data) : nomeMesAtual();
+  const pregadorFinal = pregador || "o preletor";
+  const temaFinal = tema || "a Palavra de Deus";
+  const versiculoFinal = versiculo || "";
+  const referenciaVersiculo = versiculoFinal ? " (" + versiculoFinal + ")" : "";
+
+  /* ==========================================================
+     LEGENDA INSTAGRAM
+  ========================================================== */
+  const legenda = 
+    "🙌 " + temaFinal.toUpperCase() + "\n\n" +
+    "Neste " + cultoFinal + " de " + dataFinal + ", " + pregadorFinal + 
+    " nos ministrou sobre " + temaFinal + referenciaVersiculo + 
+    ", e Deus tocou profundamente os nossos corações. 💛\n\n" +
+    (corteBase ? "✨ Destaque: " + (corteBase.descricao || "um trecho que você precisa ouvir!") + "\n\n" : "") +
+    "Deus tem algo novo para a sua vida! Venha viver isso conosco. 🙏\n\n" +
+    "📍 Monte Hermon\n" +
+    "🔗 Siga @midiamontehermon\n" +
+    "💬 Compartilhe com alguém que precisa ler isso hoje!";
+
+  /* ==========================================================
+     TÍTULO REELS / SHORTS
+  ========================================================== */
+  const titulos = [
+    "🔥 " + temaFinal,
+    "🙌 " + temaFinal + " — você precisa ouvir isso!",
+    "💛 " + temaFinal + " | Monte Hermon",
+    "✨ A Palavra que vai mudar o seu dia",
+    "🙏 " + temaFinal
+  ];
+  const titulo = titulos[Math.floor(Math.random() * titulos.length)];
+
+  /* ==========================================================
+     FRASE DE IMPACTO
+  ========================================================== */
+  const frases = [
+    "\"" + temaFinal + " — o que Deus tem para você hoje vai além do que imagina.\"",
+    "\"" + temaFinal + ": a resposta que o seu coração espera.\"",
+    "\"Não é sobre o que você faz, é sobre quem Deus é.\"",
+    "\"" + temaFinal + ". Guarde essa Palavra no coração.\"",
+    "\"Quando Deus fala, o impossível se torna possível.\"",
+    "\"A fé não é sobre ver, é sobre confiar.\""
+  ];
+  const frase = frases[Math.floor(Math.random() * frases.length)];
+
+  /* ==========================================================
+     DESCRIÇÃO YOUTUBE
+  ========================================================== */
+  const timestamp = (corteBase ? "\n\n⏱️ CORTES\n" + DB.cortes.map(c=>c.inicio + " - " + (c.descricao || "Trecho especial")).join("\n") : "");
+
+  const descricao = 
+    "🎬 " + cultoFinal + " — " + temaFinal + "\n\n" +
+    "Nesta ministração, " + pregadorFinal + " nos trouxe uma palavra sobre " + temaFinal + referenciaVersiculo + ".\n\n" +
+    "🙏 Que esta mensagem abençoe a sua vida!\n\n" +
+    "📅 Data: " + dataFinal + "\n" +
+    "📍 Monte Hermon\n" +
+    "🎙️ Preletor: " + pregadorFinal +
+    timestamp + "\n\n" +
+    "🔔 Inscreva-se no canal para não perder nenhuma ministração!\n" +
+    "👉 Compartilhe com quem precisa ouvir essa palavra.";
+
+  /* ==========================================================
+     HASHTAGS
+  ========================================================== */
+  const tags = [
+    "#fe", "#jesus", "#palavra", "#adoração", "#igreja",
+    "#deus", "#fé", "#montehermon", "#midiamontehermon",
+    "#culto", "#pregação", "#abençoado", "#comunhão",
+    "#gratidão", "#louvoreadoração", "#cristo",
+    "#shorts", "#reels", "#cristaos"
+  ];
+  const hashtags = tags.join(" ");
+
+  /* ==========================================================
+     PREENCHER CAMPOS
+  ========================================================== */
+  document.getElementById("outLegenda").value = legenda;
+  document.getElementById("outTitulo").value = titulo;
+  document.getElementById("outFrase").value = frase;
+  document.getElementById("outDescricao").value = descricao;
+  document.getElementById("outHashtags").value = hashtags;
+
+  setStatus("online", "Conteúdo gerado");
+  alert("✅ Conteúdo gerado com sucesso!\n\nRevise os textos e ajuste como quiser antes de salvar.");
+}
+
+/* ==========================================================
+   COPIAR
+========================================================== */
+function copiar(id){
+  const el = document.getElementById(id);
+  if(!el || !el.value.trim()){
+    alert("⚠️ Nada para copiar ainda.");
+    return;
+  }
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(el.value).then(()=>{
+      // Feedback visual
+      const btn = event.target;
+      const original = btn.textContent;
+      btn.textContent = "✅ Copiado!";
+      setTimeout(()=>{ btn.textContent = original; }, 1500);
+    }).catch(()=>{
+      el.select();
+      document.execCommand("copy");
+      alert("✅ Texto copiado!");
+    });
+  } else {
+    el.select();
+    document.execCommand("copy");
+    alert("✅ Texto copiado!");
+  }
+}
+
+/* ==========================================================
+   SALVAR NO HISTÓRICO
+========================================================== */
+async function salvarNoHistorico(){
+  const culto = document.getElementById("ctxCulto").value.trim();
+  const data = document.getElementById("ctxData").value;
+  const pregador = document.getElementById("ctxPregador").value.trim();
+  const tema = document.getElementById("ctxTema").value.trim();
+  const versiculo = document.getElementById("ctxVersiculo").value.trim();
+  const legenda = document.getElementById("outLegenda").value.trim();
+  const titulo = document.getElementById("outTitulo").value.trim();
+  const frase = document.getElementById("outFrase").value.trim();
+  const descricao = document.getElementById("outDescricao").value.trim();
+  const hashtags = document.getElementById("outHashtags").value.trim();
+
+  if(!legenda && !titulo){
+    alert("⚠️ Gere o conteúdo antes de salvar.");
+    return;
+  }
+
+  setStatus("syncing", "Salvando...");
+  try{
+    const { error } = await sb.from("redacao_conteudos").insert({
+      culto: culto || null,
+      data_culto: data ? dataBR(data) : null,
+      pregador: pregador || null,
+      tema: tema || null,
+      versiculo: versiculo || null,
+      fonte_youtube: document.getElementById("fonteYoutube").value.trim() || null,
+      cortes: DB.cortes,
+      legenda_instagram: legenda,
+      titulo_reels: titulo,
+      frase_impacto: frase,
+      descricao_youtube: descricao,
+      hashtags: hashtags,
+      status: "rascunho",
+      criado_por: "Redação"
+    });
+    if(error) throw error;
+
+    setStatus("online");
+    alert("✅ Conteúdo salvo no histórico!");
+    carregarHistorico();
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    alert("⚠️ Erro ao salvar: " + e.message);
+  }
+}
+
+/* ==========================================================
+   ENVIAR PARA COORDENAÇÃO
+========================================================== */
+async function enviarParaCoordenacao(){
+  const culto = document.getElementById("ctxCulto").value.trim() || "Culto";
+  const tema = document.getElementById("ctxTema").value.trim() || "a Palavra";
+  const legenda = document.getElementById("outLegenda").value.trim();
+
+  if(!legenda){
+    alert("⚠️ Gere o conteúdo antes de enviar.");
+    return;
+  }
+
+  const confirmar = confirm(
+    "📤 Enviar para a coordenação?\n\n" +
+    "Será criado um aviso no sistema da Mídia e você poderá avisar por WhatsApp também.\n\n" +
+    "Deseja continuar?"
+  );
+  if(!confirmar) return;
+
+  // 1. Salva no histórico primeiro
+  await salvarNoHistorico();
+
+  // 2. Cria aviso no sistema da Mídia
+  setStatus("syncing", "Enviando...");
+  try{
+    const { error } = await sb.from("notices").insert({
+      title: "✍️ Novo texto da Redação aguardando aprovação",
+      text_content: "Culto: " + culto + "\nTema: " + tema + "\n\nVer na Central de Redação.",
+      created_by: "Redação"
+    });
+    if(error) throw error;
+    setStatus("online");
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+  }
+
+  // 3. Abre WhatsApp (opcional)
+  const msg = "✍️ *Novo texto da Redação*\n\n" +
+    "*Culto:* " + culto + "\n" +
+    "*Tema:* " + tema + "\n\n" +
+    "Confira na Central de Redação!\n" +
+    "https://euthiagopereira.github.io/MH-Comunica/redacao/";
+
+  const querWhats = confirm("✅ Aviso criado no sistema!\n\nDeseja avisar também no WhatsApp?");
+  if(querWhats){
+    window.open("https://wa.me/5547999246455?text=" + encodeURIComponent(msg), "_blank");
+  }
+}
+
+/* ==========================================================
+   HISTÓRICO
+========================================================== */
+async function carregarHistorico(){
+  const lista = document.getElementById("historicoLista");
+  if(!lista) return;
+
+  setStatus("syncing", "Carregando...");
+  try{
+    const { data, error } = await sb.from("redacao_conteudos").select("*").order("criado_em", { ascending: false }).limit(50);
+    if(error) throw error;
+
+    DB.historico = data || [];
+    setStatus("online");
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    lista.innerHTML = '<div class="vazio">Erro ao carregar histórico</div>';
+    return;
+  }
+
+  if(!DB.historico.length){
+    lista.innerHTML = '<div class="vazio">Nenhum conteúdo salvo ainda</div>';
+    return;
+  }
+
+  lista.innerHTML = DB.historico.map(h => {
+    const data = h.criado_em ? new Date(h.criado_em).toLocaleString("pt-BR", {day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}) : "—";
+    const preview = (h.legenda_instagram || h.titulo_reels || "").substring(0, 100);
+    return '<div class="historico-item">' +
+      '<div class="hist-data">' + data + '</div>' +
+      '<div class="hist-info">' +
+        '<div class="hist-titulo">' + esc(h.culto || "Culto") + ' · ' + esc(h.tema || "Sem tema") + '</div>' +
+        '<div class="hist-preview">' + esc(preview) + '...</div>' +
+      '</div>' +
+      '<div class="hist-actions">' +
+        '<button class="dark btn-xs" onclick="verHistorico(\'' + h.id + '\')">👁️ Ver</button>' +
+        '<button class="danger btn-xs" onclick="excluirHistorico(\'' + h.id + '\')">✕</button>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+}
+
+function verHistorico(id){
+  const h = DB.historico.find(x => x.id === id);
+  if(!h) return;
+
+  openTab("redacao", document.querySelector("#tabsNav button"));
+
+  document.getElementById("ctxCulto").value = h.culto || "";
+  document.getElementById("ctxPregador").value = h.pregador || "";
+  document.getElementById("ctxTema").value = h.tema || "";
+  document.getElementById("ctxVersiculo").value = h.versiculo || "";
+  document.getElementById("fonteYoutube").value = h.fonte_youtube || "";
+
+  document.getElementById("outLegenda").value = h.legenda_instagram || "";
+  document.getElementById("outTitulo").value = h.titulo_reels || "";
+  document.getElementById("outFrase").value = h.frase_impacto || "";
+  document.getElementById("outDescricao").value = h.descricao_youtube || "";
+  document.getElementById("outHashtags").value = h.hashtags || "";
+
+  DB.cortes = h.cortes || [];
+  renderCortes();
+
+  if(h.fonte_youtube) carregarYoutube();
+
+  setStatus("online", "Conteúdo carregado");
+}
+
+async function excluirHistorico(id){
+  if(!confirm("Excluir este conteúdo do histórico?")) return;
+  setStatus("syncing");
+  try{
+    const { error } = await sb.from("redacao_conteudos").delete().eq("id", id);
+    if(error) throw error;
+    setStatus("online");
+    carregarHistorico();
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    alert("⚠️ Erro ao excluir: " + e.message);
+  }
+}
+
+/* ==========================================================
+   INICIALIZAÇÃO
+========================================================== */
+window.addEventListener("DOMContentLoaded", async ()=>{
+  if(!initSupabase()){
+    document.getElementById("loadingTexto").textContent = "❌ Erro ao conectar";
+    return;
+  }
+
+  // Testa conexão com Supabase
+  try{
+    const { error } = await sb.from("redacao_senhas").select("user_login").limit(1);
+    if(error) throw error;
+    console.log("✅ Conexão OK");
+  }catch(e){
+    console.error(e);
+    document.getElementById("loadingTexto").textContent = "❌ Erro: " + (e.message || "");
+    return;
+  }
+
+  document.getElementById("loadingOverlay").classList.add("hidden");
+
+  // Se já está logado
+  if(sessionStorage.getItem("mh_redacao_logado") === "1"){
+    abrirApp();
+  } else {
+    document.getElementById("loginScreen").classList.remove("hidden");
+    setTimeout(()=>document.getElementById("senhaInput").focus(), 200);
+  }
+
+  // Pré-preenche a data de hoje
+  const hoje = new Date();
+  const y = hoje.getFullYear();
+  const m = String(hoje.getMonth()+1).padStart(2,"0");
+  const d = String(hoje.getDate()).padStart(2,"0");
+  document.getElementById("ctxData").value = y + "-" + m + "-" + d;
+});
+</script>
+</body>
+</html>
