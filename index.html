@@ -2279,9 +2279,36 @@ async function saveTraining(){
 function renderTrainings(){
   const podeEdit = podeEditarAvisos();
   let html = "";
+
   DB.trainings.forEach((t,i)=>{
-    html += '<tr><td>'+esc(t.name)+'</td><td>'+esc(t.area)+'</td><td>'+esc(t.mentor)+'</td><td>'+esc(t.stage)+'</td><td>'+esc(t.availability)+'</td><td>'+(formatDate(t.last)||"—")+'</td><td>'+esc(t.next)+'</td><td class="col-acao">'+(podeEdit?'<button class="danger btn-del" onclick="deleteTraining('+i+')">✕</button>':"—")+'</td></tr>';
+    // Verifica se tem telefone pro aluno e pro mentor
+    const telAluno = buscarTelefonePorNome(t.name);
+    const telMentor = buscarTelefonePorNome(t.mentor);
+
+    const btnAluno = (telAluno && t.name)
+      ? '<button class="whats btn-xs" onclick="enviarWhatsTreinamento(' + i + ',\'aluno\')" title="Avisar aluno">📱 Aluno</button>'
+      : '<button class="whats btn-xs" disabled title="Aluno sem telefone cadastrado">📱 Aluno</button>';
+
+    const btnMentor = (telMentor && t.mentor)
+      ? '<button class="whats btn-xs" onclick="enviarWhatsTreinamento(' + i + ',\'mentor\')" title="Avisar mentor">📱 Mentor</button>'
+      : '<button class="whats btn-xs" disabled title="Mentor sem telefone cadastrado">📱 Mentor</button>';
+
+    html += '<tr>' +
+      '<td>'+esc(t.name)+'</td>' +
+      '<td>'+esc(t.area)+'</td>' +
+      '<td>'+esc(t.mentor)+'</td>' +
+      '<td>'+esc(t.stage)+'</td>' +
+      '<td>'+esc(t.availability)+'</td>' +
+      '<td>'+(formatDate(t.last)||"—")+'</td>' +
+      '<td>'+esc(t.next)+'</td>' +
+      '<td class="col-acao">' +
+        btnAluno + ' ' +
+        btnMentor + ' ' +
+        (podeEdit ? '<button class="danger btn-xs" onclick="deleteTraining('+i+')">✕</button>' : '') +
+      '</td>' +
+    '</tr>';
   });
+
   document.getElementById("trainingTable").innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum treinamento cadastrado.</td></tr>';
 }
 async function deleteTraining(i){
