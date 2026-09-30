@@ -2311,6 +2311,50 @@ function renderTrainings(){
 
   document.getElementById("trainingTable").innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum treinamento cadastrado.</td></tr>';
 }
+  /* ==========================================================
+   WHATSAPP — TREINAMENTOS
+========================================================== */
+function enviarWhatsTreinamento(idx, tipo){
+  const t = DB.trainings[idx];
+  if(!t) return;
+
+  const nome = tipo === "aluno" ? t.name : t.mentor;
+  if(!nome){
+    alert("⚠️ Não há " + (tipo === "aluno" ? "aluno" : "mentor") + " cadastrado neste treinamento.");
+    return;
+  }
+
+  const tel = buscarTelefonePorNome(nome);
+  if(!tel){
+    alert("⚠️ \"" + nome + "\" não tem telefone cadastrado.\n\nCadastre na aba Voluntários (com o nome exatamente igual) para poder enviar mensagem.");
+    return;
+  }
+
+  let msg = "";
+
+  if(tipo === "aluno"){
+    msg = "🕊️ Paz, " + t.name + "!\n\n" +
+          "Você está no treinamento de *" + (t.area || "Mídia") + "* " +
+          "com o mentor *" + (t.mentor || "a definir") + "*.\n\n" +
+          "📋 Etapa atual: " + (t.stage || "—") + "\n" +
+          (t.last ? "📅 Último acompanhamento: " + formatDate(t.last) + "\n" : "") +
+          (t.next ? "\n🎯 Próximo passo: " + t.next + "\n" : "") +
+          "\nContinue firme! Qualquer dúvida, fale com a coordenação.\n\n" +
+          "Deus abençoe! 🙏";
+  } else {
+    msg = "🕊️ Paz, " + t.mentor + "!\n\n" +
+          "Lembrete do treinamento:\n\n" +
+          "👤 Aluno: " + (t.name || "—") + "\n" +
+          "📚 Área: " + (t.area || "Mídia") + "\n" +
+          "📋 Etapa atual: " + (t.stage || "—") + "\n" +
+          (t.last ? "📅 Último acompanhamento: " + formatDate(t.last) + "\n" : "") +
+          (t.next ? "\n🎯 Próximo passo: " + t.next + "\n" : "") +
+          "\nQualquer coisa, avisa a coordenação.\n\n" +
+          "Deus abençoe! 🙏";
+  }
+
+  abrirWhatsApp(tel, msg);
+}
 async function deleteTraining(i){
   if(!podeEditarAvisos()) return alert("Sem permissão.");
   if(!confirm("Excluir este talento?")) return;
