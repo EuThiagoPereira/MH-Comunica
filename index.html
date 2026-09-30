@@ -936,24 +936,27 @@ td code.senha-code{
     </div>
   </section>
 
-  <section id="treinamentos" class="page">
-    <div class="notice info">
-      🌱 O treinamento deve acontecer com acompanhamento de alguém mais experiente antes da pessoa entrar sozinha na escala.
+ <section id="treinamentos" class="page">
+  <div class="notice info">
+    🌱 O treinamento deve acontecer com acompanhamento de alguém mais experiente antes da pessoa entrar sozinha na escala.
+  </div>
+  <div class="box">
+    <div class="box-title"><span class="titulo-esq">🌱 Voluntários em treinamento</span></div>
+    <div class="toolbar">
+      <button class="primary btn-admin" onclick="newTraining()">＋ Adicionar talento</button>
+      <span style="padding:10px;color:var(--texto-70);font-size:13px">
+        💡 Os telefones são puxados da aba Voluntários (nome precisa ser igual)
+      </span>
     </div>
-    <div class="box">
-      <div class="box-title"><span class="titulo-esq">🌱 Voluntários em treinamento</span></div>
-      <div class="toolbar">
-        <button class="primary btn-admin" onclick="newTraining()">＋ Adicionar talento</button>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>NOME</th><th>ÁREA</th><th>MENTOR</th><th>ETAPA</th><th>DISPONIBILIDADE</th><th>ÚLTIMO ACOMPANHAMENTO</th><th>PRÓXIMO PASSO</th><th class="col-acao">AÇÃO</th></tr></thead>
-          <tbody id="trainingTable"></tbody>
-        </table>
-      </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>NOME</th><th>ÁREA</th><th>MENTOR</th><th>ETAPA</th><th>DISPONIBILIDADE</th><th>ÚLTIMO ACOMPANHAMENTO</th><th>PRÓXIMO PASSO</th><th class="col-acao">AÇÃO</th></tr></thead>
+        <tbody id="trainingTable"></tbody>
+      </table>
     </div>
-  </section>
-
+  </div>
+</section>
+  
   <section id="historico" class="page">
     <div class="notice info">
       📈 O histórico é acumulativo e ajuda no rodízio para evitar que sempre as mesmas pessoas sejam escaladas.
