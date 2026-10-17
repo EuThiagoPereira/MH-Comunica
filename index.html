@@ -1667,6 +1667,11 @@ function fazerLogin(){
   const vol = DB.volunteers.find(v => v.user === user);
   if(!vol){ erro.textContent = "❌ Cadastro não localizado."; return; }
   usuarioAtual = vol; definirPerfil(vol);
+  
+  // ⚡ FORÇA IR PARA O MÊS ATUAL NO LOGIN
+  const dataAtual = new Date();
+  currentMonth = String(dataAtual.getMonth() + 1).padStart(2, "0");
+
   sessionStorage.setItem("mh_logado_user", user);
   abrirApp();
   alert("✅ Bem-vindo(a), "+vol.name+"!");
