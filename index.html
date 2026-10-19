@@ -1132,6 +1132,7 @@ const STATUS_FLUXO = ["A Fazer","Agendado","Gravado","Editado","Publicado"];
 const PRODUCOES_PADRAO = ["Arte/Story", "Chamada"];
 
 let currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+let currentYear = new Date().getFullYear(); // <-- NOVO: Guarda o ano atual
 let editingVolunteer = -1;
 let usuarioAtual = null;
 let perfilAtual = "visitante";
