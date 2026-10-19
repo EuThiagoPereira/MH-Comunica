@@ -1735,11 +1735,52 @@ function openTab(id, button){
   renderAll();
 }
 function renderMonths(){
+  // 1. Renderiza os meses
   let html = "";
   Object.keys(MONTHS).sort().forEach(m=>{
     html += '<button class="'+(m===currentMonth?"active":"")+'" onclick="changeMonth(\''+m+'\')">'+MONTHS[m]+'</button>';
   });
   document.getElementById("monthNav").innerHTML = html;
+
+  // 2. Renderiza o seletor de ano
+  const selAno = document.getElementById("yearSelect");
+  if(selAno){
+    let anosHtml = "";
+    const anoAtual = new Date().getFullYear();
+    // Cria opções do ano atual -1 até o ano atual +3
+    for(let a = anoAtual - 1; a <= anoAtual + 3; a++){
+      anosHtml += '<option value="'+a+'" '+(a===currentYear?"selected":"")+'>'+a+'</option>';
+    }
+    selAno.innerHTML = anosHtml;
+  }
+}
+
+function changeYear(ano){
+  currentYear = parseInt(ano);
+  
+  // Ao trocar de ano, limpa a escala em memória do ano antigo e busca a nova do banco
+  DB.scale = {}; 
+  setStatus("syncing", "Buscando dados de " + currentYear + "...");
+  
+  // Recarrega apenas as escalas do ano novo (filtro por final do ano na data "dd/mm/aaaa")
+  sb.from("schedules").select("*").like("date", "%" + currentYear).order("date").then(({data, error}) => {
+    if(!error && data){
+      DB.scale = {};
+      data.forEach(s=>{
+        if(!DB.scale[s.month_key]) DB.scale[s.month_key] = [];
+        DB.scale[s.month_key].push({
+          id: s.id, date: s.date, day: s.day||"", event: s.event, type: s.type||"regular",
+          story: s.story||"", photo: s.photo||"", data: s.datashow||"", sound: s.sound||"", status: s.status||"A Fazer"
+        });
+      });
+      // Sincroniza com o objeto DB principal para os outros painéis (Produção, etc)
+      carregarDoSupabase().then(()=> {
+         renderAll();
+      });
+    } else {
+      setStatus("offline", "Erro ao buscar ano");
+    }
+  });
 }
 function changeMonth(m){ currentMonth=m; renderAll(); }
 
