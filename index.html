@@ -774,25 +774,17 @@ td code.senha-code{
   <button onclick="openTab('historico',this)" data-aba="historico">📈 Histórico</button>
   <button onclick="openTab('senhas',this)" data-aba="senhas">🔑 Senhas</button>
 </nav>
+
 <div class="toolbar no-print hidden" id="yearNav" style="justify-content: center; padding: 10px; border-bottom: none; background: transparent;">
   <label style="display:flex; align-items:center; gap:8px; font-weight:700; font-size:14px; color:var(--dourado); margin:0;">
     📅 Ano:
     <select id="yearSelect" onchange="changeYear(this.value)" style="padding:6px 12px; font-size:14px; font-weight:700; background:var(--bg-nivel-2); border:1px solid var(--dourado); border-radius:20px; color:#fff; cursor:pointer;">
-    </select>
-  </label>
-</div>
-  <div class="toolbar no-print hidden" id="yearNav" style="justify-content: center; padding: 10px; border-bottom: none; background: transparent;">
-  <label style="display:flex; align-items:center; gap:8px; font-weight:700; font-size:14px; color:var(--dourado); margin:0;">
-    📅 Ano:
-    <select id="yearSelect" onchange="changeYear(this.value)" style="padding:6px 12px; font-size:14px; font-weight:700; background:var(--bg-nivel-2); border:1px solid var(--dourado); border-radius:20px; color:#fff; cursor:pointer;">
-      <option value="2026">2026</option>
-      <option value="2027">2027</option>
+      <!-- O JavaScript preenche os anos aqui -->
     </select>
   </label>
 </div>
 
 <div class="months hidden" id="monthNav"></div>
-<div class="toolbar no-print hidden" id="yearNav" style="justify-content: center; padding: 10px; border-bottom: none; background: transparent;">   <label style="display:flex; align-items:center; gap:8px; font-weight:700; font-size:14px; color:var(--dourado); margin:0;">     📅 Ano:     <select id="yearSelect" onchange="changeYear(this.value)" style="padding:6px 12px; font-size:14px; font-weight:700; background:var(--bg-nivel-2); border:1px solid var(--dourado); border-radius:20px; color:#fff; cursor:pointer;">       <!-- Opções geradas via JS -->     </select>   </label> </div> <div class="months hidden" id="monthNav"></div>
 
 <main class="container hidden" id="appMain">
 
@@ -953,27 +945,27 @@ td code.senha-code{
     </div>
   </section>
 
- <section id="treinamentos" class="page">
-  <div class="notice info">
-    🌱 O treinamento deve acontecer com acompanhamento de alguém mais experiente antes da pessoa entrar sozinha na escala.
-  </div>
-  <div class="box">
-    <div class="box-title"><span class="titulo-esq">🌱 Voluntários em treinamento</span></div>
-    <div class="toolbar">
-      <button class="primary btn-admin" onclick="newTraining()">＋ Adicionar talento</button>
-      <span style="padding:10px;color:var(--texto-70);font-size:13px">
-        💡 Os telefones são puxados da aba Voluntários (nome precisa ser igual)
-      </span>
+  <section id="treinamentos" class="page">
+    <div class="notice info">
+      🌱 O treinamento deve acontecer com acompanhamento de alguém mais experiente antes da pessoa entrar sozinha na escala.
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>NOME</th><th>ÁREA</th><th>MENTOR</th><th>ETAPA</th><th>DISPONIBILIDADE</th><th>ÚLTIMO ACOMPANHAMENTO</th><th>PRÓXIMO PASSO</th><th class="col-acao">AÇÃO</th></tr></thead>
-        <tbody id="trainingTable"></tbody>
-      </table>
+    <div class="box">
+      <div class="box-title"><span class="titulo-esq">🌱 Voluntários em treinamento</span></div>
+      <div class="toolbar">
+        <button class="primary btn-admin" onclick="newTraining()">＋ Adicionar talento</button>
+        <span style="padding:10px;color:var(--texto-70);font-size:13px">
+          💡 Os telefones são puxados da aba Voluntários (nome precisa ser igual)
+        </span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>NOME</th><th>ÁREA</th><th>MENTOR</th><th>ETAPA</th><th>DISPONIBILIDADE</th><th>ÚLTIMO ACOMPANHAMENTO</th><th>PRÓXIMO PASSO</th><th class="col-acao">AÇÃO</th></tr></thead>
+          <tbody id="trainingTable"></tbody>
+        </table>
+      </div>
     </div>
-  </div>
-</section>
-  
+  </section>
+
   <section id="historico" class="page">
     <div class="notice info">
       📈 O histórico é acumulativo e ajuda no rodízio para evitar que sempre as mesmas pessoas sejam escaladas.
@@ -1709,6 +1701,7 @@ function abrirApp(){
   document.getElementById("loginScreen").classList.add("hidden");
   document.getElementById("appHeader").classList.remove("hidden");
   document.getElementById("tabsNav").classList.remove("hidden");
+  document.getElementById("yearNav").classList.remove("hidden");
   document.getElementById("monthNav").classList.remove("hidden");
   document.getElementById("appMain").classList.remove("hidden");
   aplicarPermissoes();
@@ -1965,7 +1958,7 @@ async function addScaleDay(){
     renderAll();
   }catch(e){ console.error(e); setStatus("offline","Erro"); alert("⚠️ Erro: "+e.message); }
 }
-  async function addSpecialEvent(){
+async function addSpecialEvent(){
   if(!podeEditarEscala()) return alert("Sem permissão.");
   const day = prompt("Dia da semana (ex: Sábado):",""); if(day===null) return;
   const date = prompt("Data (ex: 19/09/2026):",""); if(date===null) return;
@@ -2481,7 +2474,7 @@ function renderTrainings(){
 
   document.getElementById("trainingTable").innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:24px;color:rgba(232,238,247,.4)">Nenhum treinamento cadastrado.</td></tr>';
 }
-  /* ==========================================================
+/* ==========================================================
    WHATSAPP — TREINAMENTOS
 ========================================================== */
 function enviarWhatsTreinamento(idx, tipo){
