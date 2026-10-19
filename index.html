@@ -857,9 +857,10 @@ td code.senha-code{
   <button onclick="openTab('senhas',this)" data-aba="senhas">🔑 Senhas</button>
 </nav>
 
+<!-- ⚠️ BARRA DE MESES E ANO CORRIGIDA -->
 <div class="months-nav-wrapper">
   <!-- Seletor de ano na esquerda -->
-  <div id="yearNav" class="year-selector no-print hidden">
+  <div id="yearNav" class="year-selector no-print">
     <label style="display:flex; align-items:center; gap:8px; font-weight:700; font-size:14px; color:var(--dourado); margin:0;">
       📅 Ano:
       <select id="yearSelect" onchange="changeYear(this.value)">
@@ -869,11 +870,15 @@ td code.senha-code{
   </div>
 
   <!-- Meses no centro -->
-  <div class="months-list hidden" id="monthNav"></div>
+  <div class="months-list" id="monthNav"></div>
 
-  <!-- Espaço vazio na direita (para manter a centralização) -->
+  <!-- Espaço vazio na direita -->
   <div class="year-spacer no-print"></div>
 </div>
+
+<!-- ⚠️ AQUI ESTAVA FALTANDO A TAG MAIN -->
+<main class="container hidden" id="appMain">
+
   <section id="dashboard" class="page active">
     <div class="avisos-topo" id="avisosTopo"></div>
     <div class="log-box hidden" id="logBox">
@@ -1205,8 +1210,7 @@ td code.senha-code{
   </div>
 </div>
 
-<script>
-"use strict";
+<script>"use strict";
 
 /* ==========================================================
    CONFIGURAÇÃO SUPABASE
