@@ -1912,8 +1912,15 @@ async function atualizarEscala(i, campo, valor){
   try{
     setStatus("syncing");
     await sb.from("schedules").update({
-      date:item.date, day:item.day, event:item.event, type:item.type,
-      story:item.story, photo:item.photo, datashow:item.data, sound:item.sound, status:item.status
+      date: item.date, 
+      day: item.day, 
+      event: item.event, 
+      type: item.type,
+      story: item.story, 
+      photo: item.photo, 
+      datashow: item.data, 
+      sound: item.sound, 
+      status: item.status
     }).eq("id", item.id);
     setStatus("online");
   }catch(e){ console.error(e); setStatus("offline","Erro"); }
@@ -1941,7 +1948,7 @@ async function addScaleDay(){
     renderAll();
   }catch(e){ console.error(e); setStatus("offline","Erro"); alert("⚠️ Erro: "+e.message); }
 }
-async function addSpecialEvent(){
+  async function addSpecialEvent(){
   if(!podeEditarEscala()) return alert("Sem permissão.");
   const day = prompt("Dia da semana (ex: Sábado):",""); if(day===null) return;
   const date = prompt("Data (ex: 19/09/2026):",""); if(date===null) return;
@@ -1962,6 +1969,105 @@ async function addSpecialEvent(){
     await carregarDoSupabase();
     renderAll();
   }catch(e){ console.error(e); setStatus("offline","Erro"); alert("⚠️ Erro: "+e.message); }
+}
+
+/* ==========================================================
+   GERADOR DE MÊS PADRÃO (AUTOMÁTICO)
+========================================================== */
+async function gerarMesPadrao(){
+  if(!podeEditarEscala()) return alert("Sem permissão.");
+  
+  const confirmar = confirm("🗓️ Gerar a agenda padrão para " + monthName() + " de " + currentYear + "?\n\nIsso criará:\n- Todas as quintas (Noite do Propósito)\n- 1º Dom (Santa Ceia)\n- 2º Dom (Missões)\n- 3º, 4º e 5º Dom (Família)\n\nDeseja continuar?");
+  if(!confirmar) return;
+
+  setStatus("syncing", "Gerando agenda...");
+  
+  const mes = parseInt(currentMonth);
+  const ano = currentYear;
+  
+  // Descobre quantos dias tem o mês
+  const diasNoMes = new Date(ano, mes, 0).getDate();
+  
+  const domingos = [];
+  const quintas = [];
+  
+  // Varre o mês para separar os dias
+  for(let d = 1; d <= diasNoMes; d++){
+    const dataObj = new Date(ano, mes - 1, d);
+    const diaSemana = dataObj.getDay();
+    
+    if(diaSemana === 0) domingos.push(d); // Domingo
+    if(diaSemana === 4) quintas.push(d);  // Quinta
+  }
+
+  const novosCultos = [];
+  const mesesStr = String(mes).padStart(2, "0");
+  
+  // Função auxiliar para formatar a data e adicionar
+  function addCulto(dia, nomeEvento, isSpecial = false){
+    const dataStr = String(dia).padStart(2,"0") + "/" + mesesStr + "/" + ano;
+    // Verifica se já existe (para não duplicar)
+    const existe = scale().some(c => c.date === dataStr);
+    if(!existe){
+      novosCultos.push({
+        date: dataStr, day: getNomeDiaSemana(new Date(ano, mes-1, dia).getDay()),
+        event: nomeEvento, type: isSpecial ? "special" : "regular",
+        story:"", photo:"", data:"", sound:"", status:"A Fazer", month_key: currentMonth
+      });
+    }
+  }
+
+  // 1. Adiciona as Quintas
+  quintas.forEach(dia => addCulto(dia, "Noite do Propósito"));
+
+  // 2. Adiciona os Domingos (Regras)
+  if(domingos.length > 0){
+    // 1º Domingo = Santa Ceia
+    addCulto(domingos[0], "Culto de Santa Ceia", true);
+    
+    // 2º Domingo = Missões
+    if(domingos.length > 1) addCulto(domingos[1], "Culto de Missões", true);
+    
+    // 3º, 4º e 5º Domingo = Família
+    for(let i = 2; i < domingos.length; i++){
+      addCulto(domingos[i], "Culto da Família");
+    }
+  }
+
+  if(novosCultos.length === 0){
+    setStatus("online");
+    return alert("⚠️ Todos os cultos padrão para este mês já estão cadastrados!");
+  }
+
+  // Salva no Supabase
+  try{
+    await sb.from("schedules").insert(novosCultos);
+    
+    // Gera a produção automática para esses novos cultos
+    const prodRows = [];
+    novosCultos.forEach(e=>{
+      PRODUCOES_PADRAO.forEach(prod=>{
+        prodRows.push({culto_id:e.date+"|"+e.event, date:e.date, event:e.event, tarefa:prod, responsavel:"", status:"A Fazer", month_key:currentMonth});
+      });
+    });
+    if(prodRows.length > 0) await sb.from("productions").insert(prodRows);
+
+    await registrarLog("🗓️", 'gerou a agenda padrão de '+monthName()+'/'+currentYear);
+    setStatus("online");
+    await carregarDoSupabase();
+    renderAll();
+    alert("✅ Agenda gerada com sucesso! Foram adicionados " + novosCultos.length + " cultos.");
+  }catch(e){
+    console.error(e);
+    setStatus("offline", "Erro");
+    alert("⚠️ Erro ao gerar agenda: " + e.message);
+  }
+}
+
+// Função auxiliar para pegar o nome do dia em português
+function getNomeDiaSemana(dia){
+  const dias = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
+  return dias[dia];
 }
 async function deleteScale(i){
   if(!podeEditarEscala()) return alert("Sem permissão.");
